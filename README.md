@@ -1,5 +1,7 @@
 A Flutter package that simplify the internationalizing process using JSON files. Extracts messages to generate Dart files with friendly way to access messages you need.
 
+`String get translator => "tradutor";`
+
 [![Pub](https://img.shields.io/pub/v/tradutor?color=blueviolet)](https://pub.dev/packages/tradutor)
 
 ## Features
@@ -22,7 +24,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: 0.1.0
+    tradutor: ^0.1.0
 ```
 
 ## Usage
@@ -149,6 +151,8 @@ List<String> simpleWhiteCakeReceipt(
     "counter.other": "Button cliked {quantity} times"
 }
 ```
+
+> The 'other' plural form must be provided.
 
 Generated Dart method:
 ```dart
