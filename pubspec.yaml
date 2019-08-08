@@ -1,8 +1,10 @@
 name: tradutor
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+description: A Flutter package that simplify the internationalizing process using JSON files.
+version: 0.1.0
+author: tiagohm <tiago.henrique.cco@gmail.com>
+homepage: https://github.com/tiagohm/tradutor
+repository: https://github.com/tiagohm/tradutor
+issue_tracker: https://github.com/tiagohm/tradutor/issues
 
 environment:
   sdk: ">=2.3.0 <3.0.0"

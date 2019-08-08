@@ -51,9 +51,9 @@ class I18n implements WidgetsLocalizations {
   static Locale _locale;
   static bool _shouldReload = false;
 
-  static set locale(Locale _newLocale) {
+  static changeLocale(Locale newLocale) {
     _shouldReload = true;
-    _locale = _newLocale;
+    _locale = newLocale;
   }
 
   static const GeneratedLocalizationsDelegate delegate =
@@ -64,6 +64,8 @@ class I18n implements WidgetsLocalizations {
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
+
+  String get locale => "$locale";
 
   $messages
 }
@@ -89,6 +91,9 @@ class _I18n_$locale extends $extendsOf {
 
   @override
   TextDirection get textDirection => TextDirection.${language.options.textDirection};
+
+  @override
+  String get locale => "$locale";
 
   $messages
 }
@@ -217,6 +222,7 @@ String _buildListMessage(
     values.add('"$value"');
   }
 
+  if (!isFallback) sb.writeln("@override");
   sb.write("List<String>");
 
   if (params.isEmpty) {
@@ -270,6 +276,7 @@ String _buildPluralMessage(
     values[message.type] = '"$value"';
   }
 
+  if (!isFallback) sb.writeln("@override");
   sb.write("String");
 
   if (params.isEmpty) {
@@ -297,12 +304,14 @@ String _buildPluralMessage(
   final many = values["many"];
   final other = values["other"];
 
-  final body =
-      'Intl.plural(quantity, locale: "$locale", zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other,)';
-
-  sb.write(body);
-
-  sb.write(";");
+  sb.write('Intl.plural(quantity, locale: locale,');
+  if(zero != null) sb.write(" zero: $zero,");
+  if(one != null) sb.write(" one: $one,");
+  if(two != null) sb.write(" two: $two,");
+  if(few != null) sb.write(" few: $few,");
+  if(many != null) sb.write(" many: $many,");
+  if(other != null) sb.write(" other: $other,");
+  sb.write(");");
 
   return sb.toString();
 }
