@@ -6,7 +6,11 @@ A Flutter package that simplify the internationalizing process using JSON files.
 
 * Simple messages;
 * Messages with multiple parameters;
-* 
+* List of simple messages;
+* List of messages with multiple parameters;
+* Plural messages;
+* Allow a language extends another language;
+* Supports hot reload;
 
 ## Installation 
 
@@ -39,22 +43,26 @@ Full example: `flutter packages pub run tradutor:build -s "/i18n" -o "/lib/i18n.
 
 ## JSON Files
 
-Crete JSON files naming with language code and country code. Ex.: pt_BR.json, en_US.json, etc.
+Crete JSON files naming them with language code (lowercase) and country code (uppercase). Ex.: pt_BR.json, en_US.json, etc.
 
 `en_US.json`
 ```json
 {
-    "simpleMessage": "This is a simple message",
-    "messageWithParams": "Hi {name}, welcome you!",
-    "pluralMessage.One": "Hi {name}, I have one year working experience.",
-    "pluralMessage.Other": "Hi {name}, I have {quantity} years of working experience.",
-    "arrayMessage": [
-        "White",
-        "Blue",
-        "Yellow"
+    "simpleMessage": "This is a simple Message",
+    "messageWithParameters": "Hi {name}, Welcome you!",
+    "brazilFlagColors": ["Green", "Yellow", "Blue"],
+    "simpleWhiteCakeReceipt": [
+        "{whiteSugar} cup white sugar",
+        "{butter} cup butter",
+        "{eggs} eggs",
+        "{vanilla} teasspoons vanilla extract",
+        "{flour} cups all-purpose flour",
+        "{bakingPowder} teaspoons baking powder",
+        "{milk} cup milk"
     ],
-    "message.one": "Button clicked 1 time",
-    "message.other": "Button clicked {quantity} times"    
+    "homePageTitle": "Home Page",
+    "counter.one": "Button clicked 1 time",
+    "counter.other": "Button cliked {quantity} times"
 }
 ```
 
@@ -93,24 +101,100 @@ Define an array of strings.
 
 ```json
 {
-    "colors": ["Green", "Yellow", "Blue"]
+    "brazilFlagColors": ["Green", "Yellow", "Blue", "White"]
 }
 ```
 
 Generated Dart getter:
 ```dart
-List<String> get colors => ["Green", "Yellow", "Blue"];
+List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 ```
 
-### List of messages with parameters
+### List of messages with multiple parameters
 
 ```json
 {
-    "colors": ["Green", "Yellow", "Blue"]
+    "simpleWhiteCakeReceipt": [
+        "{whiteSugar} cup white sugar",
+        "{butter} cup butter",
+        "{eggs} eggs",
+        "{vanilla} teasspoons vanilla extract",
+        "{flour} cups all-purpose flour",
+        "{bakingPowder} teaspoons baking powder",
+        "{milk} cup milk"
+    ],
 }
 ```
 
 Generated Dart getter:
 ```dart
-List<String> get colors => ["Green", "Yellow", "Blue"];
+List<String> simpleWhiteCakeReceipt(
+          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+      [
+        "${whiteSugar} cup white sugar",
+        "${butter} cup butter",
+        "${eggs} eggs",
+        "${vanilla} teasspoons vanilla extract",
+        "${flour} cups all-purpose flour",
+        "${bakingPowder} teaspoons baking powder",
+        "${milk} cup milk"
+      ];
+```
+
+### Plural messages
+
+```json
+{
+    "counter.one": "Button clicked 1 time",
+    "counter.other": "Button cliked {quantity} times"
+}
+```
+
+Generated Dart method:
+```dart
+String counter(quantity) => Intl.plural(
+        quantity,
+        locale: locale,
+        one: "Button clicked 1 time",
+        other: "Button cliked ${quantity} times",
+      );
+```
+
+### Usage of Generated Dart file (i18n.dart)
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'i18n.dart';
+
+void main() => runApp(App());
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final i18n = I18n.delegate;
+
+    return MaterialApp(
+        title: 'Tradutor',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: HomePage(),
+        localizationsDelegates: [
+          i18n,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: i18n.supportedLocales,
+        localeResolutionCallback:
+            i18n.resolution(fallback: Locale("en", "US")));
+  }
+}
+```
+
+```dart
+final i18n = I18n.of(context);
+i18n.homePageTitle;
+i18n.counter(_counter);
 ```

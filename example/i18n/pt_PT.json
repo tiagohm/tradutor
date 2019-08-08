@@ -1,18 +1,17 @@
 {
     "simpleMessage": "Esta é uma simples mensagem",
-    "messageWithParams": "Olá {name}, seja bem-vindo!",
-    "pluralMessage.One": "Olá {name}, eu tenho 1 ano de experiência de trabalho.",
-    "pluralMessage.Other": "Olá {name}, eu tenho {quantity} anos de experiência de trabalho.",
-    "arrayMessage": [
-        "Branco",
-        "Azul",
-        "Amarelo"
+    "messageWithParameters": "Olá {name}, Bem-vindo!",
+    "brazilFlagColors": ["Verde", "Amarelo", "Azul", "Branco"],
+    "simpleWhiteCakeReceipt": [
+        "{whiteSugar} copo de açúcar cristal",
+        "{butter} copo de manteiga",
+        "{eggs} ovos",
+        "{vanilla} colheres de chá de extrato de baunilha",
+        "{flour} copo de farinha de trigo",
+        "{bakingPowder} colher de fermento em pó",
+        "{milk} copo de leite"
     ],
-    "arrayMessageWithParameters": [
-        ""
-    ],
-    "message.one": "Botão clicado 1 vez",
     "homePageTitle": "Página Inicial",
-    "message.other": "Botão clicado {quantity} vezes",
-    "increment": "Incrementar"
+    "counter.one": "Botão foi clicado 1 vez",
+    "counter.other": "Botão foi clicado {quantity} vezes"
 }

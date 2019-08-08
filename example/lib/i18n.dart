@@ -7,15 +7,53 @@ import 'package:intl/intl.dart' hide TextDirection;
 // ignore_for_file: prefer_single_quotes
 // ignore_for_file: unnecessary_brace_in_string_interps
 
+class _I18n_pt_PT extends I18n {
+  const _I18n_pt_PT();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get locale => "pt_PT";
+
+  @override
+  List<String> get brazilFlagColors => ["Verde", "Amarelo", "Azul", "Branco"];
+  @override
+  String counter(quantity) => Intl.plural(
+        quantity,
+        locale: locale,
+        one: "Botão foi clicado 1 vez",
+        other: "Botão foi clicado ${quantity} vezes",
+      );
+  @override
+  String get homePageTitle => "Página Inicial";
+  @override
+  String messageWithParameters(name) => "Olá ${name}, Bem-vindo!";
+  @override
+  String get simpleMessage => "Esta é uma simples mensagem";
+  @override
+  List<String> simpleWhiteCakeReceipt(
+          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+      [
+        "${whiteSugar} copo de açúcar cristal",
+        "${butter} copo de manteiga",
+        "${eggs} ovos",
+        "${vanilla} colheres de chá de extrato de baunilha",
+        "${flour} copo de farinha de trigo",
+        "${bakingPowder} colher de fermento em pó",
+        "${milk} copo de leite"
+      ];
+}
+
 class I18n implements WidgetsLocalizations {
   const I18n();
 
   static Locale _locale;
   static bool _shouldReload = false;
 
-  static set locale(Locale _newLocale) {
+  static changeLocale(Locale newLocale) {
     _shouldReload = true;
-    _locale = _newLocale;
+    _locale = newLocale;
   }
 
   static const GeneratedLocalizationsDelegate delegate =
@@ -27,32 +65,29 @@ class I18n implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  List<String> get arrayMessage => ["White", "Blue", "Yellow"];
-  List<String> get arrayMessageWithParameters => [""];
-  String get homePageTitle => "Home Page";
-  String get increment => "Increment";
-  String message(quantity) => Intl.plural(
+  String get locale => "en_US";
+
+  List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
+  String counter(quantity) => Intl.plural(
         quantity,
-        locale: "en_US",
-        zero: null,
+        locale: locale,
         one: "Button clicked 1 time",
-        two: null,
-        few: null,
-        many: null,
-        other: "Button clicked $quantity times",
+        other: "Button clicked ${quantity} times",
       );
-  String messageWithParams(name) => "Hi $name, welcome you!";
-  String pluralMessage(quantity, name) => Intl.plural(
-        quantity,
-        locale: "en_US",
-        zero: null,
-        one: "Hi $name, I have one year working experience.",
-        two: null,
-        few: null,
-        many: null,
-        other: "Hi $name, I have $quantity years of working experience.",
-      );
-  String get simpleMessage => "This is a simple message";
+  String get homePageTitle => "Home Page";
+  String messageWithParameters(name) => "Hi ${name}, Welcome you!";
+  String get simpleMessage => "This is a simple Message";
+  List<String> simpleWhiteCakeReceipt(
+          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+      [
+        "${whiteSugar} cup white sugar",
+        "${butter} cup butter",
+        "${eggs} eggs",
+        "${vanilla} teasspoons vanilla extract",
+        "${flour} cups all-purpose flour",
+        "${bakingPowder} teaspoons baking powder",
+        "${milk} cup milk"
+      ];
 }
 
 class _I18n_en_US extends I18n {
@@ -60,6 +95,9 @@ class _I18n_en_US extends I18n {
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get locale => "en_US";
 }
 
 class _I18n_pt_BR extends _I18n_pt_PT {
@@ -67,44 +105,17 @@ class _I18n_pt_BR extends _I18n_pt_PT {
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
-}
-
-class _I18n_pt_PT extends I18n {
-  const _I18n_pt_PT();
 
   @override
-  TextDirection get textDirection => TextDirection.ltr;
+  String get locale => "pt_BR";
 
-  List<String> get arrayMessage => ["Branco", "Azul", "Amarelo"];
-  List<String> get arrayMessageWithParameters => [""];
   @override
-  String get homePageTitle => "Página Inicial";
-  @override
-  String get increment => "Incrementar";
-  String message(quantity) => Intl.plural(
+  String counter(quantity) => Intl.plural(
         quantity,
-        locale: "pt_PT",
-        zero: null,
-        one: "Botão clicado 1 vez",
-        two: null,
-        few: null,
-        many: null,
-        other: "Botão clicado $quantity vezes",
+        locale: locale,
+        one: "Botão foi pressionado ${quantity} vez",
+        other: "Botão foi pressionado ${quantity} vezes",
       );
-  @override
-  String messageWithParams(name) => "Olá $name, seja bem-vindo!";
-  String pluralMessage(quantity, name) => Intl.plural(
-        quantity,
-        locale: "pt_PT",
-        zero: null,
-        one: "Olá $name, eu tenho 1 ano de experiência de trabalho.",
-        two: null,
-        few: null,
-        many: null,
-        other: "Olá $name, eu tenho $quantity anos de experiência de trabalho.",
-      );
-  @override
-  String get simpleMessage => "Esta é uma simples mensagem";
 }
 
 class GeneratedLocalizationsDelegate
@@ -112,9 +123,9 @@ class GeneratedLocalizationsDelegate
   const GeneratedLocalizationsDelegate();
   List<Locale> get supportedLocales {
     return const <Locale>[
+      const Locale("pt", "PT"),
       const Locale("en", "US"),
       const Locale("pt", "BR"),
-      const Locale("pt", "PT"),
     ];
   }
 
@@ -136,17 +147,17 @@ class GeneratedLocalizationsDelegate
     final String lang = locale != null ? locale.toString() : "";
     final String languageCode = locale != null ? locale.languageCode : "";
 
+    if ("pt_PT" == lang)
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
     if ("en_US" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     if ("pt_BR" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
-    if ("pt_PT" == lang)
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
 
-    if ("en" == languageCode)
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     if ("pt" == languageCode)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
+    if ("en" == languageCode)
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
 
     return SynchronousFuture<WidgetsLocalizations>(const I18n());
   }

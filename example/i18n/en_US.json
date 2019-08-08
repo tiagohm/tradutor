@@ -1,18 +1,17 @@
 {
-    "simpleMessage": "This is a simple message",
-    "messageWithParams": "Hi {name}, welcome you!",
-    "pluralMessage.One": "Hi {name}, I have one year working experience.",
-    "pluralMessage.Other": "Hi {name}, I have {quantity} years of working experience.",
-    "arrayMessage": [
-        "White",
-        "Blue",
-        "Yellow"
+    "simpleMessage": "This is a simple Message",
+    "messageWithParameters": "Hi {name}, Welcome you!",
+    "brazilFlagColors": ["Green", "Yellow", "Blue", "White"],
+    "simpleWhiteCakeReceipt": [
+        "{whiteSugar} cup white sugar",
+        "{butter} cup butter",
+        "{eggs} eggs",
+        "{vanilla} teasspoons vanilla extract",
+        "{flour} cups all-purpose flour",
+        "{bakingPowder} teaspoons baking powder",
+        "{milk} cup milk"
     ],
-    "arrayMessageWithParameters": [
-        ""
-    ],
-    "message.one": "Button clicked 1 time",
     "homePageTitle": "Home Page",
-    "message.other": "Button clicked {quantity} times",
-    "increment": "Increment"
+    "counter.one": "Button clicked 1 time",
+    "counter.other": "Button clicked {quantity} times"
 }
