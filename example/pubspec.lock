@@ -9,14 +9,14 @@ packages:
     source: hosted
     version: "0.37.0"
   ansicolor:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: ansicolor
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
   args:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: args
       url: "https://pub.dartlang.org"
@@ -63,7 +63,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.1.1+1"
   csslib:
     dependency: transitive
     description:
@@ -71,8 +71,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
-  dart_style:
+  cupertino_icons:
     dependency: "direct main"
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
+  dart_style:
+    dependency: transitive
     description:
       name: dart_style
       url: "https://pub.dartlang.org"
@@ -150,7 +157,7 @@ packages:
     source: hosted
     version: "1.0.5"
   path:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -204,7 +211,7 @@ packages:
     source: hosted
     version: "2.0.0"
   stream_transform:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: stream_transform
       url: "https://pub.dartlang.org"
@@ -231,6 +238,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5"
+  tradutor:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.1.0"
   typed_data:
     dependency: transitive
     description:
