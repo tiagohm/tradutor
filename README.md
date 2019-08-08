@@ -198,3 +198,22 @@ final i18n = I18n.of(context);
 i18n.homePageTitle;
 i18n.counter(_counter);
 ```
+
+### Extending from another language
+
+Use property `@extends` and a valid locale.
+
+`pt_BR.json`
+```json
+{
+    "@extends": "pt_PT",
+    "counter.one": "Botão foi pressionado {quantity} vez",
+    "counter.other": "Botão foi pressionado {quantity} vezes"
+}
+```
+
+> You should override all plural forms for a specified message.
+
+### Other language properties
+
+* `@textDirection`: valid values are `ltr` (default) and `rtl`;
