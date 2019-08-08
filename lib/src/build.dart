@@ -163,7 +163,7 @@ String _buildStringMessage(
 
     final name = match.group(1);
     if (!params.contains(name)) params.add(name);
-    value = value.replaceRange(match.start, match.end, "\$$name");
+    value = value.replaceRange(match.start, match.end, "\${$name}");
   }
 
   if (!isFallback) sb.writeln("@override");
@@ -211,7 +211,7 @@ String _buildListMessage(
 
       final name = match.group(1);
       if (!params.contains(name)) params.add(name);
-      value = value.replaceRange(match.start, match.end, "\$$name");
+      value = value.replaceRange(match.start, match.end, "\${$name}");
     }
 
     values.add('"$value"');
@@ -264,7 +264,7 @@ String _buildPluralMessage(
 
       final name = match.group(1);
       if (!params.contains(name)) params.add(name);
-      value = value.replaceRange(match.start, match.end, "\$$name");
+      value = value.replaceRange(match.start, match.end, "\${$name}");
     }
 
     values[message.type] = '"$value"';

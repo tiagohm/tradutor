@@ -4,6 +4,6 @@ final pluralKeyRegex = RegExp(
 );
 final keyRegex = RegExp(r"^([a-z][a-z0-9]+)$", caseSensitive: false);
 final optionKeyRegex = RegExp(r"^@([a-z][a-z0-9]+)$", caseSensitive: false);
-final paramRegex = RegExp(r"{([a-z][a-z0-9]*)}", caseSensitive: false);
+final paramRegex = RegExp(r"(?<!\$){([a-z][a-z0-9]*)}", caseSensitive: false);
 final filenameRegex = RegExp(r"([a-z]{2})_([A-Z]{2})\.json$");
 final localeRegex = RegExp(r"^([a-z]{2})_([A-Z]{2})$");
