@@ -1,0 +1,18 @@
+{
+    "simpleMessage": "This is a simple message",
+    "messageWithParams": "Hi {name}, welcome you!",
+    "pluralMessage.One": "Hi {name}, I have one year working experience.",
+    "pluralMessage.Other": "Hi {name}, I have {quantity} years of working experience.",
+    "arrayMessage": [
+        "White",
+        "Blue",
+        "Yellow"
+    ],
+    "arrayMessageWithParameters": [
+        ""
+    ],
+    "message.one": "Button clicked 1 time",
+    "homePageTitle": "Home Page",
+    "message.other": "Button clicked {quantity} times",
+    "increment": "Increment"
+}
