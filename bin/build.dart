@@ -24,6 +24,8 @@ main(List<String> args) async {
   // Localiza os arquivos de tradução.
   final files = await discoveryTranslationFiles(options);
 
+  if (files == null) return;
+
   await _build(files, options);
 
   if (options.watch) {
@@ -67,7 +69,7 @@ Future<void> _build(
   final outputFile = File(path.normalize(current.path + "/" + options.output));
   await outputFile.writeAsString(text);
 
-  printSuccess("Generated translation file to ${outputFile.path}");
+  printSuccess("Generated dart file to ${outputFile.path}");
 }
 
 ArgParser _buildArgParser() {
