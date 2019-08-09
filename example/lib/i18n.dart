@@ -83,7 +83,7 @@ class I18n implements WidgetsLocalizations {
         "${whiteSugar} cup white sugar",
         "${butter} cup butter",
         "${eggs} eggs",
-        "${vanilla} teasspoons vanilla extract",
+        "${vanilla} teaspoons vanilla extract",
         "${flour} cups all-purpose flour",
         "${bakingPowder} teaspoons baking powder",
         "${milk} cup milk"

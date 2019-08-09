@@ -305,12 +305,12 @@ String _buildPluralMessage(
   final other = values["other"];
 
   sb.write('Intl.plural(quantity, locale: locale,');
-  if(zero != null) sb.write(" zero: $zero,");
-  if(one != null) sb.write(" one: $one,");
-  if(two != null) sb.write(" two: $two,");
-  if(few != null) sb.write(" few: $few,");
-  if(many != null) sb.write(" many: $many,");
-  if(other != null) sb.write(" other: $other,");
+  if (zero != null) sb.write(" zero: $zero,");
+  if (one != null) sb.write(" one: $one,");
+  if (two != null) sb.write(" two: $two,");
+  if (few != null) sb.write(" few: $few,");
+  if (many != null) sb.write(" many: $many,");
+  if (other != null) sb.write(" other: $other,");
   sb.write(");");
 
   return sb.toString();
