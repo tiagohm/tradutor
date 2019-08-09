@@ -24,7 +24,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.1.0
+    tradutor: ^0.2.0
 ```
 
 ## Usage
@@ -52,12 +52,12 @@ Crete JSON files naming them with language code (lowercase) and country code (up
 {
     "simpleMessage": "This is a simple Message",
     "messageWithParameters": "Hi {name}, Welcome you!",
-    "brazilFlagColors": ["Green", "Yellow", "Blue"],
+    "brazilFlagColors": ["Green", "Yellow", "Blue", "White"],
     "simpleWhiteCakeReceipt": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
-        "{vanilla} teasspoons vanilla extract",
+        "{vanilla} teaspoons vanilla extract",
         "{flour} cups all-purpose flour",
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
@@ -122,7 +122,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
-        "{vanilla} teasspoons vanilla extract",
+        "{vanilla} teaspoons vanilla extract",
         "{flour} cups all-purpose flour",
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
@@ -138,7 +138,7 @@ List<String> simpleWhiteCakeReceipt(
         "${whiteSugar} cup white sugar",
         "${butter} cup butter",
         "${eggs} eggs",
-        "${vanilla} teasspoons vanilla extract",
+        "${vanilla} teaspoons vanilla extract",
         "${flour} cups all-purpose flour",
         "${bakingPowder} teaspoons baking powder",
         "${milk} cup milk"
@@ -218,7 +218,7 @@ Use property `@extends` and a valid locale.
 }
 ```
 
-> You should override all plural forms for a specified message.
+> You must override all plural forms for a specified message.
 
 ### Other language properties
 
