@@ -1,6 +1,6 @@
 name: tradutor
 description: A Flutter package that simplify the internationalizing process using JSON files.
-version: 0.1.0
+version: 0.2.0
 author: tiagohm <tiago.henrique.cco@gmail.com>
 homepage: https://github.com/tiagohm/tradutor
 repository: https://github.com/tiagohm/tradutor
