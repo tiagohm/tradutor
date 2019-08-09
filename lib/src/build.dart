@@ -22,6 +22,16 @@ String buildTranslationDartFile(
   sb.writeln("// ignore_for_file: unused_import");
   sb.writeln();
 
+  // Fallback vem em primeiro, depois os idiomas por ordem alfabética.
+  languages = List.of(languages)
+    ..sort((a, b) {
+      final aIsFallback = a.locale == options.fallback;
+      final bIsFallback = b.locale == options.fallback;
+      if (aIsFallback == bIsFallback) return a.locale.compareTo(b.locale);
+      if (aIsFallback) return -1;
+      return 1;
+    });
+
   // Percorre cada idioma.
   for (final language in languages) {
     final isFallback = language.locale == options.fallback;

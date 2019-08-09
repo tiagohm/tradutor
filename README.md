@@ -36,8 +36,8 @@ flutter packages pub run tradutor:build
 
 All supported arguments:
 
-* `--source [DIRECTORY PATH]` or `-s [DIRECTORY PATH]`: A source folder contains all JSON files (defaults to "/i18n");
-* `--output [FILE PATH]` or `-o [FILE PATH]`: An output file contains all strings (defaults to "/lib/i18n.dart");
+* `--source [DIRECTORY PATH]` or `-s [DIRECTORY PATH]`: A source folder contains all JSON files (defaults to "./i18n");
+* `--output [FILE PATH]` or `-o [FILE PATH]`: An output file contains all strings (defaults to "./lib/i18n.dart");
 * `--fallback [LANGUAGE]` or `-f  [LANGUAGE]`:  Provides a default language, used when the translation for the current running system is not provided (defaults to "en_US");
 * `--watch`: Watches the JSON files for edits and does rebuilds as necessary.
 
@@ -53,7 +53,7 @@ Crete JSON files naming them with language code (lowercase) and country code (up
     "simpleMessage": "This is a simple Message",
     "messageWithParameters": "Hi {name}, Welcome you!",
     "brazilFlagColors": ["Green", "Yellow", "Blue", "White"],
-    "simpleWhiteCakeReceipt": [
+    "simpleWhiteCakeIngredients": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
@@ -118,7 +118,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 
 ```json
 {
-    "simpleWhiteCakeReceipt": [
+    "simpleWhiteCakeIngredients": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
@@ -132,7 +132,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 
 Generated Dart getter:
 ```dart
-List<String> simpleWhiteCakeReceipt(
+List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
       [
         "${whiteSugar} cup white sugar",

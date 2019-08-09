@@ -8,44 +8,6 @@ import 'package:intl/intl.dart' hide TextDirection;
 // ignore_for_file: unnecessary_brace_in_string_interps
 // ignore_for_file: unused_import
 
-class _I18n_pt_PT extends I18n {
-  const _I18n_pt_PT();
-
-  @override
-  TextDirection get textDirection => TextDirection.ltr;
-
-  @override
-  String get locale => "pt_PT";
-
-  @override
-  List<String> get brazilFlagColors => ["Verde", "Amarelo", "Azul", "Branco"];
-  @override
-  String counter(quantity) => Intl.plural(
-        quantity,
-        locale: locale,
-        one: "Botão foi clicado 1 vez",
-        other: "Botão foi clicado ${quantity} vezes",
-      );
-  @override
-  String get homePageTitle => "Página Inicial";
-  @override
-  String messageWithParameters(name) => "Olá ${name}, Bem-vindo!";
-  @override
-  String get simpleMessage => "Esta é uma simples mensagem";
-  @override
-  List<String> simpleWhiteCakeReceipt(
-          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
-      [
-        "${whiteSugar} copo de açúcar cristal",
-        "${butter} copo de manteiga",
-        "${eggs} ovos",
-        "${vanilla} colheres de chá de extrato de baunilha",
-        "${flour} copo de farinha de trigo",
-        "${bakingPowder} colher de fermento em pó",
-        "${milk} copo de leite"
-      ];
-}
-
 class I18n implements WidgetsLocalizations {
   const I18n();
 
@@ -78,7 +40,7 @@ class I18n implements WidgetsLocalizations {
   String get homePageTitle => "Home Page";
   String messageWithParameters(name) => "Hi ${name}, Welcome you!";
   String get simpleMessage => "This is a simple Message";
-  List<String> simpleWhiteCakeReceipt(
+  List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
       [
         "${whiteSugar} cup white sugar",
@@ -119,14 +81,52 @@ class _I18n_pt_BR extends _I18n_pt_PT {
       );
 }
 
+class _I18n_pt_PT extends I18n {
+  const _I18n_pt_PT();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get locale => "pt_PT";
+
+  @override
+  List<String> get brazilFlagColors => ["Verde", "Amarelo", "Azul", "Branco"];
+  @override
+  String counter(quantity) => Intl.plural(
+        quantity,
+        locale: locale,
+        one: "Botão foi clicado 1 vez",
+        other: "Botão foi clicado ${quantity} vezes",
+      );
+  @override
+  String get homePageTitle => "Página Inicial";
+  @override
+  String messageWithParameters(name) => "Olá ${name}, Bem-vindo!";
+  @override
+  String get simpleMessage => "Esta é uma simples mensagem";
+  @override
+  List<String> simpleWhiteCakeIngredients(
+          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+      [
+        "${whiteSugar} copo de açúcar cristal",
+        "${butter} copo de manteiga",
+        "${eggs} ovos",
+        "${vanilla} colheres de chá de extrato de baunilha",
+        "${flour} copo de farinha de trigo",
+        "${bakingPowder} colher de fermento em pó",
+        "${milk} copo de leite"
+      ];
+}
+
 class GeneratedLocalizationsDelegate
     extends LocalizationsDelegate<WidgetsLocalizations> {
   const GeneratedLocalizationsDelegate();
   List<Locale> get supportedLocales {
     return const <Locale>[
-      const Locale("pt", "PT"),
       const Locale("en", "US"),
       const Locale("pt", "BR"),
+      const Locale("pt", "PT"),
     ];
   }
 
@@ -148,17 +148,17 @@ class GeneratedLocalizationsDelegate
     final String lang = locale != null ? locale.toString() : "";
     final String languageCode = locale != null ? locale.languageCode : "";
 
-    if ("pt_PT" == lang)
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
     if ("en_US" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     if ("pt_BR" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
-
-    if ("pt" == languageCode)
+    if ("pt_PT" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
+
     if ("en" == languageCode)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
+    if ("pt" == languageCode)
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
 
     return SynchronousFuture<WidgetsLocalizations>(const I18n());
   }
