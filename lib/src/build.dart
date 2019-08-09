@@ -15,10 +15,11 @@ String buildTranslationDartFile(
   sb.writeln("import 'package:flutter/widgets.dart';");
   sb.writeln("import 'package:intl/intl.dart' hide TextDirection;");
   sb.writeln();
-  sb.writeln("// ignore_for_file: non_constant_identifier_names");
   sb.writeln("// ignore_for_file: camel_case_types");
   sb.writeln("// ignore_for_file: prefer_single_quotes");
+  sb.writeln("// ignore_for_file: non_constant_identifier_names");
   sb.writeln("// ignore_for_file: unnecessary_brace_in_string_interps");
+  sb.writeln("// ignore_for_file: unused_import");
   sb.writeln();
 
   // Percorre cada idioma.

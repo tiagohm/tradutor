@@ -2,10 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 
-// ignore_for_file: non_constant_identifier_names
 // ignore_for_file: camel_case_types
 // ignore_for_file: prefer_single_quotes
+// ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unused_import
 
 class _I18n_pt_PT extends I18n {
   const _I18n_pt_PT();
