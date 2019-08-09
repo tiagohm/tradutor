@@ -1,7 +1,6 @@
 import 'package:dart_style/dart_style.dart';
 import 'package:tradutor/src/build_options.dart';
 import 'package:tradutor/src/language.dart';
-import 'package:tradutor/src/language_options.dart';
 import 'package:tradutor/src/message.dart';
 import 'package:tradutor/src/regex.dart';
 
@@ -36,28 +35,30 @@ String buildTranslationDartFile(
   for (final language in languages) {
     final isFallback = language.locale == options.fallback;
     if (isFallback) {
-      sb.writeln(_buildI18nClass(language.locale, language));
-      sb.writeln(_buildLanguageClass(language.locale, language, true));
+      sb.writeln(_buildI18nClass(language, options.className));
+      sb.writeln(_buildLanguageClass(language, true, options.className));
     } else {
-      sb.writeln(_buildLanguageClass(language.locale, language, false));
+      sb.writeln(_buildLanguageClass(language, false, options.className));
     }
   }
 
-  sb.writeln(_buildGeneratedLocalizationsDelegate(languages));
+  sb.writeln(
+    _buildGeneratedLocalizationsDelegate(options.className, languages),
+  );
 
   final text = sb.toString();
   return DartFormatter().format(text);
 }
 
 String _buildI18nClass(
-  String locale,
   Language language,
+  String className,
 ) {
-  final messages = _buildMessagesLanguage(locale, language, true);
+  final messages = _buildMessagesLanguage(language, true);
 
   final text = """
-class I18n implements WidgetsLocalizations {
-  const I18n();
+class $className implements WidgetsLocalizations {
+  const $className();
 
   static Locale _locale;
   static bool _shouldReload = false;
@@ -70,13 +71,13 @@ class I18n implements WidgetsLocalizations {
   static const GeneratedLocalizationsDelegate delegate =
       const GeneratedLocalizationsDelegate();
 
-  static I18n of(BuildContext context) =>
-      Localizations.of<I18n>(context, WidgetsLocalizations);
+  static $className of(BuildContext context) =>
+      Localizations.of<$className>(context, WidgetsLocalizations);
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get locale => "$locale";
+  String get locale => "${language.locale}";
 
   $messages
 }
@@ -86,25 +87,24 @@ class I18n implements WidgetsLocalizations {
 }
 
 String _buildLanguageClass(
-  String locale,
   Language language,
   bool isFallback,
+  String className,
 ) {
-  final messages =
-      isFallback ? "" : _buildMessagesLanguage(locale, language, false);
+  final messages = isFallback ? "" : _buildMessagesLanguage(language, false);
   final extendsOf = language.options.extendsOf == null
-      ? "I18n"
-      : "_I18n_${language.options.extendsOf}";
+      ? "$className"
+      : "_${className}_${language.options.extendsOf}";
 
   return """
-class _I18n_$locale extends $extendsOf {
-  const _I18n_$locale();
+class _${className}_${language.locale} extends $extendsOf {
+  const _${className}_${language.locale}();
 
   @override
   TextDirection get textDirection => TextDirection.${language.options.textDirection};
 
   @override
-  String get locale => "$locale";
+  String get locale => "${language.locale}";
 
   $messages
 }
@@ -112,7 +112,6 @@ class _I18n_$locale extends $extendsOf {
 }
 
 String _buildMessagesLanguage(
-  String locale,
   Language language,
   bool isFallback,
 ) {
@@ -134,11 +133,11 @@ String _buildMessagesLanguage(
 
   for (final message in singularMessages) {
     if (message is StringMessage) {
-      messages.add(MapEntry(message.key,
-          _buildStringMessage(message, locale, language.options, isFallback)));
+      messages.add(MapEntry(
+          message.key, _buildStringMessage(message, language, isFallback)));
     } else if (message is ListMessage) {
-      messages.add(MapEntry(message.key,
-          _buildListMessage(message, locale, language.options, isFallback)));
+      messages.add(MapEntry(
+          message.key, _buildListMessage(message, language, isFallback)));
     }
   }
 
@@ -148,8 +147,7 @@ String _buildMessagesLanguage(
         _buildPluralMessage(
           key,
           values,
-          locale,
-          language.options,
+          language,
           isFallback,
         )));
   });
@@ -163,8 +161,7 @@ String _buildMessagesLanguage(
 
 String _buildStringMessage(
   StringMessage message,
-  String locale,
-  LanguageOptions options,
+  Language language,
   bool isFallback,
 ) {
   final sb = StringBuffer();
@@ -210,8 +207,7 @@ String _buildStringMessage(
 
 String _buildListMessage(
   ListMessage message,
-  String locale,
-  LanguageOptions options,
+  Language language,
   bool isFallback,
 ) {
   final sb = StringBuffer();
@@ -262,8 +258,7 @@ String _buildListMessage(
 String _buildPluralMessage(
   String key,
   List<PluralMessage> messages,
-  String locale,
-  LanguageOptions options,
+  Language language,
   bool isFallback,
 ) {
   final sb = StringBuffer();
@@ -327,7 +322,10 @@ String _buildPluralMessage(
   return sb.toString();
 }
 
-String _buildGeneratedLocalizationsDelegate(List<Language> languages) {
+String _buildGeneratedLocalizationsDelegate(
+  String className,
+  List<Language> languages,
+) {
   final supportedLocales = StringBuffer();
   final localizationsBylang = StringBuffer();
   final localizationsByLanguageCode = StringBuffer();
@@ -337,7 +335,7 @@ String _buildGeneratedLocalizationsDelegate(List<Language> languages) {
         'const Locale("${language.languageCode}", "${language.countryCode}"),');
     localizationsBylang.writeln('if ("${language.locale}" == lang)');
     localizationsBylang.writeln(
-        'return SynchronousFuture<WidgetsLocalizations>(const _I18n_${language.locale}());');
+        'return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());');
 
     if (language.options.extendsOf == null ||
         language.options.extendsOf.isEmpty) {
@@ -345,7 +343,7 @@ String _buildGeneratedLocalizationsDelegate(List<Language> languages) {
       localizationsByLanguageCode
           .writeln('if ("$languageCode" == languageCode)');
       localizationsByLanguageCode.writeln(
-          'return SynchronousFuture<WidgetsLocalizations>(const _I18n_${language.locale}());');
+          'return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());');
     }
   }
 
@@ -371,9 +369,9 @@ class GeneratedLocalizationsDelegate
 
   @override
   Future<WidgetsLocalizations> load(Locale _locale) {
-    I18n._locale ??= _locale;
-    I18n._shouldReload = false;
-    final Locale locale = I18n._locale;
+    $className._locale ??= _locale;
+    $className._shouldReload = false;
+    final Locale locale = $className._locale;
     final String lang = locale != null ? locale.toString() : "";
     final String languageCode = locale != null ? locale.languageCode : "";
 
@@ -381,7 +379,7 @@ class GeneratedLocalizationsDelegate
 
     $localizationsByLanguageCode
 
-    return SynchronousFuture<WidgetsLocalizations>(const I18n());
+    return SynchronousFuture<WidgetsLocalizations>(const $className());
   }
 
   @override
@@ -396,7 +394,7 @@ class GeneratedLocalizationsDelegate
   }
 
   @override
-  bool shouldReload(GeneratedLocalizationsDelegate old) => I18n._shouldReload;
+  bool shouldReload(GeneratedLocalizationsDelegate old) => $className._shouldReload;
 }
 """;
 
