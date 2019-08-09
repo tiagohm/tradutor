@@ -23,22 +23,53 @@ Language _parse(
   TranslationFile file,
   Map<String, dynamic> data,
 ) {
-  final messages = List<Message>();
+  final messages = _parseMap(data);
   final options = Map<String, String>();
 
   data.forEach((key, value) {
-    if (value == null) return;
+    if (key.isEmpty) {
+      throw ParseError("key '$key' can't be empty");
+    }
 
     // Option.
-    var match = _matchesOptionKey(key);
+    final match = _matchesOptionKey(key);
     if (match != null) {
-      if (value is List || value is Map)
-        throw ParseError("option '$key' has an invalid value");
+      if (value == null || value is List || value is Map) {
+        throw ParseError("property '$key' has an invalid value");
+      }
 
       final option = match.group(1);
       options[option] = value?.toString();
-      return;
     }
+  });
+
+  return Language(
+    messages,
+    LanguageOptions.fromMap(options),
+    file.languageCode,
+    file.countryCode,
+  );
+}
+
+List<Message> _parseMap(
+  Map<String, dynamic> data, [
+  String parentKey,
+]) {
+  final messages = List<Message>();
+
+  data.forEach((key, value) {
+    if (key.isEmpty) {
+      throw ParseError("key '$key' can't be empty");
+    }
+
+    if (value == null) {
+      throw ParseError("key '$key' has an invalid value: null");
+    }
+
+    // Option.
+    var match = _matchesOptionKey(key);
+
+    if (match != null) return;
 
     // Plural.
     match = _matchesPluralKey(key);
@@ -47,9 +78,9 @@ Language _parse(
       final type = match.group(2).toLowerCase();
 
       if (value is List) {
-        throw ParseError("'$key': plural message not support array");
+        throw ParseError("key '$key': plural message doesn't support list");
       } else if (value is Map) {
-        throw ParseError("'$key': plural message not support child");
+        throw ParseError("key '$key': plural message doesn't support child");
       } else {
         final message = StringMessage(key, value.toString());
         messages.add(PluralMessage(type, message));
@@ -65,13 +96,17 @@ Language _parse(
 
       if (value is List) {
         message = ListMessage(
-          key,
+          _concatWithParentKey(parentKey, key),
           [for (final item in value) item.toString()],
         );
       } else if (value is Map) {
-        throw ParseError("$key key: singular message not support child yet");
+        messages.addAll(_parseMap(value, _concatWithParentKey(parentKey, key)));
+        return;
       } else {
-        message = StringMessage(key, value.toString());
+        message = StringMessage(
+          _concatWithParentKey(parentKey, key),
+          value.toString(),
+        );
       }
 
       messages.add(message);
@@ -81,12 +116,20 @@ Language _parse(
     throw ParseError("'$key' is a invalid key");
   });
 
-  return Language(
-    messages,
-    LanguageOptions.fromMap(options),
-    file.languageCode,
-    file.countryCode,
-  );
+  return messages;
+}
+
+String _concatWithParentKey(
+  String parentKey,
+  String key,
+) {
+  if (parentKey == null || parentKey.isEmpty) {
+    return key;
+  } else if (key.length > 1) {
+    return parentKey + key[0].toUpperCase() + key.substring(1);
+  } else {
+    return parentKey + key.toUpperCase();
+  }
 }
 
 Match _matchesOptionKey(String key) {

@@ -1,5 +1,7 @@
 A Flutter package that simplify the internationalizing process using JSON files. Extracts messages to generate Dart files with friendly way to access messages you need.
 
+`String get translator => "tradutor";`
+
 [![Pub](https://img.shields.io/pub/v/tradutor?color=blueviolet)](https://pub.dev/packages/tradutor)
 
 ## Features
@@ -22,7 +24,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: 0.1.0
+    tradutor: ^0.2.0
 ```
 
 ## Usage
@@ -50,17 +52,19 @@ Crete JSON files naming them with language code (lowercase) and country code (up
 {
     "simpleMessage": "This is a simple Message",
     "messageWithParameters": "Hi {name}, Welcome you!",
-    "brazilFlagColors": ["Green", "Yellow", "Blue"],
+    "brazilFlagColors": ["Green", "Yellow", "Blue", "White"],
     "simpleWhiteCakeReceipt": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
-        "{vanilla} teasspoons vanilla extract",
+        "{vanilla} teaspoons vanilla extract",
         "{flour} cups all-purpose flour",
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
     ],
-    "homePageTitle": "Home Page",
+    "homePage": {
+        "title": "Home Page"
+    },
     "counter.one": "Button clicked 1 time",
     "counter.other": "Button cliked {quantity} times"
 }
@@ -118,7 +122,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
-        "{vanilla} teasspoons vanilla extract",
+        "{vanilla} teaspoons vanilla extract",
         "{flour} cups all-purpose flour",
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
@@ -134,7 +138,7 @@ List<String> simpleWhiteCakeReceipt(
         "${whiteSugar} cup white sugar",
         "${butter} cup butter",
         "${eggs} eggs",
-        "${vanilla} teasspoons vanilla extract",
+        "${vanilla} teaspoons vanilla extract",
         "${flour} cups all-purpose flour",
         "${bakingPowder} teaspoons baking powder",
         "${milk} cup milk"
@@ -149,6 +153,8 @@ List<String> simpleWhiteCakeReceipt(
     "counter.other": "Button cliked {quantity} times"
 }
 ```
+
+> The 'other' plural form must be provided.
 
 Generated Dart method:
 ```dart
@@ -212,7 +218,7 @@ Use property `@extends` and a valid locale.
 }
 ```
 
-> You should override all plural forms for a specified message.
+> You must override all plural forms for a specified message.
 
 ### Other language properties
 

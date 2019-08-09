@@ -1,17 +1,24 @@
 {
     "simpleMessage": "This is a simple Message",
     "messageWithParameters": "Hi {name}, Welcome you!",
-    "brazilFlagColors": ["Green", "Yellow", "Blue", "White"],
+    "brazilFlagColors": [
+        "Green",
+        "Yellow",
+        "Blue",
+        "White"
+    ],
     "simpleWhiteCakeReceipt": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
-        "{vanilla} teasspoons vanilla extract",
+        "{vanilla} teaspoons vanilla extract",
         "{flour} cups all-purpose flour",
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
     ],
-    "homePageTitle": "Home Page",
+    "homePage": {
+        "title": "Home Page"
+    },
     "counter.one": "Button clicked 1 time",
     "counter.other": "Button clicked {quantity} times"
 }

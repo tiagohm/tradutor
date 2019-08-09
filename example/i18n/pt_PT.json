@@ -1,7 +1,12 @@
 {
     "simpleMessage": "Esta é uma simples mensagem",
     "messageWithParameters": "Olá {name}, Bem-vindo!",
-    "brazilFlagColors": ["Verde", "Amarelo", "Azul", "Branco"],
+    "brazilFlagColors": [
+        "Verde",
+        "Amarelo",
+        "Azul",
+        "Branco"
+    ],
     "simpleWhiteCakeReceipt": [
         "{whiteSugar} copo de açúcar cristal",
         "{butter} copo de manteiga",
@@ -11,7 +16,9 @@
         "{bakingPowder} colher de fermento em pó",
         "{milk} copo de leite"
     ],
-    "homePageTitle": "Página Inicial",
+    "homePage": {
+        "title": "Página Inicial"
+    },
     "counter.one": "Botão foi clicado 1 vez",
     "counter.other": "Botão foi clicado {quantity} vezes"
 }
