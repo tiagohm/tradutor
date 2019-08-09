@@ -62,7 +62,9 @@ Crete JSON files naming them with language code (lowercase) and country code (up
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
     ],
-    "homePageTitle": "Home Page",
+    "homePage": {
+        "title": "Home Page"
+    },
     "counter.one": "Button clicked 1 time",
     "counter.other": "Button cliked {quantity} times"
 }
