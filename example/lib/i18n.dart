@@ -77,11 +77,7 @@ class _I18n_ja_JA extends I18n {
   @override
   List<String> get brazilFlagColors => ["緑", "黄色", "青い", "白い"];
   @override
-  String counter(quantity) => Intl.plural(
-        quantity,
-        locale: locale,
-        other: "ボタンが${quantity}回クリックされた",
-      );
+  String counter(quantity) => "ボタンが${quantity}回クリックされた";
   @override
   String get homePageTitle => "ホームページ";
   @override

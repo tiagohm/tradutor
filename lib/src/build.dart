@@ -1,7 +1,9 @@
 import 'package:dart_style/dart_style.dart';
 import 'package:tradutor/src/build_options.dart';
+import 'package:tradutor/src/errors.dart';
 import 'package:tradutor/src/language.dart';
 import 'package:tradutor/src/message.dart';
+import 'package:tradutor/src/pen.dart';
 import 'package:tradutor/src/regex.dart';
 
 String buildTranslationDartFile(
@@ -311,21 +313,27 @@ String _buildPluralMessage(
 
   sb.write(" => ");
 
-  final zero = values["zero"];
-  final one = values["one"];
-  final two = values["two"];
-  final few = values["few"];
-  final many = values["many"];
-  final other = values["other"];
+  if (values.length == 1) {
+    sb.write(values.values.first);
+  } else {
+    final zero = values["zero"];
+    final one = values["one"];
+    final two = values["two"];
+    final few = values["few"];
+    final many = values["many"];
+    final other = values["other"];
 
-  sb.write('Intl.plural(quantity, locale: locale,');
-  if (zero != null) sb.write(" zero: $zero,");
-  if (one != null) sb.write(" one: $one,");
-  if (two != null) sb.write(" two: $two,");
-  if (few != null) sb.write(" few: $few,");
-  if (many != null) sb.write(" many: $many,");
-  if (other != null) sb.write(" other: $other,");
-  sb.write(");");
+    sb.write('Intl.plural(quantity, locale: locale,');
+    if (zero != null) sb.write(" zero: $zero,");
+    if (one != null) sb.write(" one: $one,");
+    if (two != null) sb.write(" two: $two,");
+    if (few != null) sb.write(" few: $few,");
+    if (many != null) sb.write(" many: $many,");
+    if (other != null) sb.write(" other: $other,");
+    sb.write(")");
+  }
+
+  sb.write(";");
 
   return sb.toString();
 }
