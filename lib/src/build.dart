@@ -20,6 +20,9 @@ String buildTranslationDartFile(
   sb.writeln("// ignore_for_file: unnecessary_brace_in_string_interps");
   sb.writeln("// ignore_for_file: unused_import");
   sb.writeln();
+  sb.writeln(
+      "// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html");
+  sb.writeln();
 
   // Fallback vem em primeiro, depois os idiomas por ordem alfabética.
   languages = List.of(languages)
@@ -134,22 +137,27 @@ String _buildMessagesLanguage(
   for (final message in singularMessages) {
     if (message is StringMessage) {
       messages.add(MapEntry(
-          message.key, _buildStringMessage(message, language, isFallback)));
+        message.key,
+        _buildStringMessage(message, language, isFallback),
+      ));
     } else if (message is ListMessage) {
       messages.add(MapEntry(
-          message.key, _buildListMessage(message, language, isFallback)));
+        message.key,
+        _buildListMessage(message, language, isFallback),
+      ));
     }
   }
 
   pluralMessages.forEach((key, values) {
     messages.add(MapEntry(
+      key,
+      _buildPluralMessage(
         key,
-        _buildPluralMessage(
-          key,
-          values,
-          language,
-          isFallback,
-        )));
+        values,
+        language,
+        isFallback,
+      ),
+    ));
   });
 
   messages.sort((a, b) => a.key.compareTo(b.key));

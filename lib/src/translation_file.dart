@@ -13,6 +13,10 @@ class TranslationFile extends Locale {
     this.countryCode,
   );
 
+  bool get isJson => file.path.endsWith(".json");
+
+  bool get isYaml => file.path.endsWith(".yaml");
+
   @override
   String toString() {
     return "TranslationFile { locale: $locale, file: ${file.path} }";
