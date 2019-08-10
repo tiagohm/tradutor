@@ -24,7 +24,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.2.0
+    tradutor: ^0.3.0
 ```
 
 ## Usage
@@ -36,12 +36,13 @@ flutter packages pub run tradutor:build
 
 All supported arguments:
 
-* `--source [DIRECTORY PATH]` or `-s [DIRECTORY PATH]`: A source folder contains all JSON files (defaults to "/i18n");
-* `--output [FILE PATH]` or `-o [FILE PATH]`: An output file contains all strings (defaults to "/lib/i18n.dart");
-* `--fallback [LANGUAGE]` or `-f  [LANGUAGE]`:  Provides a default language, used when the translation for the current running system is not provided (defaults to "en_US");
+* `--source "DIRECTORY PATH"` or `-s "DIRECTORY PATH"`: A source folder contains all JSON files (defaults to "./i18n");
+* `--output "FILE PATH"` or `-o "FILE PATH"`: An output file contains all strings (defaults to "./lib/i18n.dart");
+* `--fallback "LANGUAGE"` or `-f  "LANGUAGE"`:  Provides a default language, used when the translation for the current running system is not provided (defaults to "en_US");
 * `--watch`: Watches the JSON files for edits and does rebuilds as necessary.
+* `--class-name "NAME"` or `-c "NAME"`: Allows change the generated Dart class name (defaults to "I18n").
 
-Full example: `flutter packages pub run tradutor:build -s "/i18n" -o "/lib/i18n.dart" -f "en_US" --watch`
+Full example: `flutter packages pub run tradutor:build -s "/i18n" -o "/lib/i18n.dart" -f "en_US" -c "I18n" --watch`
 
 ## JSON Files
 
@@ -53,7 +54,7 @@ Crete JSON files naming them with language code (lowercase) and country code (up
     "simpleMessage": "This is a simple Message",
     "messageWithParameters": "Hi {name}, Welcome you!",
     "brazilFlagColors": ["Green", "Yellow", "Blue", "White"],
-    "simpleWhiteCakeReceipt": [
+    "simpleWhiteCakeIngredients": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
@@ -118,7 +119,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 
 ```json
 {
-    "simpleWhiteCakeReceipt": [
+    "simpleWhiteCakeIngredients": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
@@ -132,7 +133,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 
 Generated Dart getter:
 ```dart
-List<String> simpleWhiteCakeReceipt(
+List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
       [
         "${whiteSugar} cup white sugar",
@@ -200,9 +201,40 @@ class App extends StatelessWidget {
 ```
 
 ```dart
-final i18n = I18n.of(context);
-i18n.homePageTitle;
-i18n.counter(_counter);
+class _HomePageState extends State<HomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final i18n = I18n.of(context);
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(i18n.homePageTitle),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              i18n.counter(_counter),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
 ```
 
 ### Extending from another language
