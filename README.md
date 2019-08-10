@@ -24,7 +24,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.2.0
+    tradutor: ^0.3.0
 ```
 
 ## Usage
