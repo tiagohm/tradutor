@@ -1,5 +1,5 @@
 name: tradutor
-description: A Flutter package that simplify the internationalizing process using JSON files.
+description: A Flutter package that simplify the internationalizing process using JSON and YAML files.
 version: 0.4.0
 author: tiagohm <tiago.henrique.cco@gmail.com>
 homepage: https://github.com/tiagohm/tradutor
