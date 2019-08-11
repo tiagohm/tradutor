@@ -8,6 +8,7 @@ import 'package:tradutor/src/language_options.dart';
 import 'package:tradutor/src/message.dart';
 import 'package:tradutor/src/regex.dart';
 import 'package:tradutor/src/translation_file.dart';
+import 'package:tradutor/src/yaml.dart';
 
 Future<Language> parseTranslationFile(
   TranslationFile translationFile,
@@ -15,7 +16,7 @@ Future<Language> parseTranslationFile(
 ) async {
   final file = File(translationFile.file.path);
   final text = await file.readAsString();
-  final data = json.decode(text);
+  final data = translationFile.isYaml ? yaml.decode(text) : json.decode(text);
   return _parse(translationFile, data as Map<String, dynamic>);
 }
 

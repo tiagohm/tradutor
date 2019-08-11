@@ -8,6 +8,8 @@ import 'package:intl/intl.dart' hide TextDirection;
 // ignore_for_file: unnecessary_brace_in_string_interps
 // ignore_for_file: unused_import
 
+// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html
+
 class I18n implements WidgetsLocalizations {
   const I18n();
 
@@ -61,6 +63,39 @@ class _I18n_en_US extends I18n {
 
   @override
   String get locale => "en_US";
+}
+
+class _I18n_ja_JA extends I18n {
+  const _I18n_ja_JA();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get locale => "ja_JA";
+
+  @override
+  List<String> get brazilFlagColors => ["緑", "黄色", "青い", "白い"];
+  @override
+  String counter(quantity) => "ボタンが${quantity}回クリックされた";
+  @override
+  String get homePageTitle => "ホームページ";
+  @override
+  String messageWithParameters(name) => "${name}様、ようこそ！";
+  @override
+  String get simpleMessage => "これは簡単なメッセージです";
+  @override
+  List<String> simpleWhiteCakeIngredients(
+          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+      [
+        "白砂糖${whiteSugar}カップ",
+        "バター${butter}カップ",
+        "卵${eggs}個",
+        "バニラエッセンス小さじ${vanilla}",
+        "薄力粉${flour}カップ",
+        "小さじ${bakingPowder}杯のベーキングパウダー",
+        "牛乳${milk}カップ"
+      ];
 }
 
 class _I18n_pt_BR extends _I18n_pt_PT {
@@ -125,6 +160,7 @@ class GeneratedLocalizationsDelegate
   List<Locale> get supportedLocales {
     return const <Locale>[
       const Locale("en", "US"),
+      const Locale("ja", "JA"),
       const Locale("pt", "BR"),
       const Locale("pt", "PT"),
     ];
@@ -150,6 +186,8 @@ class GeneratedLocalizationsDelegate
 
     if ("en_US" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
+    if ("ja_JA" == lang)
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_ja_JA());
     if ("pt_BR" == lang)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
     if ("pt_PT" == lang)
@@ -157,6 +195,8 @@ class GeneratedLocalizationsDelegate
 
     if ("en" == languageCode)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
+    if ("ja" == languageCode)
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_ja_JA());
     if ("pt" == languageCode)
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
 

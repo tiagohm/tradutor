@@ -1,3 +1,7 @@
+## [0.4.0] - 2019-08-11
+
+* Added support to YAML files.
+
 ## [0.3.0] - 2019-08-09
 
 * Added support to change the generated Dart class name.
