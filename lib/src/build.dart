@@ -11,10 +11,9 @@ String buildTranslationDartFile(
   final sb = StringBuffer();
 
   sb.writeln("import 'package:flutter/foundation.dart';");
-  if (options.isWeb)
-    sb.writeln("import 'package:flutter_web/widgets.dart';");
-  else
-    sb.writeln("import 'package:flutter/widgets.dart';");
+  sb.writeln(options.isWeb
+      ? "import 'package:flutter_web/widgets.dart';"
+      : "import 'package:flutter/widgets.dart';");
   sb.writeln("import 'package:intl/intl.dart' hide TextDirection;");
   sb.writeln();
   sb.writeln("// ignore_for_file: camel_case_types");
@@ -22,6 +21,7 @@ String buildTranslationDartFile(
   sb.writeln("// ignore_for_file: non_constant_identifier_names");
   sb.writeln("// ignore_for_file: unnecessary_brace_in_string_interps");
   sb.writeln("// ignore_for_file: unused_import");
+  sb.writeln("// ignore_for_file: curly_braces_in_flow_control_structures");
   sb.writeln();
   sb.writeln(
       "// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html");
@@ -77,7 +77,7 @@ class $className implements WidgetsLocalizations {
   }
 
   static const GeneratedLocalizationsDelegate delegate =
-      const GeneratedLocalizationsDelegate();
+      GeneratedLocalizationsDelegate();
 
   static $className of(BuildContext context) =>
       Localizations.of<$className>(context, WidgetsLocalizations);
@@ -167,7 +167,9 @@ String _buildMessagesLanguage(
 
   messages.sort((a, b) => a.key.compareTo(b.key));
 
-  for (final item in messages) sb.writeln(item.value);
+  for (final item in messages) {
+    sb.writeln(item.value);
+  }
 
   return sb.toString();
 }
@@ -351,7 +353,7 @@ String _buildGeneratedLocalizationsDelegate(
 
   for (final language in languages) {
     supportedLocales.writeln(
-        'const Locale("${language.languageCode}", "${language.countryCode}"),');
+        'Locale("${language.languageCode}", "${language.countryCode}"),');
     localizationsBylang.writeln('if ("${language.locale}" == lang)');
     localizationsBylang.writeln(
         'return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());');

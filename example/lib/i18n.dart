@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' hide TextDirection;
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_brace_in_string_interps
 // ignore_for_file: unused_import
+// ignore_for_file: curly_braces_in_flow_control_structures
 
 // See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html
 
@@ -24,7 +25,7 @@ class I18n implements WidgetsLocalizations {
   }
 
   static const GeneratedLocalizationsDelegate delegate =
-      const GeneratedLocalizationsDelegate();
+      GeneratedLocalizationsDelegate();
 
   static I18n of(BuildContext context) =>
       Localizations.of<I18n>(context, WidgetsLocalizations);
@@ -161,10 +162,10 @@ class GeneratedLocalizationsDelegate
   const GeneratedLocalizationsDelegate();
   List<Locale> get supportedLocales {
     return const <Locale>[
-      const Locale("en", "US"),
-      const Locale("ja", "JA"),
-      const Locale("pt", "BR"),
-      const Locale("pt", "PT"),
+      Locale("en", "US"),
+      Locale("ja", "JA"),
+      Locale("pt", "BR"),
+      Locale("pt", "PT"),
     ];
   }
 

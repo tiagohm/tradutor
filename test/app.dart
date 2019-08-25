@@ -70,10 +70,11 @@ class _HomePage extends StatelessWidget {
   void _changeLanguage() {
     var locale = I18n.locale;
 
-    if (locale.languageCode == "en")
+    if (locale.languageCode == "en") {
       locale = Locale("pt", "BR");
-    else
+    } else {
       locale = Locale("en", "US");
+    }
 
     I18n.locale = locale;
 
