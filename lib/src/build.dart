@@ -10,7 +10,8 @@ String buildTranslationDartFile(
 ) {
   final sb = StringBuffer();
 
-  sb.writeln("import 'package:flutter/foundation.dart';");
+  final hideSynchronousFuture = options.isWeb ? " hide SynchronousFuture" : "";
+  sb.writeln("import 'package:flutter/foundation.dart'$hideSynchronousFuture;");
   sb.writeln(options.isWeb
       ? "import 'package:flutter_web/widgets.dart';"
       : "import 'package:flutter/widgets.dart';");
