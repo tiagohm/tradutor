@@ -79,6 +79,7 @@ ArgParser _buildArgParser() {
   parser.addOption("output", abbr: "o", defaultsTo: "/lib/i18n.dart");
   parser.addOption("fallback", abbr: "f", defaultsTo: "en_US");
   parser.addOption("class-name", abbr: "c", defaultsTo: "I18n");
+  parser.addFlag("web");
 
   parser.addFlag("watch");
 
@@ -92,5 +93,6 @@ BuildOptions _obtainBuildOptions(ArgResults results) {
     fallback: results["fallback"],
     watch: results["watch"],
     className: results["class-name"],
+    isWeb: results["web"],
   );
 }

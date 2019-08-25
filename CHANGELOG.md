@@ -1,3 +1,7 @@
+## [0.5.0] - 2019-08-25
+* Added support to Flutter Web;
+* Added widget tests.
+
 ## [0.4.0] - 2019-08-11
 
 * Added support to YAML files.
