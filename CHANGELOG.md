@@ -1,3 +1,6 @@
+## [0.5.1] - 2019-08-25
+* Bug fixed.
+
 ## [0.5.0] - 2019-08-25
 * Added support to Flutter Web;
 * Added widget tests.
