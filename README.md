@@ -42,6 +42,7 @@ All supported arguments:
 * `--fallback "LANGUAGE"` or `-f  "LANGUAGE"`:  Provides a default language, used when the translation for the current running system is not provided (defaults to "en_US");
 * `--watch`: Watches the JSON/YAML files for edits and does rebuilds as necessary.
 * `--class-name "NAME"` or `-c "NAME"`: Allows change the generated Dart class name (defaults to "I18n").
+* `--web`: Use this for generate Dart file prepared for Flutter Web.
 
 Full example: `flutter packages pub run tradutor:build -s "/i18n" -o "/lib/i18n.dart" -f "en_US" -c "I18n" --watch`
 
@@ -187,7 +188,7 @@ Generated Dart method:
 ```dart
 String counter(quantity) => Intl.plural(
         quantity,
-        locale: locale,
+        locale: language,
         one: "Button clicked 1 time",
         other: "Button cliked ${quantity} times",
       );

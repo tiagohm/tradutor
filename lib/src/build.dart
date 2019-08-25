@@ -1,9 +1,7 @@
 import 'package:dart_style/dart_style.dart';
 import 'package:tradutor/src/build_options.dart';
-import 'package:tradutor/src/errors.dart';
 import 'package:tradutor/src/language.dart';
 import 'package:tradutor/src/message.dart';
-import 'package:tradutor/src/pen.dart';
 import 'package:tradutor/src/regex.dart';
 
 String buildTranslationDartFile(
@@ -13,7 +11,10 @@ String buildTranslationDartFile(
   final sb = StringBuffer();
 
   sb.writeln("import 'package:flutter/foundation.dart';");
-  sb.writeln("import 'package:flutter/widgets.dart';");
+  if (options.isWeb)
+    sb.writeln("import 'package:flutter_web/widgets.dart';");
+  else
+    sb.writeln("import 'package:flutter/widgets.dart';");
   sb.writeln("import 'package:intl/intl.dart' hide TextDirection;");
   sb.writeln();
   sb.writeln("// ignore_for_file: camel_case_types");
@@ -68,9 +69,11 @@ class $className implements WidgetsLocalizations {
   static Locale _locale;
   static bool _shouldReload = false;
 
-  static changeLocale(Locale newLocale) {
+  static Locale get locale => _locale;
+
+  static set locale(Locale locale) {
     _shouldReload = true;
-    _locale = newLocale;
+    _locale = locale;
   }
 
   static const GeneratedLocalizationsDelegate delegate =
@@ -82,7 +85,7 @@ class $className implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get locale => "${language.locale}";
+  String get language => "${language.locale}";
 
   $messages
 }
@@ -109,7 +112,7 @@ class _${className}_${language.locale} extends $extendsOf {
   TextDirection get textDirection => TextDirection.${language.options.textDirection};
 
   @override
-  String get locale => "${language.locale}";
+  String get language => "${language.locale}";
 
   $messages
 }
@@ -323,7 +326,7 @@ String _buildPluralMessage(
     final many = values["many"];
     final other = values["other"];
 
-    sb.write('Intl.plural(quantity, locale: locale,');
+    sb.write('Intl.plural(quantity, locale: language,');
     if (zero != null) sb.write(" zero: $zero,");
     if (one != null) sb.write(" one: $one,");
     if (two != null) sb.write(" two: $two,");
@@ -384,10 +387,10 @@ class GeneratedLocalizationsDelegate
   }
 
   @override
-  Future<WidgetsLocalizations> load(Locale _locale) {
-    $className._locale ??= _locale;
+  Future<WidgetsLocalizations> load(Locale locale) {
+    $className._locale ??= locale;
     $className._shouldReload = false;
-    final Locale locale = $className._locale;
+    locale = $className._locale;
     final String lang = locale != null ? locale.toString() : "";
     final String languageCode = locale != null ? locale.languageCode : "";
 

@@ -16,9 +16,11 @@ class I18n implements WidgetsLocalizations {
   static Locale _locale;
   static bool _shouldReload = false;
 
-  static changeLocale(Locale newLocale) {
+  static Locale get locale => _locale;
+
+  static set locale(Locale locale) {
     _shouldReload = true;
-    _locale = newLocale;
+    _locale = locale;
   }
 
   static const GeneratedLocalizationsDelegate delegate =
@@ -30,12 +32,12 @@ class I18n implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get locale => "en_US";
+  String get language => "en_US";
 
   List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
   String counter(quantity) => Intl.plural(
         quantity,
-        locale: locale,
+        locale: language,
         one: "Button clicked 1 time",
         other: "Button clicked ${quantity} times",
       );
@@ -62,7 +64,7 @@ class _I18n_en_US extends I18n {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get locale => "en_US";
+  String get language => "en_US";
 }
 
 class _I18n_ja_JA extends I18n {
@@ -72,7 +74,7 @@ class _I18n_ja_JA extends I18n {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get locale => "ja_JA";
+  String get language => "ja_JA";
 
   @override
   List<String> get brazilFlagColors => ["緑", "黄色", "青い", "白い"];
@@ -105,12 +107,12 @@ class _I18n_pt_BR extends _I18n_pt_PT {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get locale => "pt_BR";
+  String get language => "pt_BR";
 
   @override
   String counter(quantity) => Intl.plural(
         quantity,
-        locale: locale,
+        locale: language,
         one: "Botão foi pressionado ${quantity} vez",
         other: "Botão foi pressionado ${quantity} vezes",
       );
@@ -123,14 +125,14 @@ class _I18n_pt_PT extends I18n {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get locale => "pt_PT";
+  String get language => "pt_PT";
 
   @override
   List<String> get brazilFlagColors => ["Verde", "Amarelo", "Azul", "Branco"];
   @override
   String counter(quantity) => Intl.plural(
         quantity,
-        locale: locale,
+        locale: language,
         one: "Botão foi clicado 1 vez",
         other: "Botão foi clicado ${quantity} vezes",
       );
@@ -177,10 +179,10 @@ class GeneratedLocalizationsDelegate
   }
 
   @override
-  Future<WidgetsLocalizations> load(Locale _locale) {
-    I18n._locale ??= _locale;
+  Future<WidgetsLocalizations> load(Locale locale) {
+    I18n._locale ??= locale;
     I18n._shouldReload = false;
-    final Locale locale = I18n._locale;
+    locale = I18n._locale;
     final String lang = locale != null ? locale.toString() : "";
     final String languageCode = locale != null ? locale.languageCode : "";
 

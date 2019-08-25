@@ -4,6 +4,7 @@ class BuildOptions {
   final String fallback;
   final bool watch;
   final String className;
+  final bool isWeb;
 
   BuildOptions({
     this.source = "/i18n",
@@ -11,5 +12,6 @@ class BuildOptions {
     this.fallback = "en_US",
     this.watch = false,
     this.className = "I18n",
+    this.isWeb = false,
   });
 }
