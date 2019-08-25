@@ -13,7 +13,8 @@ A Flutter package that simplify the internationalizing process using JSON and YA
 * Plural messages;
 * Allow a language extends another language;
 * JSON and YAML files;
-* Supports hot reload;
+* Supports Flutter Web;
+* Supports hot reload.
 
 ## Installation 
 
@@ -25,7 +26,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.4.0
+    tradutor: ^0.5.0
 ```
 
 ## Usage
