@@ -14,7 +14,7 @@ import 'package:tradutor/src/translation_file.dart';
 
 // flutter packages pub run tradutor:build
 
-main(List<String> args) async {
+void main(List<String> args) async {
   // Constroi o parser de argumentos.
   final parser = _buildArgParser();
   // Obtém os argumentos.
@@ -31,16 +31,16 @@ main(List<String> args) async {
   if (options.watch) {
     // Windows só monitora pastas.
     final inputDir = Directory(
-      path.normalize(Directory.current.path + "/" + options.source),
+      path.normalize('${Directory.current.path}/${options.source}'),
     );
 
-    printInfo("watching files at '${inputDir.path}'");
+    printInfo('watching files at "${inputDir.path}"');
 
     inputDir
         .watch()
-        .transform(debounce(Duration(milliseconds: 1500)))
+        .debounce(const Duration(milliseconds: 1500))
         .listen((modifiedFile) async {
-      printInfo("file '${modifiedFile.path}' was modified");
+      printInfo('file "${modifiedFile.path}" was modified');
       await _build(files, options);
     });
   }
@@ -50,15 +50,15 @@ Future<void> _build(
   List<TranslationFile> files,
   BuildOptions options,
 ) async {
-  final languages = List<Language>();
+  final languages = <Language>[];
 
   for (final file in files) {
     try {
       languages.add(await parseTranslationFile(file, options));
     } on ParseError catch (e) {
-      printError("Error in file '${file.file.path}': ${e.message}");
+      printError('Error in file "${file.file.path}": ${e.message}');
     } catch (e) {
-      printError("Error in file '${file.file.path}': $e");
+      printError('Error in file "${file.file.path}": $e');
     }
   }
 
@@ -66,33 +66,33 @@ Future<void> _build(
   final text = buildTranslationDartFile(languages, options);
   // Cria e escreve num arquivo.
   final current = Directory.current;
-  final outputFile = File(path.normalize(current.path + "/" + options.output));
+  final outputFile = File(path.normalize('${current.path}/${options.output}'));
   await outputFile.writeAsString(text);
 
-  printSuccess("Generated dart file to ${outputFile.path}");
+  printSuccess('Generated dart file to ${outputFile.path}');
 }
 
 ArgParser _buildArgParser() {
   final parser = ArgParser();
 
-  parser.addOption("source", abbr: "s", defaultsTo: "/i18n");
-  parser.addOption("output", abbr: "o", defaultsTo: "/lib/i18n.dart");
-  parser.addOption("fallback", abbr: "f", defaultsTo: "en_US");
-  parser.addOption("class-name", abbr: "c", defaultsTo: "I18n");
-  parser.addFlag("web");
+  parser.addOption('source', abbr: 's', defaultsTo: '/i18n');
+  parser.addOption('output', abbr: 'o', defaultsTo: '/lib/i18n.dart');
+  parser.addOption('fallback', abbr: 'f', defaultsTo: 'en_US');
+  parser.addOption('class-name', abbr: 'c', defaultsTo: 'I18n');
+  parser.addFlag('web');
 
-  parser.addFlag("watch");
+  parser.addFlag('watch');
 
   return parser;
 }
 
 BuildOptions _obtainBuildOptions(ArgResults results) {
   return BuildOptions(
-    source: results["source"],
-    output: results["output"],
-    fallback: results["fallback"],
-    watch: results["watch"],
-    className: results["class-name"],
-    isWeb: results["web"],
+    source: results['source'] as String,
+    output: results['output'] as String,
+    fallback: results['fallback'] as String,
+    watch: results['watch'] as bool,
+    className: results['class-name'] as String,
+    isWeb: results['web'] as bool,
   );
 }

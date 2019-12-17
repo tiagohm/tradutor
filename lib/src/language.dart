@@ -5,7 +5,9 @@ import 'package:tradutor/src/message.dart';
 class Language extends Locale {
   final List<Message> messages;
   final LanguageOptions options;
+  @override
   final String languageCode;
+  @override
   final String countryCode;
 
   Language(
@@ -17,6 +19,6 @@ class Language extends Locale {
 
   @override
   String toString() {
-    return "Language { locale: $locale, message: $messages, options: $options }";
+    return 'Language { locale: $locale, message: $messages, options: $options }';
   }
 }

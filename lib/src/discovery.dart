@@ -13,14 +13,14 @@ Future<List<TranslationFile>> discoveryTranslationFiles(
   final current = Directory.current;
 
   final inputPath =
-      Directory(path.normalize(current.path + "/" + options.source));
+      Directory(path.normalize('${current.path}/${options.source}'));
   if (!await inputPath.exists()) {
     printError("input path '${inputPath.path}' not found");
     return null;
   }
 
-  List<FileSystemEntity> files = await _listFiles(inputPath);
-  final translationFiles = List<TranslationFile>();
+  final files = await _listFiles(inputPath);
+  final translationFiles = <TranslationFile>[];
 
   for (final file in files) {
     final filename = path.basename(file.path);
@@ -38,12 +38,12 @@ Future<List<TranslationFile>> discoveryTranslationFiles(
 }
 
 Future<List<FileSystemEntity>> _listFiles(Directory dir) {
-  final files = List<FileSystemEntity>();
+  final files = <FileSystemEntity>[];
   final completer = Completer<List<FileSystemEntity>>();
   final lister = dir.list(recursive: false);
 
   lister.listen(
-    (file) => files.add(file),
+    files.add,
     onDone: () => completer.complete(files),
     onError: completer.completeError,
   );

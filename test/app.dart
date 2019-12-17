@@ -36,7 +36,8 @@ class _AppState extends State<App> {
       ],
       locale: _locale ?? widget.locale,
       supportedLocales: i18n.supportedLocales,
-      localeResolutionCallback: i18n.resolution(fallback: Locale("en", "US")),
+      localeResolutionCallback:
+          i18n.resolution(fallback: const Locale('en', 'US')),
     );
   }
 }
@@ -70,10 +71,10 @@ class _HomePage extends StatelessWidget {
   void _changeLanguage() {
     var locale = I18n.locale;
 
-    if (locale.languageCode == "en") {
-      locale = Locale("pt", "BR");
+    if (locale.languageCode == 'en') {
+      locale = const Locale('pt', 'BR');
     } else {
-      locale = Locale("en", "US");
+      locale = const Locale('en', 'US');
     }
 
     I18n.locale = locale;

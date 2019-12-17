@@ -10,13 +10,16 @@ import 'package:tradutor/src/regex.dart';
 import 'package:tradutor/src/translation_file.dart';
 import 'package:tradutor/src/yaml.dart';
 
+import 'message.dart';
+
 Future<Language> parseTranslationFile(
   TranslationFile translationFile,
   BuildOptions options,
 ) async {
   final file = File(translationFile.file.path);
   final text = await file.readAsString();
-  final data = translationFile.isYaml ? yaml.decode(text) : json.decode(text);
+  final dynamic data =
+      translationFile.isYaml ? yaml.decode(text) : json.decode(text);
   return _parse(translationFile, data as Map<String, dynamic>);
 }
 
@@ -25,21 +28,21 @@ Language _parse(
   Map<String, dynamic> data,
 ) {
   final messages = _parseMap(data);
-  final options = Map<String, String>();
+  final options = <String, String>{};
 
-  data.forEach((key, value) {
+  data.forEach((key, dynamic value) {
     if (key.isEmpty) {
       throw ParseError("key '$key' can't be empty");
     }
 
     // Option.
-    final match = _matchesOptionKey(key);
-    if (match != null) {
+    final matchOption = _matchesOptionKey(key);
+    if (matchOption != null) {
       if (value == null || value is List || value is Map) {
         throw ParseError("property '$key' has an invalid value");
       }
 
-      final option = match.group(1);
+      final option = matchOption.group(1);
       options[option] = value?.toString();
     }
   });
@@ -56,9 +59,9 @@ List<Message> _parseMap(
   Map<String, dynamic> data, [
   String parentKey,
 ]) {
-  final messages = List<Message>();
+  final messages = <Message>[];
 
-  data.forEach((key, value) {
+  data.forEach((key, dynamic value) {
     if (key.isEmpty) {
       throw ParseError("key '$key' can't be empty");
     }
@@ -68,15 +71,29 @@ List<Message> _parseMap(
     }
 
     // Option.
-    var match = _matchesOptionKey(key);
+    if (_matchesOptionKey(key) != null) {
+      return;
+    }
 
-    if (match != null) return;
+    // Date.
+    final matchDate = _matchesDateKey(key);
+
+    if (matchDate != null) {
+      if (value is String) {
+        final key = matchDate.group(1);
+        messages.add(DateMessage(key, value));
+        return;
+      } else {
+        throw ParseError("key '$key': date message must be a string");
+      }
+    }
 
     // Plural.
-    match = _matchesPluralKey(key);
-    if (match != null) {
-      final key = match.group(1);
-      final type = match.group(2).toLowerCase();
+    final matchPlural = _matchesPluralKey(key);
+
+    if (matchPlural != null) {
+      final key = matchPlural.group(1);
+      final type = matchPlural.group(2).toLowerCase();
 
       if (value is List) {
         throw ParseError("key '$key': plural message doesn't support list");
@@ -90,9 +107,10 @@ List<Message> _parseMap(
     }
 
     // Singular.
-    match = _matchesKey(key);
-    if (match != null) {
-      final key = match.group(1);
+    final matchSingular = _matchesKey(key);
+
+    if (matchSingular != null) {
+      final key = matchSingular.group(1);
       Message message;
 
       if (value is List) {
@@ -100,7 +118,7 @@ List<Message> _parseMap(
           _concatWithParentKey(parentKey, key),
           [for (final item in value) item.toString()],
         );
-      } else if (value is Map) {
+      } else if (value is Map<String, dynamic>) {
         messages.addAll(_parseMap(value, _concatWithParentKey(parentKey, key)));
         return;
       } else {
@@ -135,6 +153,10 @@ String _concatWithParentKey(
 
 Match _matchesOptionKey(String key) {
   return optionKeyRegex.firstMatch(key);
+}
+
+Match _matchesDateKey(String key) {
+  return dateKeyRegex.firstMatch(key);
 }
 
 Match _matchesPluralKey(String key) {

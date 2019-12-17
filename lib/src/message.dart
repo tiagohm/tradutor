@@ -10,7 +10,7 @@ abstract class Message<T> implements Comparable<Message<T>> {
 
   @override
   String toString() {
-    return "$runtimeType { key: $key, value: $value }";
+    return '$runtimeType { key: $key, value: $value }';
   }
 }
 
@@ -43,6 +43,10 @@ class PluralMessage implements Message<String> {
 
   @override
   String toString() {
-    return "PluralMessage { type: $type, key: $key, value: $value }";
+    return 'PluralMessage { type: $type, key: $key, value: $value }';
   }
+}
+
+class DateMessage extends Message<String> {
+  DateMessage(String key, String value) : super(key, value);
 }

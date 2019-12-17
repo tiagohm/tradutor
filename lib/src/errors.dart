@@ -3,5 +3,6 @@ class ParseError extends Error {
 
   ParseError(this.message);
 
-  String toString() => "Parse error: $message";
+  @override
+  String toString() => 'Parse error: $message';
 }

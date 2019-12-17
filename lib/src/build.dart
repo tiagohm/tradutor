@@ -10,22 +10,23 @@ String buildTranslationDartFile(
 ) {
   final sb = StringBuffer();
 
-  final hideSynchronousFuture = options.isWeb ? " hide SynchronousFuture" : "";
+  final hideSynchronousFuture = options.isWeb ? ' hide SynchronousFuture' : '';
   sb.writeln("import 'package:flutter/foundation.dart'$hideSynchronousFuture;");
   sb.writeln(options.isWeb
       ? "import 'package:flutter_web/widgets.dart';"
       : "import 'package:flutter/widgets.dart';");
   sb.writeln("import 'package:intl/intl.dart' hide TextDirection;");
   sb.writeln();
-  sb.writeln("// ignore_for_file: camel_case_types");
-  sb.writeln("// ignore_for_file: prefer_single_quotes");
-  sb.writeln("// ignore_for_file: non_constant_identifier_names");
-  sb.writeln("// ignore_for_file: unnecessary_brace_in_string_interps");
-  sb.writeln("// ignore_for_file: unused_import");
-  sb.writeln("// ignore_for_file: curly_braces_in_flow_control_structures");
+  sb.writeln('// ignore_for_file: camel_case_types');
+  sb.writeln('// ignore_for_file: prefer_single_quotes');
+  sb.writeln('// ignore_for_file: non_constant_identifier_names');
+  sb.writeln('// ignore_for_file: unnecessary_brace_in_string_interps');
+  sb.writeln('// ignore_for_file: unused_import');
+  sb.writeln('// ignore_for_file: curly_braces_in_flow_control_structures');
+  sb.writeln('// ignore_for_file: implicit_dynamic_parameter');
   sb.writeln();
   sb.writeln(
-      "// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html");
+      '// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html');
   sb.writeln();
 
   // Fallback vem em primeiro, depois os idiomas por ordem alfabética.
@@ -63,7 +64,7 @@ String _buildI18nClass(
 ) {
   final messages = _buildMessagesLanguage(language, true);
 
-  final text = """
+  final text = '''
 class $className implements WidgetsLocalizations {
   const $className();
 
@@ -86,11 +87,11 @@ class $className implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get language => "${language.locale}";
+  String get language => '${language.locale}';
 
   $messages
 }
-""";
+''';
 
   return text;
 }
@@ -100,12 +101,12 @@ String _buildLanguageClass(
   bool isFallback,
   String className,
 ) {
-  final messages = isFallback ? "" : _buildMessagesLanguage(language, false);
+  final messages = isFallback ? '' : _buildMessagesLanguage(language, false);
   final extendsOf = language.options.extendsOf == null
-      ? "$className"
-      : "_${className}_${language.options.extendsOf}";
+      ? '$className'
+      : '_${className}_${language.options.extendsOf}';
 
-  return """
+  return '''
 class _${className}_${language.locale} extends $extendsOf {
   const _${className}_${language.locale}();
 
@@ -113,11 +114,11 @@ class _${className}_${language.locale} extends $extendsOf {
   TextDirection get textDirection => TextDirection.${language.options.textDirection};
 
   @override
-  String get language => "${language.locale}";
+  String get language => '${language.locale}';
 
   $messages
 }
-""";
+''';
 }
 
 String _buildMessagesLanguage(
@@ -126,14 +127,14 @@ String _buildMessagesLanguage(
 ) {
   final sb = StringBuffer();
 
-  final singularMessages = List<Message>();
-  final pluralMessages = Map<String, List<PluralMessage>>();
-  final messages = List<MapEntry<String, String>>();
+  final singularMessages = <Message>[];
+  final pluralMessages = <String, List<PluralMessage>>{};
+  final messages = <MapEntry<String, String>>[];
 
   for (final message in language.messages) {
     if (message is PluralMessage) {
       pluralMessages
-          .putIfAbsent(message.key, () => List<PluralMessage>())
+          .putIfAbsent(message.key, () => <PluralMessage>[])
           .add(message);
     } else {
       singularMessages.add(message);
@@ -150,6 +151,11 @@ String _buildMessagesLanguage(
       messages.add(MapEntry(
         message.key,
         _buildListMessage(message, language, isFallback),
+      ));
+    } else if (message is DateMessage) {
+      messages.add(MapEntry(
+        message.key,
+        _buildDateMessage(message, language, isFallback),
       ));
     }
   }
@@ -181,7 +187,7 @@ String _buildStringMessage(
   bool isFallback,
 ) {
   final sb = StringBuffer();
-  final params = List<String>();
+  final params = <String>[];
   var value = message.value;
 
   // Parâmetros.
@@ -192,31 +198,31 @@ String _buildStringMessage(
 
     final name = match.group(1);
     if (!params.contains(name)) params.add(name);
-    value = value.replaceRange(match.start, match.end, "\${$name}");
+    value = value.replaceRange(match.start, match.end, '\${$name}');
   }
 
-  if (!isFallback) sb.writeln("@override");
-  sb.write("String");
+  if (!isFallback) sb.writeln('@override');
+  sb.write('String');
 
   if (params.isEmpty) {
-    sb.write(" get");
+    sb.write(' get');
   }
 
-  sb.write(" ${message.key}");
+  sb.write(' ${message.key}');
 
   if (params.isNotEmpty) {
     params.sort();
 
-    sb.write("(");
-    sb.write(params.join(","));
-    sb.write(")");
+    sb.write('(');
+    sb.write(params.join(','));
+    sb.write(')');
   }
 
-  sb.write(" => ");
+  sb.write(' => ');
 
-  sb.write('"$value"');
+  sb.write("'${escape(value)}'");
 
-  sb.write(";");
+  sb.write(';');
 
   return sb.toString();
 }
@@ -227,8 +233,8 @@ String _buildListMessage(
   bool isFallback,
 ) {
   final sb = StringBuffer();
-  final params = List<String>();
-  final values = List<String>();
+  final params = <String>[];
+  final values = <String>[];
 
   // Parâmetros.
   for (var value in message.value) {
@@ -239,34 +245,34 @@ String _buildListMessage(
 
       final name = match.group(1);
       if (!params.contains(name)) params.add(name);
-      value = value.replaceRange(match.start, match.end, "\${$name}");
+      value = value.replaceRange(match.start, match.end, '\${$name}');
     }
 
-    values.add('"$value"');
+    values.add("'${escape(value)}'");
   }
 
-  if (!isFallback) sb.writeln("@override");
-  sb.write("List<String>");
+  if (!isFallback) sb.writeln('@override');
+  sb.write('List<String>');
 
   if (params.isEmpty) {
-    sb.write(" get");
+    sb.write(' get');
   }
 
-  sb.write(" ${message.key}");
+  sb.write(' ${message.key}');
 
   if (params.isNotEmpty) {
     params.sort();
 
-    sb.write("(");
-    sb.write(params.join(","));
-    sb.write(")");
+    sb.write('(');
+    sb.write(params.join(','));
+    sb.write(')');
   }
 
-  sb.write(" => ");
+  sb.write(' => ');
 
-  sb.write("[" + values.join(",") + "]");
+  sb.write('[${values.join(',')}]');
 
-  sb.write(";");
+  sb.write(';');
 
   return sb.toString();
 }
@@ -278,8 +284,8 @@ String _buildPluralMessage(
   bool isFallback,
 ) {
   final sb = StringBuffer();
-  final params = List<String>();
-  final values = Map<String, String>();
+  final params = <String>[];
+  final values = <String, String>{};
 
   // Parâmetros.
   for (final message in messages) {
@@ -292,54 +298,83 @@ String _buildPluralMessage(
 
       final name = match.group(1);
       if (!params.contains(name)) params.add(name);
-      value = value.replaceRange(match.start, match.end, "\${$name}");
+      value = value.replaceRange(match.start, match.end, '\${$name}');
     }
 
-    values[message.type] = '"$value"';
+    values[message.type] = "'${escape(value)}'";
   }
 
-  if (!isFallback) sb.writeln("@override");
-  sb.write("String");
+  if (!isFallback) sb.writeln('@override');
+  sb.write('String');
 
   if (params.isEmpty) {
-    sb.write(" get");
+    params.add('quantity');
   }
 
-  sb.write(" $key");
+  sb.write(' $key');
 
   if (params.isNotEmpty) {
-    params.remove("quantity");
+    params.remove('quantity');
     params.sort();
-    params.insert(0, "quantity");
+    params.insert(0, 'num quantity');
 
-    sb.write("(");
-    sb.write(params.join(","));
-    sb.write(")");
+    sb.write('(');
+    sb.write(params.join(','));
+    sb.write(')');
   }
 
-  sb.write(" => ");
+  sb.write(' => ');
 
   if (values.length == 1) {
     sb.write(values.values.first);
   } else {
-    final zero = values["zero"];
-    final one = values["one"];
-    final two = values["two"];
-    final few = values["few"];
-    final many = values["many"];
-    final other = values["other"];
+    final zero = values['zero'];
+    final one = values['one'];
+    final two = values['two'];
+    final few = values['few'];
+    final many = values['many'];
+    final other = values['other'];
 
     sb.write('Intl.plural(quantity, locale: language,');
-    if (zero != null) sb.write(" zero: $zero,");
-    if (one != null) sb.write(" one: $one,");
-    if (two != null) sb.write(" two: $two,");
-    if (few != null) sb.write(" few: $few,");
-    if (many != null) sb.write(" many: $many,");
-    if (other != null) sb.write(" other: $other,");
-    sb.write(")");
+    if (zero != null) sb.write(' zero: $zero,');
+    if (one != null) sb.write(' one: $one,');
+    if (two != null) sb.write(' two: $two,');
+    if (few != null) sb.write(' few: $few,');
+    if (many != null) sb.write(' many: $many,');
+    if (other != null) sb.write(' other: $other,');
+    sb.write(')');
   }
 
-  sb.write(";");
+  sb.write(';');
+
+  return sb.toString();
+}
+
+String _buildDateMessage(
+  DateMessage message,
+  Language language,
+  bool isFallback,
+) {
+  final sb = StringBuffer();
+  var value = message.value;
+
+  final staticInstanceName = '_${message.key}Formatter';
+  sb.writeln(
+    "static final $staticInstanceName = DateFormat('${escape(value)}', '${language.locale}');",
+  );
+
+  if (!isFallback) sb.writeln('@override');
+  sb.write('String');
+
+  sb.write(' ${message.key}');
+
+  sb.write('(DateTime date)');
+
+  sb.write(' => ');
+
+  sb.write('$staticInstanceName.format(date)');
+
+  sb.write(';');
 
   return sb.toString();
 }
@@ -354,22 +389,24 @@ String _buildGeneratedLocalizationsDelegate(
 
   for (final language in languages) {
     supportedLocales.writeln(
-        'Locale("${language.languageCode}", "${language.countryCode}"),');
-    localizationsBylang.writeln('if ("${language.locale}" == lang)');
+        "Locale('${language.languageCode}', '${language.countryCode}'),");
+    localizationsBylang.writeln("if ('${language.locale}' == lang)");
     localizationsBylang.writeln(
-        'return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());');
+      '{return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());}',
+    );
 
     if (language.options.extendsOf == null ||
         language.options.extendsOf.isEmpty) {
       final languageCode = language.languageCode;
       localizationsByLanguageCode
-          .writeln('if ("$languageCode" == languageCode)');
+          .writeln("if ('$languageCode' == languageCode)");
       localizationsByLanguageCode.writeln(
-          'return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());');
+        '{return SynchronousFuture<WidgetsLocalizations>(const _${className}_${language.locale}());}',
+      );
     }
   }
 
-  final text = """
+  final text = '''
 class GeneratedLocalizationsDelegate
     extends LocalizationsDelegate<WidgetsLocalizations> {
   const GeneratedLocalizationsDelegate();
@@ -381,10 +418,10 @@ class GeneratedLocalizationsDelegate
 
   LocaleResolutionCallback resolution({Locale fallback}) {
     return (Locale locale, Iterable<Locale> supported) {
-      if (this.isSupported(locale)) {
+      if (isSupported(locale)) {
         return locale;
       }
-      final Locale fallbackLocale = fallback ?? supported.first;
+      final fallbackLocale = fallback ?? supported.first;
       return fallbackLocale;
     };
   }
@@ -394,8 +431,8 @@ class GeneratedLocalizationsDelegate
     $className._locale ??= locale;
     $className._shouldReload = false;
     locale = $className._locale;
-    final String lang = locale != null ? locale.toString() : "";
-    final String languageCode = locale != null ? locale.languageCode : "";
+    final lang = locale != null ? locale.toString() : '';
+    final languageCode = locale != null ? locale.languageCode : '';
 
     $localizationsBylang
 
@@ -418,7 +455,31 @@ class GeneratedLocalizationsDelegate
   @override
   bool shouldReload(GeneratedLocalizationsDelegate old) => $className._shouldReload;
 }
-""";
+''';
 
   return text;
+}
+
+String escape(String text) {
+  if (text == null) {
+    return null;
+  }
+
+  if (text.isEmpty) {
+    return text;
+  }
+
+  final sb = StringBuffer();
+
+  for (var i = 0; i < text.length; i++) {
+    final c = text[i];
+
+    if (c == "'") {
+      sb.write('\\$c');
+    } else {
+      sb.write(c);
+    }
+  }
+
+  return sb.toString();
 }

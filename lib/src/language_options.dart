@@ -6,20 +6,20 @@ class LanguageOptions {
   final String extendsOf;
 
   LanguageOptions({
-    this.textDirection = "ltr",
+    this.textDirection = 'ltr',
     this.extendsOf,
   }) {
     if (extendsOf != null &&
         extendsOf.isNotEmpty &&
         !localeRegex.hasMatch(extendsOf)) {
-      throw ParseError("extends property has invalid value");
+      throw ParseError('extends property has invalid value');
     }
   }
 
   factory LanguageOptions.fromMap(Map<String, String> options) {
     return LanguageOptions(
-      textDirection: options["textDirection"] ?? "ltr",
-      extendsOf: options["extends"],
+      textDirection: options['textDirection'] ?? 'ltr',
+      extendsOf: options['extends'],
     );
   }
 }
