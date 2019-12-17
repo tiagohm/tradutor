@@ -1,5 +1,0 @@
-{
-    "@extends": "pt_PT",
-    "counter.one": "Botão foi pressionado {quantity} vez",
-    "counter.other": "Botão foi pressionado {quantity} vezes"
-}

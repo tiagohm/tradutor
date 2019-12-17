@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../example/lib/i18n.dart';
+import 'i18n.dart';
 
 class App extends StatefulWidget {
   final Locale locale;
