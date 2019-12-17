@@ -1,3 +1,7 @@
+## [0.6.0] - 2019-12-17
+* Added Date message type;
+* Bug fixes.
+
 ## [0.5.1] - 2019-08-25
 * Bug fixed.
 
