@@ -20,5 +20,6 @@
         "title": "Home Page"
     },
     "counter.one": "Button clicked 1 time",
-    "counter.other": "Button clicked {quantity} times"
+    "counter.other": "Button clicked {quantity} times",
+    "#fullDate": "MM dd, yyyy h:mm:ss a"
 }

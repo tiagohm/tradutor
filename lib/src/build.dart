@@ -152,6 +152,11 @@ String _buildMessagesLanguage(
         message.key,
         _buildListMessage(message, language, isFallback),
       ));
+    } else if (message is DateMessage) {
+      messages.add(MapEntry(
+        message.key,
+        _buildDateMessage(message, language, isFallback),
+      ));
     }
   }
 
@@ -303,7 +308,7 @@ String _buildPluralMessage(
   sb.write('String');
 
   if (params.isEmpty) {
-    sb.write(' get');
+    params.add('quantity');
   }
 
   sb.write(' $key');
@@ -339,6 +344,35 @@ String _buildPluralMessage(
     if (other != null) sb.write(' other: $other,');
     sb.write(')');
   }
+
+  sb.write(';');
+
+  return sb.toString();
+}
+
+String _buildDateMessage(
+  DateMessage message,
+  Language language,
+  bool isFallback,
+) {
+  final sb = StringBuffer();
+  var value = message.value;
+
+  final staticInstanceName = '_${message.key}Formatter';
+  sb.writeln(
+    "static final $staticInstanceName = DateFormat('$value', '${language.locale}');",
+  );
+
+  if (!isFallback) sb.writeln('@override');
+  sb.write('String');
+
+  sb.write(' ${message.key}');
+
+  sb.write('(DateTime date)');
+
+  sb.write(' => ');
+
+  sb.write('$staticInstanceName.format(date)');
 
   sb.write(';');
 

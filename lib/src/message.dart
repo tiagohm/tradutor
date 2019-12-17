@@ -46,3 +46,7 @@ class PluralMessage implements Message<String> {
     return 'PluralMessage { type: $type, key: $key, value: $value }';
   }
 }
+
+class DateMessage extends Message<String> {
+  DateMessage(String key, String value) : super(key, value);
+}

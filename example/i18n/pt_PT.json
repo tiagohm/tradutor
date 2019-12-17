@@ -20,5 +20,6 @@
         "title": "Página Inicial"
     },
     "counter.one": "Botão foi clicado 1 vez",
-    "counter.other": "Botão foi clicado {quantity} vezes"
+    "counter.other": "Botão foi clicado {quantity} vezes",
+    "#fullDate": "dd MM yyyy hh:mm:ss"
 }

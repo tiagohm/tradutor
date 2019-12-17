@@ -10,6 +10,8 @@ import 'package:tradutor/src/regex.dart';
 import 'package:tradutor/src/translation_file.dart';
 import 'package:tradutor/src/yaml.dart';
 
+import 'message.dart';
+
 Future<Language> parseTranslationFile(
   TranslationFile translationFile,
   BuildOptions options,
@@ -34,13 +36,13 @@ Language _parse(
     }
 
     // Option.
-    final match = _matchesOptionKey(key);
-    if (match != null) {
+    final matchOption = _matchesOptionKey(key);
+    if (matchOption != null) {
       if (value == null || value is List || value is Map) {
         throw ParseError("property '$key' has an invalid value");
       }
 
-      final option = match.group(1);
+      final option = matchOption.group(1);
       options[option] = value?.toString();
     }
   });
@@ -73,12 +75,25 @@ List<Message> _parseMap(
       return;
     }
 
-    // Plural.
-    final match1 = _matchesPluralKey(key);
+    // Date.
+    final matchDate = _matchesDateKey(key);
 
-    if (match1 != null) {
-      final key = match1.group(1);
-      final type = match1.group(2).toLowerCase();
+    if (matchDate != null) {
+      if (value is String) {
+        final key = matchDate.group(1);
+        messages.add(DateMessage(key, value));
+        return;
+      } else {
+        throw ParseError("key '$key': date message must be a string");
+      }
+    }
+
+    // Plural.
+    final matchPlural = _matchesPluralKey(key);
+
+    if (matchPlural != null) {
+      final key = matchPlural.group(1);
+      final type = matchPlural.group(2).toLowerCase();
 
       if (value is List) {
         throw ParseError("key '$key': plural message doesn't support list");
@@ -92,10 +107,10 @@ List<Message> _parseMap(
     }
 
     // Singular.
-    final match2 = _matchesKey(key);
+    final matchSingular = _matchesKey(key);
 
-    if (match2 != null) {
-      final key = match2.group(1);
+    if (matchSingular != null) {
+      final key = matchSingular.group(1);
       Message message;
 
       if (value is List) {
@@ -138,6 +153,10 @@ String _concatWithParentKey(
 
 Match _matchesOptionKey(String key) {
   return optionKeyRegex.firstMatch(key);
+}
+
+Match _matchesDateKey(String key) {
+  return dateKeyRegex.firstMatch(key);
 }
 
 Match _matchesPluralKey(String key) {

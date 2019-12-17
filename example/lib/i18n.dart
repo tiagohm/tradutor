@@ -43,6 +43,9 @@ class I18n implements WidgetsLocalizations {
         one: 'Button clicked 1 time',
         other: 'Button clicked ${quantity} times',
       );
+  static final _fullDateFormatter =
+      DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
+  String fullDate(DateTime date) => _fullDateFormatter.format(date);
   String get homePageTitle => 'Home Page';
   String messageWithParameters(name) => 'Hi ${name}, Welcome you!';
   String get simpleMessage => 'This is a simple Message';
@@ -138,6 +141,9 @@ class _I18n_pt_PT extends I18n {
         one: 'Botão foi clicado 1 vez',
         other: 'Botão foi clicado ${quantity} vezes',
       );
+  static final _fullDateFormatter = DateFormat('dd MM yyyy hh:mm:ss', 'pt_PT');
+  @override
+  String fullDate(DateTime date) => _fullDateFormatter.format(date);
   @override
   String get homePageTitle => 'Página Inicial';
   @override

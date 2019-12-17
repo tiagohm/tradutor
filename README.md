@@ -11,6 +11,7 @@ A Flutter package that simplify the internationalizing process using JSON and YA
 * List of simple messages;
 * List of messages with multiple parameters;
 * Plural messages;
+* Date messages;
 * Allow a language extends another language;
 * JSON and YAML files;
 * Supports Flutter Web;
@@ -194,6 +195,23 @@ String counter(quantity) => Intl.plural(
         other: "Button cliked ${quantity} times",
       );
 ```
+
+### Date messages
+
+Use `#{parameterName}` in a message.
+```json
+{
+    "#fullDate": "MM dd, yyyy h:mm:ss a"
+}
+```
+
+Generated Dart method:
+```dart
+static final _fullDateFormatter = DateTime('MM dd, yyyy h:mm:ss a', 'en_US');
+String fullDate(DateTime date) => _fullDateFormatter.format(date);
+```
+
+See the DateFormat documentation [here](https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html).
 
 ### Usage of Generated Dart file (i18n.dart)
 
