@@ -19,7 +19,7 @@ class YamlDecoder extends Converter<String, Object> {
 
   @override
   Object convert(String input) {
-    final doc = loadYaml(input);
+    final dynamic doc = loadYaml(input);
     final text = json.encode(doc);
     return json.decode(text);
   }

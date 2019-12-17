@@ -33,7 +33,7 @@ class App extends StatelessWidget {
         ],
         supportedLocales: i18n.supportedLocales,
         localeResolutionCallback:
-            i18n.resolution(fallback: Locale("en", "US")));
+            i18n.resolution(fallback: const Locale('en', 'US')));
   }
 }
 

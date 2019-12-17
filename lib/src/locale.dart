@@ -3,6 +3,6 @@ abstract class Locale {
   String get countryCode;
 
   String get locale => countryCode != null && countryCode.isNotEmpty
-      ? "${languageCode}_$countryCode"
+      ? '${languageCode}_$countryCode'
       : languageCode;
 }

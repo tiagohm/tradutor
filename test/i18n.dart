@@ -1,1 +1,0 @@
-../example/lib/i18n.dart

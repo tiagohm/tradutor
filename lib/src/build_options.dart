@@ -7,11 +7,11 @@ class BuildOptions {
   final bool isWeb;
 
   BuildOptions({
-    this.source = "/i18n",
-    this.output = "/lib/i18n.dart",
-    this.fallback = "en_US",
+    this.source = '/i18n',
+    this.output = '/lib/i18n.dart',
+    this.fallback = 'en_US',
     this.watch = false,
-    this.className = "I18n",
+    this.className = 'I18n',
     this.isWeb = false,
   });
 }

@@ -16,7 +16,8 @@ Future<Language> parseTranslationFile(
 ) async {
   final file = File(translationFile.file.path);
   final text = await file.readAsString();
-  final data = translationFile.isYaml ? yaml.decode(text) : json.decode(text);
+  final dynamic data =
+      translationFile.isYaml ? yaml.decode(text) : json.decode(text);
   return _parse(translationFile, data as Map<String, dynamic>);
 }
 
@@ -25,9 +26,9 @@ Language _parse(
   Map<String, dynamic> data,
 ) {
   final messages = _parseMap(data);
-  final options = Map<String, String>();
+  final options = <String, String>{};
 
-  data.forEach((key, value) {
+  data.forEach((key, dynamic value) {
     if (key.isEmpty) {
       throw ParseError("key '$key' can't be empty");
     }
@@ -56,9 +57,9 @@ List<Message> _parseMap(
   Map<String, dynamic> data, [
   String parentKey,
 ]) {
-  final messages = List<Message>();
+  final messages = <Message>[];
 
-  data.forEach((key, value) {
+  data.forEach((key, dynamic value) {
     if (key.isEmpty) {
       throw ParseError("key '$key' can't be empty");
     }
@@ -68,15 +69,16 @@ List<Message> _parseMap(
     }
 
     // Option.
-    var match = _matchesOptionKey(key);
-
-    if (match != null) return;
+    if (_matchesOptionKey(key) != null) {
+      return;
+    }
 
     // Plural.
-    match = _matchesPluralKey(key);
-    if (match != null) {
-      final key = match.group(1);
-      final type = match.group(2).toLowerCase();
+    final match1 = _matchesPluralKey(key);
+
+    if (match1 != null) {
+      final key = match1.group(1);
+      final type = match1.group(2).toLowerCase();
 
       if (value is List) {
         throw ParseError("key '$key': plural message doesn't support list");
@@ -90,9 +92,10 @@ List<Message> _parseMap(
     }
 
     // Singular.
-    match = _matchesKey(key);
-    if (match != null) {
-      final key = match.group(1);
+    final match2 = _matchesKey(key);
+
+    if (match2 != null) {
+      final key = match2.group(1);
       Message message;
 
       if (value is List) {
@@ -100,7 +103,7 @@ List<Message> _parseMap(
           _concatWithParentKey(parentKey, key),
           [for (final item in value) item.toString()],
         );
-      } else if (value is Map) {
+      } else if (value is Map<String, dynamic>) {
         messages.addAll(_parseMap(value, _concatWithParentKey(parentKey, key)));
         return;
       } else {
