@@ -220,7 +220,7 @@ String _buildStringMessage(
 
   sb.write(' => ');
 
-  sb.write("'$value'");
+  sb.write("'${escape(value)}'");
 
   sb.write(';');
 
@@ -248,7 +248,7 @@ String _buildListMessage(
       value = value.replaceRange(match.start, match.end, '\${$name}');
     }
 
-    values.add("'$value'");
+    values.add("'${escape(value)}'");
   }
 
   if (!isFallback) sb.writeln('@override');
@@ -301,7 +301,7 @@ String _buildPluralMessage(
       value = value.replaceRange(match.start, match.end, '\${$name}');
     }
 
-    values[message.type] = "'$value'";
+    values[message.type] = "'${escape(value)}'";
   }
 
   if (!isFallback) sb.writeln('@override');
@@ -360,7 +360,7 @@ String _buildDateMessage(
 
   final staticInstanceName = '_${message.key}Formatter';
   sb.writeln(
-    "static final $staticInstanceName = DateFormat('$value', '${language.locale}');",
+    "static final $staticInstanceName = DateFormat('${escape(value)}', '${language.locale}');",
   );
 
   if (!isFallback) sb.writeln('@override');
@@ -458,4 +458,28 @@ class GeneratedLocalizationsDelegate
 ''';
 
   return text;
+}
+
+String escape(String text) {
+  if (text == null) {
+    return null;
+  }
+
+  if (text.isEmpty) {
+    return text;
+  }
+
+  final sb = StringBuffer();
+
+  for (var i = 0; i < text.length; i++) {
+    final c = text[i];
+
+    if (c == "'") {
+      sb.write('\\$c');
+    } else {
+      sb.write(c);
+    }
+  }
+
+  return sb.toString();
 }
