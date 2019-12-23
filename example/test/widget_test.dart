@@ -12,19 +12,19 @@ void main() {
     await tester.pumpAndSettle();
 
     var titleFinder = find.text('Página Inicial');
-    var messageFinder = find.text('Esta é uma simples mensagem');
+    var helloFinder = find.text('Olá');
 
     expect(titleFinder, findsOneWidget);
-    expect(messageFinder, findsOneWidget);
+    expect(helloFinder, findsOneWidget);
 
     await tester.tap(find.byType(FloatingActionButton));
 
     await tester.pumpAndSettle();
 
     titleFinder = find.text('Home Page');
-    messageFinder = find.text('This is a simple Message');
+    helloFinder = find.text('Hello');
 
     expect(titleFinder, findsOneWidget);
-    expect(messageFinder, findsOneWidget);
+    expect(helloFinder, findsOneWidget);
   });
 }

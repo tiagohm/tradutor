@@ -1,0 +1,22 @@
+{
+    "homePage": "Página Inicial",
+    "hello": "Olá",
+    "counter.one": "Botão foi clicado {quantity} vez",
+    "counter.other": "Botão foi clicado {quantity} vezes",
+    "brazilFlagColors": [
+        "Verde",
+        "Amarelo",
+        "Azul",
+        "Branco"
+    ],
+    "simpleWhiteCakeIngredients": [
+        "{whiteSugar} copos de açúcar cristal",
+        "{butter} copo de manteiga",
+        "{eggs} ovos",
+        "{vanilla} colher (chá) de extrato de baunilha",
+        "{flour} copos de farinha de trigo",
+        "{bakingPowder} colher (chá) de fermento em pó",
+        "{milk} copo de leite"
+    ],
+    "#fullDate": "dd/MM/yyyy HH:mm:ss"
+}

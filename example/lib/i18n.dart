@@ -3,11 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 
 // ignore_for_file: camel_case_types
-// ignore_for_file: prefer_single_quotes
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_brace_in_string_interps
 // ignore_for_file: unused_import
-// ignore_for_file: curly_braces_in_flow_control_structures
 // ignore_for_file: implicit_dynamic_parameter
 
 // See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html
@@ -40,15 +38,14 @@ class I18n implements WidgetsLocalizations {
   String counter(num quantity) => Intl.plural(
         quantity,
         locale: language,
-        one: 'Button clicked 1 time',
-        other: 'Button clicked ${quantity} times',
+        one: 'Button tapped ${quantity} time',
+        other: 'Button tapped ${quantity} times',
       );
   static final _fullDateFormatter =
       DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
   String fullDate(DateTime date) => _fullDateFormatter.format(date);
-  String get homePageTitle => 'Home Page';
-  String messageWithParameters(name) => 'Hi ${name}, Welcome you!';
-  String get simpleMessage => 'This is a simple Message';
+  String get hello => 'Hello';
+  String get homePage => 'Home Page';
   List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
       [
@@ -72,40 +69,7 @@ class _I18n_en_US extends I18n {
   String get language => 'en_US';
 }
 
-class _I18n_ja_JA extends I18n {
-  const _I18n_ja_JA();
-
-  @override
-  TextDirection get textDirection => TextDirection.ltr;
-
-  @override
-  String get language => 'ja_JA';
-
-  @override
-  List<String> get brazilFlagColors => ['緑', '黄色', '青い', '白い'];
-  @override
-  String counter(num quantity) => 'ボタンが${quantity}回クリックされた';
-  @override
-  String get homePageTitle => 'ホームページ';
-  @override
-  String messageWithParameters(name) => '${name}様、ようこそ！';
-  @override
-  String get simpleMessage => 'これは簡単なメッセージです';
-  @override
-  List<String> simpleWhiteCakeIngredients(
-          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
-      [
-        '白砂糖${whiteSugar}カップ',
-        'バター${butter}カップ',
-        '卵${eggs}個',
-        'バニラエッセンス小さじ${vanilla}',
-        '薄力粉${flour}カップ',
-        '小さじ${bakingPowder}杯のベーキングパウダー',
-        '牛乳${milk}カップ'
-      ];
-}
-
-class _I18n_pt_BR extends _I18n_pt_PT {
+class _I18n_pt_BR extends I18n {
   const _I18n_pt_BR();
 
   @override
@@ -115,51 +79,31 @@ class _I18n_pt_BR extends _I18n_pt_PT {
   String get language => 'pt_BR';
 
   @override
-  String counter(num quantity) => Intl.plural(
-        quantity,
-        locale: language,
-        one: 'Botão foi pressionado ${quantity} vez',
-        other: 'Botão foi pressionado ${quantity} vezes',
-      );
-}
-
-class _I18n_pt_PT extends I18n {
-  const _I18n_pt_PT();
-
-  @override
-  TextDirection get textDirection => TextDirection.ltr;
-
-  @override
-  String get language => 'pt_PT';
-
-  @override
   List<String> get brazilFlagColors => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   @override
   String counter(num quantity) => Intl.plural(
         quantity,
         locale: language,
-        one: 'Botão foi clicado 1 vez',
+        one: 'Botão foi clicado ${quantity} vez',
         other: 'Botão foi clicado ${quantity} vezes',
       );
-  static final _fullDateFormatter = DateFormat('dd MM yyyy hh:mm:ss', 'pt_PT');
+  static final _fullDateFormatter = DateFormat('dd/MM/yyyy HH:mm:ss', 'pt_BR');
   @override
   String fullDate(DateTime date) => _fullDateFormatter.format(date);
   @override
-  String get homePageTitle => 'Página Inicial';
+  String get hello => 'Olá';
   @override
-  String messageWithParameters(name) => 'Olá ${name}, Bem-vindo!';
-  @override
-  String get simpleMessage => 'Esta é uma simples mensagem';
+  String get homePage => 'Página Inicial';
   @override
   List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
       [
-        '${whiteSugar} copo de açúcar cristal',
+        '${whiteSugar} copos de açúcar cristal',
         '${butter} copo de manteiga',
         '${eggs} ovos',
-        '${vanilla} colheres de chá de extrato de baunilha',
-        '${flour} copo de farinha de trigo',
-        '${bakingPowder} colher de fermento em pó',
+        '${vanilla} colher (chá) de extrato de baunilha',
+        '${flour} copos de farinha de trigo',
+        '${bakingPowder} colher (chá) de fermento em pó',
         '${milk} copo de leite'
       ];
 }
@@ -170,9 +114,7 @@ class GeneratedLocalizationsDelegate
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale('en', 'US'),
-      Locale('ja', 'JA'),
       Locale('pt', 'BR'),
-      Locale('pt', 'PT'),
     ];
   }
 
@@ -197,24 +139,15 @@ class GeneratedLocalizationsDelegate
     if ('en_US' == lang) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     }
-    if ('ja_JA' == lang) {
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_ja_JA());
-    }
     if ('pt_BR' == lang) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
-    }
-    if ('pt_PT' == lang) {
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
     }
 
     if ('en' == languageCode) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     }
-    if ('ja' == languageCode) {
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_ja_JA());
-    }
     if ('pt' == languageCode) {
-      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_PT());
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
     }
 
     return SynchronousFuture<WidgetsLocalizations>(const I18n());
