@@ -1,0 +1,21 @@
+{
+    "homePage": "Home Page",
+    "counter.one": "Button tapped {quantity} time",
+    "counter.other": "Button tapped {quantity} times",
+    "brazilFlagColors": [
+        "Green",
+        "Yellow",
+        "Blue",
+        "White"
+    ],
+    "simpleWhiteCakeIngredients": [
+        "{whiteSugar} cup white sugar",
+        "{butter} cup butter",
+        "{eggs} eggs",
+        "{vanilla} teaspoons vanilla extract",
+        "{flour} cups all-purpose flour",
+        "{bakingPowder} teaspoons baking powder",
+        "{milk} cup milk"
+    ],
+    "#fullDate": "MM dd, yyyy h:mm:ss a"
+}

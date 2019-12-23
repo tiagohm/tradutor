@@ -229,26 +229,35 @@ class App extends StatelessWidget {
     final i18n = I18n.delegate;
 
     return MaterialApp(
-        title: 'Tradutor',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: HomePage(),
-        localizationsDelegates: [
-          i18n,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: i18n.supportedLocales,
-        localeResolutionCallback:
-            i18n.resolution(fallback: Locale("en", "US")));
+      title: 'Tradutor',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const HomePage(),
+      localizationsDelegates: [
+        i18n,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: i18n.supportedLocales,
+      localeResolutionCallback: i18n.resolution(
+        fallback: const Locale('en', 'US'),
+      ),
+    );
   }
 }
-```
 
-```dart
+class HomePage extends StatefulWidget {
+  const HomePage({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  var _counter = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -259,24 +268,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final i18n = I18n.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(i18n.homePageTitle),
+        title: Text(i18n.homePage),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              i18n.counter(_counter),
-            ),
+            Text(i18n.counter(_counter)),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
