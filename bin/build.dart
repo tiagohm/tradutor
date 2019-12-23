@@ -38,7 +38,7 @@ void main(List<String> args) async {
 
     inputDir
         .watch()
-        .debounce(const Duration(milliseconds: 1500))
+        .debounce(const Duration(milliseconds: 3000))
         .listen((modifiedFile) async {
       printInfo('file "${modifiedFile.path}" was modified');
       await _build(files, options);
