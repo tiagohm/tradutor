@@ -12,21 +12,22 @@ String buildTranslationDartFile(
 
   final hideSynchronousFuture = options.isWeb ? ' hide SynchronousFuture' : '';
   sb.writeln("import 'package:flutter/foundation.dart'$hideSynchronousFuture;");
-  sb.writeln(options.isWeb
-      ? "import 'package:flutter_web/widgets.dart';"
-      : "import 'package:flutter/widgets.dart';");
+  sb.writeln(
+    options.isWeb
+        ? "import 'package:flutter_web/widgets.dart';"
+        : "import 'package:flutter/widgets.dart';",
+  );
   sb.writeln("import 'package:intl/intl.dart' hide TextDirection;");
   sb.writeln();
   sb.writeln('// ignore_for_file: camel_case_types');
-  sb.writeln('// ignore_for_file: prefer_single_quotes');
   sb.writeln('// ignore_for_file: non_constant_identifier_names');
   sb.writeln('// ignore_for_file: unnecessary_brace_in_string_interps');
   sb.writeln('// ignore_for_file: unused_import');
-  sb.writeln('// ignore_for_file: curly_braces_in_flow_control_structures');
   sb.writeln('// ignore_for_file: implicit_dynamic_parameter');
   sb.writeln();
   sb.writeln(
-      '// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html');
+    '// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html',
+  );
   sb.writeln();
 
   // Fallback vem em primeiro, depois os idiomas por ordem alfabética.
