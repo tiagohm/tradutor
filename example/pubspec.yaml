@@ -1,5 +1,4 @@
 name: example
-description: Tradutor example.
 version: 0.1.0
 
 environment:
@@ -11,6 +10,11 @@ dependencies:
     flutter_localizations:
       sdk: flutter
 
+flutter:
+  uses-material-design: true
+
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   tradutor:
     path: ../

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'i18n.dart';
+import '../lib/i18n.dart';
 
 class App extends StatefulWidget {
   final Locale locale;
@@ -56,10 +56,10 @@ class _HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(i18n.homePageTitle),
+        title: Text(i18n.homePage),
       ),
       body: Center(
-        child: Text(i18n.simpleMessage),
+        child: Text(i18n.hello),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.refresh),

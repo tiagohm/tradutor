@@ -1,5 +1,6 @@
 {
     "homePage": "Home Page",
+    "hello": "Hello",
     "counter.one": "Button tapped {quantity} time",
     "counter.other": "Button tapped {quantity} times",
     "brazilFlagColors": [

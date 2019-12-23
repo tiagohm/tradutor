@@ -44,6 +44,7 @@ class I18n implements WidgetsLocalizations {
   static final _fullDateFormatter =
       DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
   String fullDate(DateTime date) => _fullDateFormatter.format(date);
+  String get hello => 'Hello';
   String get homePage => 'Home Page';
   List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
@@ -68,12 +69,52 @@ class _I18n_en_US extends I18n {
   String get language => 'en_US';
 }
 
+class _I18n_pt_BR extends I18n {
+  const _I18n_pt_BR();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get language => 'pt_BR';
+
+  @override
+  List<String> get brazilFlagColors => ['Verde', 'Amarelo', 'Azul', 'Branco'];
+  @override
+  String counter(num quantity) => Intl.plural(
+        quantity,
+        locale: language,
+        one: 'Botão foi clicado ${quantity} vez',
+        other: 'Botão foi clicado ${quantity} vezes',
+      );
+  static final _fullDateFormatter = DateFormat('dd/MM/yyyy HH:mm:ss', 'pt_BR');
+  @override
+  String fullDate(DateTime date) => _fullDateFormatter.format(date);
+  @override
+  String get hello => 'Olá';
+  @override
+  String get homePage => 'Página Inicial';
+  @override
+  List<String> simpleWhiteCakeIngredients(
+          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+      [
+        '${whiteSugar} copos de açúcar cristal',
+        '${butter} copo de manteiga',
+        '${eggs} ovos',
+        '${vanilla} colher (chá) de extrato de baunilha',
+        '${flour} copos de farinha de trigo',
+        '${bakingPowder} colher (chá) de fermento em pó',
+        '${milk} copo de leite'
+      ];
+}
+
 class GeneratedLocalizationsDelegate
     extends LocalizationsDelegate<WidgetsLocalizations> {
   const GeneratedLocalizationsDelegate();
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale('en', 'US'),
+      Locale('pt', 'BR'),
     ];
   }
 
@@ -98,9 +139,15 @@ class GeneratedLocalizationsDelegate
     if ('en_US' == lang) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     }
+    if ('pt_BR' == lang) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
+    }
 
     if ('en' == languageCode) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
+    }
+    if ('pt' == languageCode) {
+      return SynchronousFuture<WidgetsLocalizations>(const _I18n_pt_BR());
     }
 
     return SynchronousFuture<WidgetsLocalizations>(const I18n());
