@@ -207,7 +207,7 @@ Use `#{parameterName}` in a message.
 
 Generated Dart method:
 ```dart
-static final _fullDateFormatter = DateTime('MM dd, yyyy h:mm:ss a', 'en_US');
+static final _fullDateFormatter = DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
 String fullDate(DateTime date) => _fullDateFormatter.format(date);
 ```
 
