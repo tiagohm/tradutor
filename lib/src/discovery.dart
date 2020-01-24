@@ -14,7 +14,8 @@ Future<List<TranslationFile>> discoveryTranslationFiles(
 
   final inputPath =
       Directory(path.normalize('${current.path}/${options.source}'));
-  if (!await inputPath.exists()) {
+
+  if (!inputPath.existsSync()) {
     printError("input path '${inputPath.path}' not found");
     return null;
   }

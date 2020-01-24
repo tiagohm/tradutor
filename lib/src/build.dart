@@ -357,7 +357,7 @@ String _buildDateMessage(
   bool isFallback,
 ) {
   final sb = StringBuffer();
-  var value = message.value;
+  final value = message.value;
 
   final staticInstanceName = '_${message.key}Formatter';
   sb.writeln(
@@ -418,7 +418,7 @@ class GeneratedLocalizationsDelegate
   }
 
   LocaleResolutionCallback resolution({Locale fallback}) {
-    return (Locale locale, Iterable<Locale> supported) {
+    return (locale, supported) {
       if (isSupported(locale)) {
         return locale;
       }
