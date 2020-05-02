@@ -119,7 +119,7 @@ class GeneratedLocalizationsDelegate
   }
 
   LocaleResolutionCallback resolution({Locale fallback}) {
-    return (Locale locale, Iterable<Locale> supported) {
+    return (locale, supported) {
       if (isSupported(locale)) {
         return locale;
       }

@@ -30,7 +30,7 @@ Language _parse(
   final messages = _parseMap(data);
   final options = <String, String>{};
 
-  data.forEach((key, dynamic value) {
+  data.forEach((key, value) {
     if (key.isEmpty) {
       throw ParseError("key '$key' can't be empty");
     }
@@ -61,7 +61,7 @@ List<Message> _parseMap(
 ]) {
   final messages = <Message>[];
 
-  data.forEach((key, dynamic value) {
+  data.forEach((key, value) {
     if (key.isEmpty) {
       throw ParseError("key '$key' can't be empty");
     }

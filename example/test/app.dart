@@ -62,8 +62,8 @@ class _HomePage extends StatelessWidget {
         child: Text(i18n.hello),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh),
         onPressed: _changeLanguage,
+        child: Icon(Icons.refresh),
       ),
     );
   }
