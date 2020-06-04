@@ -67,7 +67,8 @@ List<Message> _parseMap(
     }
 
     if (value == null) {
-      throw ParseError("key '$key' has an invalid value: null");
+      // throw ParseError("key '$key' has an invalid value: null");
+      return;
     }
 
     // Option.

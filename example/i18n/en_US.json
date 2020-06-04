@@ -18,5 +18,6 @@
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
     ],
-    "#fullDate": "MM dd, yyyy h:mm:ss a"
+    "#fullDate": "MM dd, yyyy h:mm:ss a",
+    "notTranslatable": "Not translatable"
 }

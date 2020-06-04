@@ -46,6 +46,7 @@ class I18n implements WidgetsLocalizations {
   String fullDate(DateTime date) => _fullDateFormatter.format(date);
   String get hello => 'Hello';
   String get homePage => 'Home Page';
+  String get notTranslatable => 'Not translatable';
   List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
       [
