@@ -1,4 +1,6 @@
-class BuildOptions {
+import 'package:equatable/equatable.dart';
+
+class BuildOptions extends Equatable {
   final String source;
   final String output;
   final String fallback;
@@ -6,7 +8,7 @@ class BuildOptions {
   final String className;
   final bool isWeb;
 
-  BuildOptions({
+  const BuildOptions({
     this.source = '/i18n',
     this.output = '/lib/i18n.dart',
     this.fallback = 'en_US',
@@ -14,4 +16,7 @@ class BuildOptions {
     this.className = 'I18n',
     this.isWeb = false,
   });
+
+  @override
+  List<Object> get props => [source, output, fallback, watch, className, isWeb];
 }

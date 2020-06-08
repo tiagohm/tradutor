@@ -14,7 +14,6 @@ A Flutter package that simplify the internationalizing process using JSON and YA
 * Date messages;
 * Allow a language extends another language;
 * JSON and YAML files;
-* Supports Flutter Web;
 * Supports hot reload.
 
 ## Installation 

@@ -2,13 +2,13 @@ name: example
 version: 0.1.0
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
-    flutter:
-      sdk: flutter
-    flutter_localizations:
-      sdk: flutter
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 flutter:
   uses-material-design: true

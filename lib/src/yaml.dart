@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:yaml/yaml.dart';
 
-const YamlCodec yaml = YamlCodec();
+const yaml = YamlCodec();
 
 class YamlCodec extends Codec<Object, String> {
   const YamlCodec();

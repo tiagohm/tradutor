@@ -12,7 +12,7 @@ void main() {
     await tester.pumpAndSettle();
 
     var titleFinder = find.text('Página Inicial');
-    var helloFinder = find.text('Olá');
+    var helloFinder = find.text('Olá Tiago');
 
     expect(titleFinder, findsOneWidget);
     expect(helloFinder, findsOneWidget);
@@ -22,7 +22,7 @@ void main() {
     await tester.pumpAndSettle();
 
     titleFinder = find.text('Home Page');
-    helloFinder = find.text('Hello');
+    helloFinder = find.text('Hello Tiago');
 
     expect(titleFinder, findsOneWidget);
     expect(helloFinder, findsOneWidget);

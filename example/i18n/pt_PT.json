@@ -1,8 +1,9 @@
 {
+    "@parent": true,
     "simpleMessage": "Página Inicial",
     "simpleMessageWithParameters": "Olá {name}",
-    "pluralMesssage.one": "Botão foi clicado {quantity} vez",
-    "pluralMesssage.other": "Botão foi clicado {quantity} vezes",
+    "pluralMesssage.one": "Botão foi pressionado {quantity} vez",
+    "pluralMesssage.other": "Botão foi pressionado {quantity} vezes",
     "pluralMesssageWithParameters.one": "{item} foi {action} {quantity} vez",
     "pluralMesssageWithParameters.other": "{item} foi {action} {quantity} vezes",
     "listMessage": [

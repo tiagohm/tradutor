@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../lib/i18n.dart';
+import '../example/lib/i18n.dart';
 
 class App extends StatefulWidget {
   final Locale locale;
@@ -27,7 +27,9 @@ class _AppState extends State<App> {
     return MaterialApp(
       title: 'App',
       home: _HomePage(
-        localeChanged: (locale) => setState(() => _locale = locale),
+        onLocaleChanged: (locale) {
+          setState(() => _locale = locale);
+        },
       ),
       localizationsDelegates: [
         i18n,
@@ -43,11 +45,11 @@ class _AppState extends State<App> {
 }
 
 class _HomePage extends StatelessWidget {
-  final void Function(Locale locale) localeChanged;
+  final void Function(Locale locale) onLocaleChanged;
 
   const _HomePage({
     Key key,
-    this.localeChanged,
+    this.onLocaleChanged,
   }) : super(key: key);
 
   @override
@@ -56,10 +58,10 @@ class _HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(i18n.homePage),
+        title: Text(i18n.simpleMessage),
       ),
       body: Center(
-        child: Text(i18n.hello),
+        child: Text(i18n.simpleMessageWithParameters('Tiago')),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _changeLanguage,
@@ -69,7 +71,7 @@ class _HomePage extends StatelessWidget {
   }
 
   void _changeLanguage() {
-    var locale = I18n.locale;
+    var locale = I18n.getLocale();
 
     if (locale.languageCode == 'en') {
       locale = const Locale('pt', 'BR');
@@ -77,8 +79,8 @@ class _HomePage extends StatelessWidget {
       locale = const Locale('en', 'US');
     }
 
-    I18n.locale = locale;
+    I18n.setLocale(locale);
 
-    localeChanged?.call(locale);
+    onLocaleChanged?.call(locale);
   }
 }
