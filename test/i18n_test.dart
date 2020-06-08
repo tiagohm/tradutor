@@ -83,4 +83,17 @@ void main() {
     expect(ptPT.pluralMesssageWithParameters(2, 'Botão', 'pressionado'),
         'Botão foi pressionado 2 vezes');
   });
+
+  test('Curly Brackets', () {
+    expect(enUS.messageWithOneCurlyBracket,
+        'This message contains one {curly_bracket}');
+    expect(enUS.messageWithTwoCurlyBrackets,
+        'This message contains two {{curly_brackets}}');
+    expect(ptBR.messageWithOneCurlyBracket, 'Esta mensagem contém uma {chave}');
+    expect(ptBR.messageWithTwoCurlyBrackets,
+        'Esta mensagem contém duas {{chaves}}');
+    expect(ptPT.messageWithOneCurlyBracket, 'Esta mensagem contém uma {chave}');
+    expect(ptPT.messageWithTwoCurlyBrackets,
+        'Esta mensagem contém duas {{chaves}}');
+  });
 }

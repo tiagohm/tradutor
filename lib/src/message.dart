@@ -1,6 +1,26 @@
 import 'package:equatable/equatable.dart';
 
-final _paramRegex = RegExp(r'(?<!\$){([a-z][a-z0-9_]*)}', caseSensitive: false);
+final _paramRegex = RegExp(r'(?<!{){([a-z][a-z0-9_]*)}', caseSensitive: false);
+
+class MessageParameterList extends Iterable<MessageParameter>
+    with EquatableMixin {
+  final List<MessageParameter> parameters;
+
+  static final MessageParameterList empty = MessageParameterList(const []);
+
+  MessageParameterList(this.parameters);
+
+  @override
+  String toString() {
+    return parameters?.toString();
+  }
+
+  @override
+  List<Object> get props => parameters;
+
+  @override
+  Iterator<MessageParameter> get iterator => parameters.iterator;
+}
 
 class MessageParameter extends Equatable {
   final String name;
@@ -29,7 +49,7 @@ abstract class Message<T> implements Comparable<Message<T>> {
 
   T get value;
 
-  List<MessageParameter> get parameters;
+  MessageParameterList get parameters;
 
   @override
   int compareTo(Message<T> other) => key.compareTo(other.key);
@@ -43,7 +63,7 @@ abstract class Message<T> implements Comparable<Message<T>> {
 class SimpleMessage extends Message<String> {
   @override
   final String key;
-  List<MessageParameter> _parameters;
+  MessageParameterList _parameters;
   String _value;
   final String raw;
 
@@ -56,28 +76,39 @@ class SimpleMessage extends Message<String> {
   List init(String value) {
     final params = <MessageParameter>[];
 
+    var pos = 0;
+
     while (true) {
-      final match = _paramRegex.firstMatch(value);
-      if (match == null) break;
-      final name = match.group(1);
-      params.add(MessageParameter(name, dynamic));
-      value = value.replaceRange(match.start, match.end, '\${$name}');
+      try {
+        final match = _paramRegex.allMatches(value, pos)?.first;
+        if (match == null) break;
+        final name = match.group(1);
+        params.add(MessageParameter(name, dynamic));
+        final textToReplace = '\${$name}';
+        value = value.replaceRange(match.start, match.end, textToReplace);
+        pos = match.start + textToReplace.length;
+      } catch (e) {
+        break;
+      }
     }
 
-    return [value, params];
+    return [
+      value.replaceAll('{{', '{').replaceAll('}}', '}'),
+      MessageParameterList(params),
+    ];
   }
 
   @override
   String get value => _value;
 
   @override
-  List<MessageParameter> get parameters => _parameters;
+  MessageParameterList get parameters => _parameters;
 }
 
 class ListMessage extends Message<List<String>> {
   final String key;
   List<String> _value;
-  List<MessageParameter> _parameters;
+  MessageParameterList _parameters;
 
   ListMessage(this.key, List<String> values) {
     final res = init(values);
@@ -87,30 +118,37 @@ class ListMessage extends Message<List<String>> {
 
   List init(List<String> values) {
     final params = <MessageParameter>[];
-    final vals = <String>[];
+    final res = <String>[];
 
     for (var i = 0; i < values.length; i++) {
       var value = values[i];
+      var pos = 0;
 
       while (true) {
-        final match = _paramRegex.firstMatch(value);
-        if (match == null) break;
-        final name = match.group(1);
-        params.add(MessageParameter(name, dynamic));
-        value = value.replaceRange(match.start, match.end, '\${$name}');
+        try {
+          final match = _paramRegex.allMatches(value, pos)?.first;
+          if (match == null) break;
+          final name = match.group(1);
+          params.add(MessageParameter(name, dynamic));
+          final textToReplace = '\${$name}';
+          value = value.replaceRange(match.start, match.end, textToReplace);
+          pos = match.start + textToReplace.length;
+        } catch (e) {
+          break;
+        }
       }
 
-      vals.add(value);
+      res.add(value.replaceAll('{{', '{').replaceAll('}}', '}'));
     }
 
-    return [vals, params];
+    return [res, MessageParameterList(params)];
   }
 
   @override
   List<String> get value => _value;
 
   @override
-  List<MessageParameter> get parameters => _parameters;
+  MessageParameterList get parameters => _parameters;
 }
 
 enum PluralType { zero, one, two, few, many, other }
@@ -150,11 +188,12 @@ class PluralMessage extends SimpleMessage {
   @override
   List init(String value) {
     final res = super.init(value);
-    final List<MessageParameter> params = res[1];
+    final MessageParameterList params = res[1];
 
     return [
       res[0],
-      [for (final p in params) if (p.name != 'quantity') p],
+      MessageParameterList(
+          [for (final p in params) if (p.name != 'quantity') p]),
     ];
   }
 }
@@ -164,7 +203,7 @@ class DateMessage extends SimpleMessage {
 
   @override
   List init(String value) {
-    return [value, const <MessageParameter>[]];
+    return [value, MessageParameterList.empty];
   }
 }
 
@@ -173,6 +212,6 @@ class OptionMessage extends SimpleMessage {
 
   @override
   List init(String value) {
-    return [value, const <MessageParameter>[]];
+    return [value, MessageParameterList.empty];
   }
 }

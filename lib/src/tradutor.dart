@@ -259,7 +259,7 @@ class Tradutor {
       // TODO: Futuramente poderá um idioma possuir parâmetros
       // mas seu fallback não?
       else if (messages[m.key]?.runtimeType == m.runtimeType &&
-          messages[m.key].parameters.length == m.parameters.length) {
+          messages[m.key].parameters == m.parameters) {
         messages[m.key] = m;
       }
       // Tentando adicionar a mesma chave.

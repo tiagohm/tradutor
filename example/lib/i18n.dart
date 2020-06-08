@@ -61,6 +61,10 @@ class I18n implements WidgetsLocalizations {
         '${milk} cup milk'
       ];
   String get messageKeyCamelCase => 'This is a message';
+  String get messageWithOneCurlyBracket =>
+      'This message contains one {curly_bracket}';
+  String get messageWithTwoCurlyBrackets =>
+      'This message contains two {{curly_brackets}}';
   String get notTranslatable => 'This message is not translatable';
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: language$,
@@ -108,6 +112,9 @@ class _I18n_pt_BR extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
+  String get messageWithOneCurlyBracket => 'Esta mensagem contém uma {chave}';
+  String get messageWithTwoCurlyBrackets =>
+      'Esta mensagem contém duas {{chaves}}';
   String get notTranslatable => 'This message is not translatable';
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: language$,
@@ -155,6 +162,9 @@ class _I18n_pt_PT extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
+  String get messageWithOneCurlyBracket => 'Esta mensagem contém uma {chave}';
+  String get messageWithTwoCurlyBrackets =>
+      'Esta mensagem contém duas {{chaves}}';
   String get notTranslatable => 'This message is not translatable';
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: language$,
