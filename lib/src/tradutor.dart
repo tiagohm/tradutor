@@ -28,6 +28,8 @@ class Tradutor {
     // ignore_for_file: non_constant_identifier_names
     // ignore_for_file: unnecessary_brace_in_string_interps
     // ignore_for_file: unused_import
+    // ignore_for_file: annotate_overrides
+    // ignore_for_file: avoid_annotating_with_dynamic
     // ignore_for_file: implicit_dynamic_parameter
 
     // See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html
