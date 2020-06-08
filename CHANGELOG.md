@@ -1,3 +1,6 @@
+## [0.6.3]
+* Ignore messages with null value.
+
 ## [0.6.2]
 * Bug fixes.
 
@@ -5,27 +8,27 @@
 * Bug fixes.
 
 ## [0.6.0]
-* Added Date message type;
+* Add Date message type;
 * Bug fixes.
 
 ## [0.5.1]
 * Bug fixed.
 
 ## [0.5.0]
-* Added support to Flutter Web;
-* Added widget tests.
+* Add support to Flutter Web;
+* Add widget tests.
 
 ## [0.4.0]
 
-* Added support to YAML files.
+* Add support to YAML files.
 
 ## [0.3.0]
 
-* Added support to change the generated Dart class name.
+* Add support to change the generated Dart class name.
 
 ## [0.2.0]
 
-* Added support to nested messages;
+* Add support to nested messages;
 * Bug fixes.
 
 ## [0.1.0]
