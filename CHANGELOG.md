@@ -1,36 +1,43 @@
+## [0.7.0]
+ - Code refactoring.
+ - Otimizations.
+  - Fix escape curly braces.
+ - [Breaking]: Remove `@extendsOf` property.
+ - [Breaking]: Remove web support.
+
 ## [0.6.3]
-* Ignore messages with null value.
+ - Ignore messages with null value.
 
 ## [0.6.2]
-* Bug fixes.
+ - Bug fixes.
 
 ## [0.6.1]
-* Bug fixes.
+ - Bug fixes.
 
 ## [0.6.0]
-* Add Date message type;
-* Bug fixes.
+ - Add Date message type.
+ - Bug fixes.
 
 ## [0.5.1]
-* Bug fixed.
+ - Bug fixed.
 
 ## [0.5.0]
-* Add support to Flutter Web;
-* Add widget tests.
+ - Add support to Flutter Web.
+ - Add widget tests.
 
 ## [0.4.0]
 
-* Add support to YAML files.
+ - Add support to YAML files.
 
 ## [0.3.0]
 
-* Add support to change the generated Dart class name.
+ - Add support to change the generated Dart class name.
 
 ## [0.2.0]
 
-* Add support to nested messages;
-* Bug fixes.
+ - Add support to nested messages.
+ - Bug fixes.
 
 ## [0.1.0]
 
-* Initial release.
+ - Initial release.

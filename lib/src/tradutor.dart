@@ -32,7 +32,7 @@ class Tradutor {
     // ignore_for_file: avoid_annotating_with_dynamic
     // ignore_for_file: implicit_dynamic_parameter
 
-    // See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html
+    // See more about language plural rules: https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
 
    ''';
 
@@ -331,7 +331,8 @@ class Tradutor {
         if (isFallback)
           Method((m) {
             m.static = true;
-            m.name = 'getLocale';
+            m.name = 'locale\$';
+            m.type = MethodType.getter;
             m.lambda = true;
             m.returns = refer('Locale');
             m.body = Code('_locale');
@@ -339,8 +340,8 @@ class Tradutor {
         if (isFallback)
           Method((m) {
             m.static = true;
-            m.name = 'setLocale';
-            m.returns = refer('void');
+            m.name = 'locale\$';
+            m.type = MethodType.setter;
             m.requiredParameters.add(Parameter((p) {
               p.name = 'locale';
               p.type = refer('Locale');
@@ -350,13 +351,6 @@ class Tradutor {
               refer('_locale').assign(refer('locale')).statement,
             ]);
           }),
-        Method((m) {
-          m.type = MethodType.getter;
-          m.name = 'language\$';
-          m.returns = refer('String');
-          m.lambda = true;
-          m.body = literal('$language').code;
-        }),
         Method((m) {
           m.type = MethodType.getter;
           m.name = 'textDirection';
@@ -392,7 +386,7 @@ class Tradutor {
 
         // Plural.
         if (message is List) {
-          m = _buildPluralMessage(message);
+          m = _buildPluralMessage(message, language);
         }
         // Option.
         else if (message is OptionMessage) {
@@ -566,7 +560,7 @@ class Tradutor {
         m.returns = refer('String');
         m.type = MethodType.getter;
         m.lambda = true;
-        m.body = literal(message.value).code;
+        m.body = message.expression.code;
       }),
     ];
   }
@@ -589,12 +583,12 @@ class Tradutor {
         for (final parameter in parameters.values) {
           m.requiredParameters.add(Parameter((p) {
             p.name = parameter.name;
-            p.type = refer(parameter.type.toString());
+            p.type = refer('${parameter.type}');
           }));
         }
 
         m.lambda = true;
-        m.body = literal(message.value).code;
+        m.body = message.expression.code;
       }),
     ];
   }
@@ -615,7 +609,7 @@ class Tradutor {
         m.returns = refer('List<String>');
         m.type = MethodType.getter;
         m.lambda = true;
-        m.body = literalList(message.value).code;
+        m.body = message.expression.code;
       }),
     ];
   }
@@ -638,17 +632,20 @@ class Tradutor {
         for (final parameter in parameters.values) {
           m.requiredParameters.add(Parameter((p) {
             p.name = parameter.name;
-            p.type = refer(parameter.type.toString());
+            p.type = refer('${parameter.type}');
           }));
         }
 
         m.lambda = true;
-        m.body = literalList(message.value).code;
+        m.body = message.expression.code;
       }),
     ];
   }
 
-  static List _buildPluralMessage(List<PluralMessage> messages) {
+  static List _buildPluralMessage(
+    List<PluralMessage> messages,
+    Language language,
+  ) {
     final parameters = <String, MessageParameter>{};
 
     parameters['quantity'] = MessageParameter('quantity', int);
@@ -669,7 +666,7 @@ class Tradutor {
         for (final parameter in parameters.values) {
           m.requiredParameters.add(Parameter((p) {
             p.name = parameter.name;
-            p.type = refer(parameter.type.toString());
+            p.type = refer('${parameter.type}');
           }));
         }
 
@@ -677,9 +674,9 @@ class Tradutor {
         m.body = refer('Intl.plural').call(
           [refer('quantity')],
           {
-            'locale': refer('language\$'),
+            'locale': literal('$language'),
             for (final message in messages)
-              pluralName(message.type): literal(message.value),
+              pluralName(message.type): message.expression,
           },
         ).code;
       }),

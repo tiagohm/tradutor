@@ -22,7 +22,7 @@ void main() {
   });
 
   test('List Message With Parameters', () {
-    expect(enUS.listMessageWithParameters(1, 2, 3, 4, 5, 6, 7), const [
+    expect(enUS.listMessageWithParameters(6, 2, 3, 5, 7, 4, 1), const [
       '1 cup white sugar',
       '2 cup butter',
       '3 eggs',
@@ -31,7 +31,7 @@ void main() {
       '6 teaspoons baking powder',
       '7 cup milk'
     ]);
-    expect(ptBR.listMessageWithParameters(1, 2, 3, 4, 5, 6, 7), const [
+    expect(ptBR.listMessageWithParameters(6, 2, 3, 5, 7, 4, 1), const [
       '1 copos de açúcar cristal',
       '2 copo de manteiga',
       '3 ovos',
@@ -40,7 +40,7 @@ void main() {
       '6 colher (chá) de fermento em pó',
       '7 copo de leite'
     ]);
-    expect(ptPT.listMessageWithParameters(1, 2, 3, 4, 5, 6, 7), const [
+    expect(ptPT.listMessageWithParameters(6, 2, 3, 5, 7, 4, 1), const [
       '1 copos de açúcar cristal',
       '2 copo de manteiga',
       '3 ovos',
@@ -64,36 +64,27 @@ void main() {
   });
 
   test('Plural Message With Parameters', () {
-    expect(enUS.pluralMesssageWithParameters(0, 'Button', 'tapped'),
+    expect(enUS.pluralMesssageWithParameters(0, 'tapped', 'Button'),
         'Button tapped 0 times');
-    expect(enUS.pluralMesssageWithParameters(1, 'Button', 'tapped'),
+    expect(enUS.pluralMesssageWithParameters(1, 'tapped', 'Button'),
         'Button tapped 1 time');
-    expect(enUS.pluralMesssageWithParameters(2, 'Button', 'tapped'),
+    expect(enUS.pluralMesssageWithParameters(2, 'tapped', 'Button'),
         'Button tapped 2 times');
-    expect(ptBR.pluralMesssageWithParameters(0, 'Botão', 'clicado'),
+    expect(ptBR.pluralMesssageWithParameters(0, 'clicado', 'Botão'),
         'Botão foi clicado 0 vez');
-    expect(ptBR.pluralMesssageWithParameters(1, 'Botão', 'clicado'),
+    expect(ptBR.pluralMesssageWithParameters(1, 'clicado', 'Botão'),
         'Botão foi clicado 1 vez');
-    expect(ptBR.pluralMesssageWithParameters(2, 'Botão', 'clicado'),
+    expect(ptBR.pluralMesssageWithParameters(2, 'clicado', 'Botão'),
         'Botão foi clicado 2 vezes');
-    expect(ptPT.pluralMesssageWithParameters(0, 'Botão', 'pressionado'),
+    expect(ptPT.pluralMesssageWithParameters(0, 'pressionado', 'Botão'),
         'Botão foi pressionado 0 vezes');
-    expect(ptPT.pluralMesssageWithParameters(1, 'Botão', 'pressionado'),
+    expect(ptPT.pluralMesssageWithParameters(1, 'pressionado', 'Botão'),
         'Botão foi pressionado 1 vez');
-    expect(ptPT.pluralMesssageWithParameters(2, 'Botão', 'pressionado'),
+    expect(ptPT.pluralMesssageWithParameters(2, 'pressionado', 'Botão'),
         'Botão foi pressionado 2 vezes');
   });
 
-  test('Curly Brackets', () {
-    expect(enUS.messageWithOneCurlyBracket,
-        'This message contains one {curly_bracket}');
-    expect(enUS.messageWithTwoCurlyBrackets,
-        'This message contains two {{curly_brackets}}');
-    expect(ptBR.messageWithOneCurlyBracket, 'Esta mensagem contém uma {chave}');
-    expect(ptBR.messageWithTwoCurlyBrackets,
-        'Esta mensagem contém duas {{chaves}}');
-    expect(ptPT.messageWithOneCurlyBracket, 'Esta mensagem contém uma {chave}');
-    expect(ptPT.messageWithTwoCurlyBrackets,
-        'Esta mensagem contém duas {{chaves}}');
+  test('Escape Message', () {
+    expect(enUS.escapeMessage('b', 'd', 'e'), '{a} b \\{c} \\d {e} {{f}} \$');
   });
 }

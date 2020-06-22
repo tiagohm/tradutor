@@ -71,7 +71,7 @@ class _HomePage extends StatelessWidget {
   }
 
   void _changeLanguage() {
-    var locale = I18n.getLocale();
+    var locale = I18n.locale$;
 
     if (locale.languageCode == 'en') {
       locale = const Locale('pt', 'BR');
@@ -79,7 +79,7 @@ class _HomePage extends StatelessWidget {
       locale = const Locale('en', 'US');
     }
 
-    I18n.setLocale(locale);
+    I18n.locale$ = locale;
 
     onLocaleChanged?.call(locale);
   }

@@ -23,7 +23,5 @@
     ],
     "#dateMessage": "dd/MM/yyyy HH:mm:ss",
     "notTranslatable": null,
-    "message.key.camel.case": "Isto é uma mensagem",
-    "messageWithOneCurlyBracket": "Esta mensagem contém uma {{chave}}",
-    "messageWithTwoCurlyBrackets": "Esta mensagem contém duas {{{{chaves}}}}"
+    "message.key.camel.case": "Isto é uma mensagem"
 }

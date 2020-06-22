@@ -6,9 +6,11 @@ import 'package:intl/intl.dart' hide TextDirection;
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_brace_in_string_interps
 // ignore_for_file: unused_import
+// ignore_for_file: annotate_overrides
+// ignore_for_file: avoid_annotating_with_dynamic
 // ignore_for_file: implicit_dynamic_parameter
 
-// See more about language plural rules: https://www.unicode.org/cldr/charts/33/supplemental/language_plural_rules.html
+// See more about language plural rules: https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
 
 const I18n enUS = _I18n_en_US();
 const I18n ptBR = _I18n_pt_BR();
@@ -31,26 +33,27 @@ class I18n implements WidgetsLocalizations {
   static final _dateMessageFormatter =
       DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
 
-  static Locale getLocale() => _locale;
-  static void setLocale(Locale locale) {
+  static Locale get locale$ => _locale;
+  static set locale$(Locale locale) {
     _shouldReload = true;
     _locale = locale;
   }
 
-  String get language$ => 'en_US';
   TextDirection get textDirection => TextDirection.ltr;
   static I18n of(BuildContext context) =>
       Localizations.of<I18n>(context, WidgetsLocalizations);
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
+  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
+      '\{a} ${b} \\{c} \\${d} {${e}} {\{f}} \$';
   List<String> get listMessage => ['Green', 'Yellow', 'Blue', 'White'];
   List<String> listMessageWithParameters(
-          dynamic whiteSugar,
+          dynamic bakingPowder,
           dynamic butter,
           dynamic eggs,
-          dynamic vanilla,
           dynamic flour,
-          dynamic bakingPowder,
-          dynamic milk) =>
+          dynamic milk,
+          dynamic vanilla,
+          dynamic whiteSugar) =>
       [
         '${whiteSugar} cup white sugar',
         '${butter} cup butter',
@@ -61,23 +64,19 @@ class I18n implements WidgetsLocalizations {
         '${milk} cup milk'
       ];
   String get messageKeyCamelCase => 'This is a message';
-  String get messageWithOneCurlyBracket =>
-      'This message contains one {curly_bracket}';
-  String get messageWithTwoCurlyBrackets =>
-      'This message contains two {{curly_brackets}}';
   String get notTranslatable => 'This message is not translatable';
   String pluralMesssage(int quantity) => Intl.plural(quantity,
-      locale: language$,
+      locale: 'en_US',
       one: 'Button tapped ${quantity} time',
       other: 'Button tapped ${quantity} times');
   String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: language$,
+      locale: 'en_US',
       one: 'Button tapped ${quantity} time',
       other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
-          int quantity, dynamic item, dynamic action) =>
+          int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,
-          locale: language$,
+          locale: 'en_US',
           one: '${item} ${action} ${quantity} time',
           other: '${item} ${action} ${quantity} times');
   String get simpleMessage => 'Home Page';
@@ -90,18 +89,19 @@ class _I18n_pt_BR extends I18n {
   static final _dateMessageFormatter =
       DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US');
 
-  String get language$ => 'pt_BR';
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
+  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
+      '\{a} ${b} \\{c} \\${d} {${e}} {\{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
-          dynamic whiteSugar,
+          dynamic bakingPowder,
           dynamic butter,
           dynamic eggs,
-          dynamic vanilla,
           dynamic flour,
-          dynamic bakingPowder,
-          dynamic milk) =>
+          dynamic milk,
+          dynamic vanilla,
+          dynamic whiteSugar) =>
       [
         '${whiteSugar} copos de açúcar cristal',
         '${butter} copo de manteiga',
@@ -112,22 +112,19 @@ class _I18n_pt_BR extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
-  String get messageWithOneCurlyBracket => 'Esta mensagem contém uma {chave}';
-  String get messageWithTwoCurlyBrackets =>
-      'Esta mensagem contém duas {{chaves}}';
   String get notTranslatable => 'This message is not translatable';
   String pluralMesssage(int quantity) => Intl.plural(quantity,
-      locale: language$,
+      locale: 'pt_BR',
       one: 'Botão foi clicado ${quantity} vez',
       other: 'Botão foi clicado ${quantity} vezes');
   String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: language$,
+      locale: 'pt_BR',
       one: 'Button tapped ${quantity} time',
       other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
-          int quantity, dynamic item, dynamic action) =>
+          int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,
-          locale: language$,
+          locale: 'pt_BR',
           one: '${item} foi ${action} ${quantity} vez',
           other: '${item} foi ${action} ${quantity} vezes');
   String get simpleMessage => 'Página Inicial';
@@ -140,18 +137,19 @@ class _I18n_pt_PT extends I18n {
   static final _dateMessageFormatter =
       DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US');
 
-  String get language$ => 'pt_PT';
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
+  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
+      '\{a} ${b} \\{c} \\${d} {${e}} {\{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
-          dynamic whiteSugar,
+          dynamic bakingPowder,
           dynamic butter,
           dynamic eggs,
-          dynamic vanilla,
           dynamic flour,
-          dynamic bakingPowder,
-          dynamic milk) =>
+          dynamic milk,
+          dynamic vanilla,
+          dynamic whiteSugar) =>
       [
         '${whiteSugar} copos de açúcar cristal',
         '${butter} copo de manteiga',
@@ -162,22 +160,19 @@ class _I18n_pt_PT extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
-  String get messageWithOneCurlyBracket => 'Esta mensagem contém uma {chave}';
-  String get messageWithTwoCurlyBrackets =>
-      'Esta mensagem contém duas {{chaves}}';
   String get notTranslatable => 'This message is not translatable';
   String pluralMesssage(int quantity) => Intl.plural(quantity,
-      locale: language$,
+      locale: 'pt_PT',
       one: 'Botão foi pressionado ${quantity} vez',
       other: 'Botão foi pressionado ${quantity} vezes');
   String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: language$,
+      locale: 'pt_PT',
       one: 'Button tapped ${quantity} time',
       other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
-          int quantity, dynamic item, dynamic action) =>
+          int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,
-          locale: language$,
+          locale: 'pt_PT',
           one: '${item} foi ${action} ${quantity} vez',
           other: '${item} foi ${action} ${quantity} vezes');
   String get simpleMessage => 'Página Inicial';
