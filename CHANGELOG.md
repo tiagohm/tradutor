@@ -1,9 +1,9 @@
 ## [0.7.0]
  - Code refactoring.
- - Otimizations.
-  - Fix escape curly braces.
- - [Breaking]: Remove `@extendsOf` property.
- - [Breaking]: Remove web support.
+ - Otimizations and improved performance.
+ - Fix escape curly braces.
+ - [Breaking]: Remove `@extendsOf` property in favor of the `@parent` property.
+ - [Breaking]: Remove web support (temporarily).
 
 ## [0.6.3]
  - Ignore messages with null value.

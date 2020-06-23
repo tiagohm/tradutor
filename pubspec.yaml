@@ -1,6 +1,6 @@
 name: tradutor
 description: A Flutter package that simplify the internationalizing process using JSON and YAML files.
-version: 0.6.3
+version: 0.7.0
 homepage: https://github.com/tiagohm/tradutor
 
 environment:
@@ -17,6 +17,7 @@ dependencies:
   yaml: ^2.2.1
   code_builder: ^3.3.0
   equatable: ^1.2.0
+  args: ^1.6.0
 
 dev_dependencies:
   flutter_test:
