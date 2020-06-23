@@ -1,6 +1,7 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 
+import 'helpers.dart';
 import 'language.dart';
 import 'message.dart';
 
@@ -42,19 +43,32 @@ class Tradutor {
     _fallback = _buildFallback(this.fallback);
   }
 
-  void read(
+  void clear() {
+    _items.clear();
+    _messages.clear();
+    _languages.clear();
+    _parent.clear();
+    _textDirection.clear();
+  }
+
+  bool read(
     dynamic items,
     Language language,
   ) {
     if (items is Map<String, dynamic>) {
       _items[language]?.clear();
       _items[language] ??= <String, dynamic>{};
+      if (_parent[language.code] == language) {
+        _parent.remove(language.code);
+      }
+      _textDirection.remove(language);
       _parse(language, items);
       _analyse(language);
       _loadOptions(language);
-      _build(language);
+      return _build(language);
     } else {
-      throw ParseError('Invalid file format', language);
+      ParseError.printInvalidFormat(language);
+      return false;
     }
   }
 
@@ -96,7 +110,7 @@ class Tradutor {
           if (item is num || item is bool || item is String) {
             list.add('$item');
           } else {
-            throw ParseError.invalidType(key, item, language);
+            ParseError.printInvalidType(key, item, language);
           }
         }
 
@@ -108,7 +122,7 @@ class Tradutor {
       }
       // Unknown.
       else {
-        throw ParseError.invalidType(key, value, language);
+        ParseError.printInvalidType(key, value, language);
       }
     });
   }
@@ -119,7 +133,8 @@ class Tradutor {
 
     for (final key in keys(language)) {
       if (_keyRegex.firstMatch(key) == null) {
-        throw ParseError.invalidKey(key, language);
+        ParseError.printInvalidKey(key, language);
+        continue;
       }
 
       final res = value(language, key);
@@ -130,7 +145,7 @@ class Tradutor {
           _messages[language].add(OptionMessage(key.substring(1), res));
           continue;
         } else {
-          throw ParseError.invalidType(key, res, language);
+          ParseError.printInvalidType(key, res, language);
         }
       }
       // Date.
@@ -139,7 +154,7 @@ class Tradutor {
           _messages[language].add(DateMessage(key.substring(1), res));
           continue;
         } else {
-          throw ParseError.invalidType(key, res, language);
+          ParseError.printInvalidType(key, res, language);
         }
       }
       // Number.
@@ -148,7 +163,7 @@ class Tradutor {
           _messages[language].add(NumberMessage(key.substring(1), res));
           continue;
         } else {
-          throw ParseError.invalidType(key, res, language);
+          ParseError.printInvalidType(key, res, language);
         }
       }
       // Plural.
@@ -160,7 +175,7 @@ class Tradutor {
           _messages[language].add(PluralMessage(type, message));
           continue;
         } else {
-          throw ParseError.invalidType(key, res, language);
+          ParseError.printInvalidType(key, res, language);
         }
       }
       // List.
@@ -184,7 +199,7 @@ class Tradutor {
         } else if (m.key == 'parent') {
           if (m.value == 'true') {
             if (_parent.containsKey(language.code)) {
-              throw ParseError('Duplicate parent language', language);
+              ParseError.printDuplicateParentLanguage(language);
             }
 
             _parent[language.code] = language;
@@ -193,13 +208,18 @@ class Tradutor {
           continue;
         }
 
-        throw ParseError.invalidValue(m.key, m.value, language);
+        ParseError.printInvalidValue(m.key, m.value, language);
       }
     }
   }
 
-  void _build(Language language) {
+  bool _build(Language language) {
     final messages = <String, dynamic>{};
+
+    if (!_messages.containsKey(fallback)) {
+      printError('Fallback language can not be found');
+      return false;
+    }
 
     // Preenche com o idioma fallback.
     for (final m in _messages[fallback]) {
@@ -207,7 +227,7 @@ class Tradutor {
       if (m is PluralMessage) {
         // Já existe a chave mas ela não é dos plurais.
         if (messages.containsKey(m.key) && messages[m.key] is! List) {
-          throw ParseError('Duplicate key ${m.key}', fallback);
+          ParseError.printDuplicate(m.key, fallback);
         }
         // Cria a lista de plurais, se necessário.
         messages[m.key] ??= <PluralMessage>[];
@@ -220,7 +240,7 @@ class Tradutor {
       }
       // Chave duplicada.
       else {
-        throw ParseError('Duplicate key ${m.key}', fallback);
+        ParseError.printDuplicate(m.key, fallback);
       }
     }
 
@@ -232,7 +252,8 @@ class Tradutor {
       }
       // A chave não está presente no idioma de fallback.
       if (!messages.containsKey(m.key)) {
-        throw ParseError('Key ${m.key} is not present in fallback', language);
+        ParseError.printNotPresentInFallback(m.key, language);
+        continue;
       }
       // Plural.
       if (m is PluralMessage) {
@@ -260,7 +281,7 @@ class Tradutor {
       // Tentando adicionar a mesma chave.
       // Ou os tipos não batem.
       else {
-        throw ParseError('Duplicate or invalid key ${m.key}', language);
+        ParseError.printDuplicateOrInvalid(m.key, language);
       }
     }
 
@@ -276,6 +297,8 @@ class Tradutor {
     _languages[language] = _buildClass(messages, language);
     _delegate = _buildDelegate();
     _constants = _buildConstants();
+
+    return true;
   }
 
   Class _buildClass(
@@ -817,6 +840,10 @@ class Tradutor {
 
   bool removeLanguage(Language language) {
     if (_items.remove(language) != null) {
+      if (_parent[language.code] == language) {
+        _parent.remove(language.code);
+      }
+      _textDirection.remove(language.code);
       _languages.remove(language);
       _delegate = _buildDelegate();
       _constants = _buildConstants();
@@ -889,14 +916,47 @@ class ParseError extends Error {
 
   ParseError(this.message, this.language);
 
-  ParseError.invalidValue(String key, dynamic value, this.language)
-      : message = "Invalid value '$value' for key '$key'";
+  static void printInvalidFormat(Language language) {
+    printWarning(_message('Invalid file format', language));
+  }
 
-  ParseError.invalidType(String key, Type type, this.language)
-      : message = "Invalid value type '$type' for key '$key'";
+  static void printDuplicateParentLanguage(Language language) {
+    printWarning(_message('Duplicate parent language', language));
+  }
 
-  ParseError.invalidKey(String key, this.language)
-      : message = "Message key '$key' has an invalid format";
+  static void printDuplicate(String key, Language language) {
+    printWarning(_message("Message '$key' is duplicate", language));
+  }
+
+  static void printDuplicateOrInvalid(String key, Language language) {
+    printWarning(_message("Message '$key' is duplicate or invalid", language));
+  }
+
+  static void printNotPresentInFallback(String key, Language language) {
+    printWarning(
+        _message("Message '$key' is not present in fallback", language));
+  }
+
+  static void printInvalidValue(String key, dynamic value, Language language) {
+    printWarning(
+        _message("Message '$key' has an invalid value: '$value'", language));
+  }
+
+  static void printInvalidType(String key, Type type, Language language) {
+    printWarning(_message(
+        "Message '$key' has an invalid value type: '$type'", language));
+  }
+
+  static void printInvalidKey(String key, Language language) {
+    printWarning(_message("Message '$key' has an invalid key", language));
+  }
+
+  static String _message(
+    String message,
+    Language language,
+  ) {
+    return '[$language]: $message';
+  }
 
   @override
   String toString() {
