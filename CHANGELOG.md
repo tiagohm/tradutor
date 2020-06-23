@@ -1,3 +1,8 @@
+## [0.8.0]
+ - Add Number Format support.
+ - Add Map support.
+ - Various bug fixes.
+
 ## [0.7.0]
  - Code refactoring.
  - Otimizations and improved performance.

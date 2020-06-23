@@ -10,9 +10,11 @@ A Flutter package that simplify the internationalizing process using JSON and YA
 * Messages with multiple parameters.
 * List of simple messages.
 * List of messages with multiple parameters.
-* Plural messages.
-* Date messages.
-* Number messages.
+* Supported message types:
+  * Plural.
+  * Date.
+  * Numeric.
+  * Map.
 * JSON and YAML files.
 * Nested messages support.
 * Supports hot reload.
@@ -27,7 +29,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.7.0
+    tradutor: ^0.8.0
 ```
 
 ## Usage
@@ -99,9 +101,11 @@ counter.other: ボタンが{quantity}回クリックされた
 
 ## Nested messages
 
-The messages can be nested. The final message key will be in camelCase (starting with a lower case character and capital for each later key).
+The messages can be nested. The final message name will be transformed to camelCase format (starting with a lower case character and capital for each later key).
 
 ## Supported Message Type
+
+The all parameters in a message must be surrounded by curly braces. The parameters are sorted alphabetically.
 
 ### Simple message
 
@@ -112,13 +116,13 @@ The messages can be nested. The final message key will be in camelCase (starting
 ```
 
 Generated Dart getter:
+
 ```dart
 String get simpleMessage => "This is a simple Message";
 ```
 
 ### Message with parameters
 
-Use `{parameterName}` in a message.
 ```json
 {
     "messageWithParameters": "Hi {name}, Welcome you!"
@@ -126,8 +130,9 @@ Use `{parameterName}` in a message.
 ```
 
 Generated Dart method:
+
 ```dart
-String messageWithParameters(name) => "Hi $name, Welcome you!";
+String messageWithParameters(dynamic name) => "Hi $name, Welcome you!";
 ```
 
 ### List of simple messages
@@ -141,6 +146,7 @@ Define an array of strings.
 ```
 
 Generated Dart getter:
+
 ```dart
 List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 ```
@@ -162,9 +168,16 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 ```
 
 Generated Dart method:
+
 ```dart
 List<String> simpleWhiteCakeIngredients(
-          bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
+          dynamic bakingPowder, 
+          dynamic butter, 
+          dynamic eggs, 
+          dynamic flour, 
+          dynamic milk, 
+          dynamic vanilla, 
+          dynamic whiteSugar) =>
       [
         "${whiteSugar} cup white sugar",
         "${butter} cup butter",
@@ -182,8 +195,8 @@ The message name must be end with `zero`, `one`, `two`, `few`, `many` or `other`
 
 ```json
 {
-    "counter.one": "Button clicked 1 time",
-    "counter.other": "Button cliked {quantity} times"
+  "counter.one": "Button clicked 1 time",
+  "counter.other": "Button cliked {quantity} times"
 }
 ```
 
@@ -191,20 +204,21 @@ Or
 
 ```json
 {
-    "counter": {
-      "one": "Button clicked 1 time",
-      "other": "Button cliked {quantity} times"
-    }
+  "counter": {
+    "one": "Button clicked 1 time",
+    "other": "Button cliked {quantity} times"
+  }
 }
 ```
 
 > The 'other' plural form must be provided.
 
-> `quantity` is the default parameter used to format a message depending on its value.
+> `quantity` is the parameter used to format a message depending on its value.
 
 Generated Dart method:
+
 ```dart
-String counter(quantity) => Intl.plural(
+String counter(int quantity) => Intl.plural(
         quantity,
         locale: 'en_US',
         one: "Button clicked 1 time",
@@ -212,9 +226,40 @@ String counter(quantity) => Intl.plural(
       );
 ```
 
+### Map messages
+
+The message name starts with '%'.
+
+```json
+{
+  "%eyeColor": {
+    "FAMALE": "She has {color} eyes",
+    "MALE": "He has {color} eyes"
+  }
+}
+```
+
+Generated Dart method:
+
+```dart
+String eyeColor(String key, dynamic color) {
+    switch (key) {
+      case 'FAMALE':
+        return 'She has ${color} eyes';
+      case 'MALE':
+        return 'He has ${color} eyes';
+      default:
+        return null;
+    }
+  }
+```
+
+> `key` is the parameter used to format a message depending on its value.
+
 ### Date messages
 
-Use `#{parameterName}` in a message.
+The message name starts with '#'.
+
 ```json
 {
     "#fullDate": "MM dd, yyyy h:mm:ss a"
@@ -222,12 +267,32 @@ Use `#{parameterName}` in a message.
 ```
 
 Generated Dart method:
+
 ```dart
 static final _fullDateFormatter = DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
 String fullDate(DateTime date) => _fullDateFormatter.format(date);
 ```
 
 See the DateFormat documentation [here](https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html).
+
+### Number messages
+
+The message name starts with '$'.
+
+```json
+{
+    "$currencyMessage": "\\$#,##0.00"
+}
+```
+
+Generated Dart method:
+
+```dart
+static final _currencyMessageFormatter = NumberFormat('\$#,##0.00', 'en_US');
+String currencyMessage(num number) => _currencyMessageFormatter.format(number);
+```
+
+See the NumberFormat documentation [here](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html).
 
 ### Usage of Generated Dart file (i18n.dart)
 
