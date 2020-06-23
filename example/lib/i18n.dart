@@ -106,8 +106,6 @@ class _I18n_pt_BR extends I18n {
 
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
-  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
@@ -128,17 +126,12 @@ class _I18n_pt_BR extends I18n {
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
   String moneyMessage(num number) => _moneyMessageFormatter.format(number);
-  String get notTranslatable => 'This message is not translatable';
   String numberMessage(num number) => _numberMessageFormatter.format(number);
   String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_BR',
       one: 'Botão foi clicado ${quantity} vez',
       other: 'Botão foi clicado ${quantity} vezes');
-  String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: 'pt_BR',
-      one: 'Button tapped ${quantity} time',
-      other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
           int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,
@@ -163,8 +156,6 @@ class _I18n_pt_PT extends I18n {
 
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
-  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
@@ -185,17 +176,12 @@ class _I18n_pt_PT extends I18n {
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
   String moneyMessage(num number) => _moneyMessageFormatter.format(number);
-  String get notTranslatable => 'This message is not translatable';
   String numberMessage(num number) => _numberMessageFormatter.format(number);
   String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_PT',
       one: 'Botão foi pressionado ${quantity} vez',
       other: 'Botão foi pressionado ${quantity} vezes');
-  String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: 'pt_PT',
-      one: 'Button tapped ${quantity} time',
-      other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
           int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,

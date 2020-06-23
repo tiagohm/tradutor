@@ -264,6 +264,15 @@ class Tradutor {
       }
     }
 
+    // Remove as chaves que está presente no fallback mas não no idioma atual.
+    for (final key in List.of(messages.keys)) {
+      final index = _messages[language].indexWhere((m) => m.key == key);
+
+      if (index == -1) {
+        messages.remove(key);
+      }
+    }
+
     _languages[language] = _buildClass(messages, language);
     _delegate = _buildDelegate();
     _constants = _buildConstants();
