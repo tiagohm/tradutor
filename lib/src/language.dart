@@ -1,24 +1,36 @@
-import 'package:tradutor/src/language_options.dart';
-import 'package:tradutor/src/locale.dart';
-import 'package:tradutor/src/message.dart';
+import 'package:equatable/equatable.dart';
 
-class Language extends Locale {
-  final List<Message> messages;
-  final LanguageOptions options;
-  @override
-  final String languageCode;
-  @override
-  final String countryCode;
+class Language extends Equatable {
+  final String code;
+  final String country;
 
-  Language(
-    this.messages,
-    this.options,
-    this.languageCode,
-    this.countryCode,
-  );
+  static final _languageRegex = RegExp(r'^[a-z]{2}_[a-zA-Z]{2}$');
+
+  Language(String code, String country)
+      : assert(code != null),
+        assert(country != null),
+        code = code.toLowerCase(),
+        country = country.toUpperCase();
+
+  factory Language.parse(String text) {
+    if (!matches(text)) {
+      throw ArgumentError('Invalid format for language $text');
+    }
+
+    final code = text.substring(0, 2);
+    final country = text.substring(3);
+    return Language(code, country);
+  }
+
+  static bool matches(String text) {
+    return _languageRegex.hasMatch(text);
+  }
 
   @override
   String toString() {
-    return 'Language { locale: $locale, message: $messages, options: $options }';
+    return '${code}_$country';
   }
+
+  @override
+  List<Object> get props => [code, country];
 }

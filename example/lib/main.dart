@@ -53,13 +53,13 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(i18n.homePage),
+        title: Text(i18n.simpleMessage),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(i18n.counter(_counter)),
+            Text(i18n.pluralMesssage(_counter)),
           ],
         ),
       ),

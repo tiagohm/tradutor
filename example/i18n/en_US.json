@@ -1,15 +1,21 @@
 {
-    "homePage": "Home Page",
-    "hello": "Hello",
-    "counter.one": "Button tapped {quantity} time",
-    "counter.other": "Button tapped {quantity} times",
-    "brazilFlagColors": [
+    "simpleMessage": "Home Page",
+    "simpleMessageWithParameters": "Hello {name}",
+    "pluralMesssageGrouped": {
+        "one": "Button tapped {quantity} time",
+        "other": "Button tapped {quantity} times"
+    },
+    "pluralMesssage.one": "Button tapped {quantity} time",
+    "pluralMesssage.other": "Button tapped {quantity} times",
+    "pluralMesssageWithParameters.one": "{item} {action} {quantity} time",
+    "pluralMesssageWithParameters.other": "{item} {action} {quantity} times",
+    "listMessage": [
         "Green",
         "Yellow",
         "Blue",
         "White"
     ],
-    "simpleWhiteCakeIngredients": [
+    "listMessageWithParameters": [
         "{whiteSugar} cup white sugar",
         "{butter} cup butter",
         "{eggs} eggs",
@@ -18,6 +24,8 @@
         "{bakingPowder} teaspoons baking powder",
         "{milk} cup milk"
     ],
-    "#fullDate": "MM dd, yyyy h:mm:ss a",
-    "notTranslatable": "Not translatable"
+    "#dateMessage": "MM dd, yyyy h:mm:ss a",
+    "notTranslatable": "This message is not translatable",
+    "message.key.camel.case": "This is a message",
+    "escapeMessage": "\\{a} {b} \\\\{c} \\{!d} {{e}} {\\{f}} \\$"
 }

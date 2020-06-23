@@ -12,10 +12,9 @@ A Flutter package that simplify the internationalizing process using JSON and YA
 * List of messages with multiple parameters;
 * Plural messages;
 * Date messages;
-* Allow a language extends another language;
 * JSON and YAML files;
-* Supports Flutter Web;
-* Supports hot reload.
+* Nested messages support;
+* Supports hot reload;
 
 ## Installation 
 
@@ -27,14 +26,14 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.6.3
+    tradutor: ^0.7.0
 ```
 
 ## Usage
 Open a terminal inside your project directory and run the following command:
 
 ```
-flutter packages pub run tradutor:build
+flutter pub run tradutor:generate
 ```
 
 All supported arguments:
@@ -44,7 +43,6 @@ All supported arguments:
 * `--fallback "LANGUAGE"` or `-f  "LANGUAGE"`:  Provides a default language, used when the translation for the current running system is not provided (defaults to "en_US");
 * `--watch`: Watches the JSON/YAML files for edits and does rebuilds as necessary.
 * `--class-name "NAME"` or `-c "NAME"`: Allows change the generated Dart class name (defaults to "I18n").
-* `--web`: Use this for generate Dart file prepared for Flutter Web.
 
 Full example: `flutter packages pub run tradutor:build -s "/i18n" -o "/lib/i18n.dart" -f "en_US" -c "I18n" --watch`
 
@@ -97,6 +95,10 @@ homePage:
   title: ホームページ
 counter.other: ボタンが{quantity}回クリックされた
 ```
+
+## Nested messages
+
+The messages can be nested. The final message key will be in camelCase (starting with a lower case character and capital for each later key).
 
 ## Supported Message Type
 
@@ -158,7 +160,7 @@ List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
 }
 ```
 
-Generated Dart getter:
+Generated Dart method:
 ```dart
 List<String> simpleWhiteCakeIngredients(
           bakingPowder, butter, eggs, flour, milk, vanilla, whiteSugar) =>
@@ -175,6 +177,8 @@ List<String> simpleWhiteCakeIngredients(
 
 ### Plural messages
 
+The message name must be end with `zero`, `one`, `two`, `few`, `many` or `other`. See [Language Plural Rules](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html).
+
 ```json
 {
     "counter.one": "Button clicked 1 time",
@@ -182,15 +186,26 @@ List<String> simpleWhiteCakeIngredients(
 }
 ```
 
+Or
+
+```json
+{
+    "counter": {
+      "one": "Button clicked 1 time",
+      "other": "Button cliked {quantity} times"
+    }
+}
+```
+
 > The 'other' plural form must be provided.
 
-> `quantity` is the parameter used to format a message depending on its value.
+> `quantity` is the default parameter used to format a message depending on its value.
 
 Generated Dart method:
 ```dart
 String counter(quantity) => Intl.plural(
         quantity,
-        locale: language,
+        locale: 'en_US',
         one: "Button clicked 1 time",
         other: "Button cliked ${quantity} times",
       );
@@ -290,21 +305,38 @@ class _HomePageState extends State<HomePage> {
 }
 ```
 
-### Extending from another language
+## Escaping Curly Braces and Dollar Sign.
 
-Use property `@extends` and a valid locale.
+| Json | Dart | Message (a = 'text') | Note |
+| :-: | :-: | :-: | :-: |
+| "{a}" | "${a}" | "text" | Just a parameter |
+| "\\\\{a}" | "\\{a}"  | "{a}" | Text surrounded by curly braces |
+| "\\\\\\\\{a}"  | "\\\\{a}" | "\\{a}" | Backslash + text surrounded by curly braces |
+| "\\\\{!a}" | "\\${a}" | "\\text" | Backslash + parameter |
+| "\\\\$"  | "\\$" | "$" | Just a dollar sign |
 
-`pt_BR.json`
+## Language Options
+
+### @parent
+
+Use `@parent` to indicate that language is a parent language.
+
+`pt_PT.json`
 ```json
 {
-    "@extends": "pt_PT",
-    "counter.one": "Botão foi pressionado {quantity} vez",
-    "counter.other": "Botão foi pressionado {quantity} vezes"
+    "@parent": true,
 }
 ```
 
-> You must override all plural forms for a specified message.
+`pt_PT` is parent language of `pt_BR`, `pt_AO`, `pt_TL`, etc. If some child language does not found, `pt_PT` will be used instead.
 
-### Other language properties
+### @textDirection
 
-* `@textDirection`: valid values are `ltr` (default) and `rtl`;
+Use `@textDirection` to indicate the direction in which text flows. The valid values are `ltr` (default) and `rtl`.
+
+`he_IL.json`
+```json
+{
+    "@textDirection": "rtl",
+}
+```

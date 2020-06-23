@@ -1,7 +1,0 @@
-builders:
-  translatorBuilder:
-    import: "package:tradutor/builder.dart"
-    builder_factories: ["translatorBuilder"]
-    build_extensions: {".i18n.json": [".dart"]}
-    build_to: source
-    auto_apply: root_package
