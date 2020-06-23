@@ -27,5 +27,8 @@
     "#dateMessage": "MM dd, yyyy h:mm:ss a",
     "notTranslatable": "This message is not translatable",
     "message.key.camel.case": "This is a message",
-    "escapeMessage": "\\{a} {b} \\\\{c} \\{!d} {{e}} {\\{f}} \\$"
+    "escapeMessage": "\\{a} {b} \\\\{c} \\{!d} {{e}} {\\{f}} \\$",
+    "$numberMessage": "###.0#",
+    "$moneyMessage": "\\$#,##0.00",
+    "$percentMessage": "###.0%"
 }

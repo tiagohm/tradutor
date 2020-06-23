@@ -16,7 +16,7 @@ class Tradutor {
   final _textDirection = <Language, String>{};
   final _parent = <String, Language>{};
 
-  static final _keyRegex = RegExp(r'^[@#]?[a-zA-Z][\w.-]*$');
+  static final _keyRegex = RegExp(r'^[@#$]?[a-zA-Z][\w.-]*$');
   static final _camelizeRegex = RegExp('[^a-zA-Z0-9]+');
 
   static const _header = '''
@@ -80,8 +80,12 @@ class Tradutor {
     items?.forEach((key, value) {
       // Key.
       final itemKey = parentKey == null ? key : '$parentKey.$key';
+      // Null or Empty.
+      if (value == null || value == '') {
+        // nada.
+      }
       // Primitive.
-      if (value is num || value is bool || value is String) {
+      else if (value is num || value is bool || value is String) {
         _items[language][itemKey] = '$value';
       }
       // List of Primitives.
@@ -92,7 +96,7 @@ class Tradutor {
           if (item is num || item is bool || item is String) {
             list.add('$item');
           } else {
-            throw ParseError('List can have only primitive types', language);
+            throw ParseError.invalidType(key, item, language);
           }
         }
 
@@ -102,16 +106,9 @@ class Tradutor {
       else if (value is Map) {
         _parse(language, value, itemKey);
       }
-      // Null or Empty.
-      else if (value == null || value == '') {
-        // nada.
-      }
       // Unknown.
       else {
-        throw ParseError(
-          'Key has unsupported value type: ${value.runtimeType}',
-          language,
-        );
+        throw ParseError.invalidType(key, value, language);
       }
     });
   }
@@ -122,7 +119,7 @@ class Tradutor {
 
     for (final key in keys(language)) {
       if (_keyRegex.firstMatch(key) == null) {
-        throw ParseError('Invalid key $key', language);
+        throw ParseError.invalidKey(key, language);
       }
 
       final res = value(language, key);
@@ -133,26 +130,27 @@ class Tradutor {
           _messages[language].add(OptionMessage(key.substring(1), res));
           continue;
         } else {
-          throw ParseError(
-            'Option $key has invalid value type: ${res.runtimeType}',
-            language,
-          );
+          throw ParseError.invalidType(key, res, language);
         }
       }
-
       // Date.
       if (key.startsWith('#')) {
         if (res is String) {
           _messages[language].add(DateMessage(key.substring(1), res));
           continue;
         } else {
-          throw ParseError(
-            'Date $key has invalid value type: ${res.runtimeType}',
-            language,
-          );
+          throw ParseError.invalidType(key, res, language);
         }
       }
-
+      // Number.
+      if (key.startsWith('\$')) {
+        if (res is String) {
+          _messages[language].add(NumberMessage(key.substring(1), res));
+          continue;
+        } else {
+          throw ParseError.invalidType(key, res, language);
+        }
+      }
       // Plural.
       final type = pluralTypeFromKey(key.toLowerCase());
 
@@ -162,19 +160,14 @@ class Tradutor {
           _messages[language].add(PluralMessage(type, message));
           continue;
         } else {
-          throw ParseError(
-            'Plural $key has invalid value type: ${res.runtimeType}',
-            language,
-          );
+          throw ParseError.invalidType(key, res, language);
         }
       }
-
       // List.
       if (res is List<String>) {
         _messages[language].add(ListMessage(key, res));
         continue;
       }
-
       // Simple.
       _messages[language].add(SimpleMessage(key, '$res'));
     }
@@ -200,7 +193,7 @@ class Tradutor {
           continue;
         }
 
-        throw ParseError('Invalid value for key ${m.key}', language);
+        throw ParseError.invalidValue(m.key, m.value, language);
       }
     }
   }
@@ -393,7 +386,11 @@ class Tradutor {
         }
         // Date.
         else if (message is DateMessage) {
-          m = _buildDateMessage(message, fallback);
+          m = _buildDateMessage(message, language);
+        }
+        // Number.
+        else if (message is NumberMessage) {
+          m = _buildNumberMessage(message, language);
         }
         // List.
         else if (message is ListMessage) {
@@ -716,6 +713,39 @@ class Tradutor {
     ];
   }
 
+  static List _buildNumberMessage(
+    NumberMessage message,
+    Language language,
+  ) {
+    final name = camelize(message.key);
+    final formatterName = '_${name}Formatter';
+
+    return [
+      Field((m) {
+        m.name = formatterName;
+        m.static = true;
+        m.modifier = FieldModifier.final$;
+        m.assignment = refer('NumberFormat').newInstance(
+          [literal(message.value), literal('$language')],
+        ).code;
+      }),
+      Method((m) {
+        m.name = name;
+        m.returns = refer('String');
+
+        m.requiredParameters.add(Parameter((p) {
+          p.name = 'number';
+          p.type = refer('num');
+        }));
+
+        m.lambda = true;
+        m.body = refer('$formatterName.format').call(
+          [refer('number')],
+        ).code;
+      }),
+    ];
+  }
+
   static PluralType pluralTypeFromKey(String key) {
     if (key.endsWith('.zero')) return PluralType.zero;
     if (key.endsWith('.one')) return PluralType.one;
@@ -849,6 +879,15 @@ class ParseError extends Error {
   final Language language;
 
   ParseError(this.message, this.language);
+
+  ParseError.invalidValue(String key, dynamic value, this.language)
+      : message = "Invalid value '$value' for key '$key'";
+
+  ParseError.invalidType(String key, Type type, this.language)
+      : message = "Invalid value type '$type' for key '$key'";
+
+  ParseError.invalidKey(String key, this.language)
+      : message = "Message key '$key' has an invalid format";
 
   @override
   String toString() {

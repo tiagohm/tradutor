@@ -238,6 +238,15 @@ class DateMessage extends SimpleMessage {
   }
 }
 
+class NumberMessage extends SimpleMessage {
+  NumberMessage(String key, String value) : super(key, value);
+
+  @override
+  List init(String value) {
+    return [value, MessageParameterList.empty];
+  }
+}
+
 class OptionMessage extends SimpleMessage {
   OptionMessage(String key, String value) : super(key, value);
 

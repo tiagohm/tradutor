@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:equatable/equatable.dart';
 import 'package:path/path.dart' as path;
 import 'package:stream_transform/stream_transform.dart';
-import 'package:tradutor/src/build_options.dart';
 import 'package:tradutor/src/language.dart';
 import 'package:tradutor/src/tradutor.dart';
 import 'package:tradutor/src/yaml.dart';
@@ -170,4 +170,25 @@ Future<List<FileSystemEntity>> _list(Directory dir) {
   );
 
   return completer.future;
+}
+
+class BuildOptions extends Equatable {
+  final String source;
+  final String output;
+  final String fallback;
+  final bool watch;
+  final String className;
+  final bool isWeb;
+
+  const BuildOptions({
+    this.source = '/i18n',
+    this.output = '/lib/i18n.dart',
+    this.fallback = 'en_US',
+    this.watch = false,
+    this.className = 'I18n',
+    this.isWeb = false,
+  });
+
+  @override
+  List<Object> get props => [source, output, fallback, watch, className, isWeb];
 }

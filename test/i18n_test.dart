@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import '../example/lib/i18n.dart';
 
@@ -86,5 +87,33 @@ void main() {
 
   test('Escape Message', () {
     expect(enUS.escapeMessage('b', 'd', 'e'), '{a} b \\{c} \\d {e} {{f}} \$');
+  });
+
+  test('Date Message', () {
+    final date = DateTime(2019, 1, 1, 12, 0, 6);
+    expect(enUS.dateMessage(date), '01 01, 2019 12:00:06 PM');
+    // expect(ptBR.dateMessage(date), 'BRL 12,35');
+    // expect(ptPT.dateMessage(date), 'USD 12,35');
+  });
+
+  test('Number Message', () {
+    expect(enUS.numberMessage(12.345), '12.35');
+    expect(enUS.numberMessage(12.301), '12.3');
+    expect(ptBR.numberMessage(12.345), '12,35');
+    expect(ptBR.numberMessage(12.301), '12,3');
+    expect(ptPT.numberMessage(12.345), '12,35');
+    expect(ptPT.numberMessage(12.301), '12,3');
+  });
+
+  test('Money Message', () {
+    expect(enUS.moneyMessage(12.345), '\$12.35');
+    expect(ptBR.moneyMessage(12.345), 'R\$ 12,35');
+    expect(ptPT.moneyMessage(12.345), '12,35 €');
+  });
+
+  test('Percent Message', () {
+    expect(enUS.percentMessage(0.123), '12.3%');
+    expect(ptBR.percentMessage(0.123), '12,3%');
+    expect(ptPT.percentMessage(0.123), '12,3%');
   });
 }

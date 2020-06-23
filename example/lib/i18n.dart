@@ -33,6 +33,12 @@ class I18n implements WidgetsLocalizations {
   static final _dateMessageFormatter =
       DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
 
+  static final _moneyMessageFormatter = NumberFormat('\$#,##0.00', 'en_US');
+
+  static final _numberMessageFormatter = NumberFormat('###.0#', 'en_US');
+
+  static final _percentMessageFormatter = NumberFormat('###.0%', 'en_US');
+
   static Locale get locale$ => _locale;
   static set locale$(Locale locale) {
     _shouldReload = true;
@@ -64,7 +70,10 @@ class I18n implements WidgetsLocalizations {
         '${milk} cup milk'
       ];
   String get messageKeyCamelCase => 'This is a message';
+  String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String get notTranslatable => 'This message is not translatable';
+  String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'en_US',
       one: 'Button tapped ${quantity} time',
@@ -87,7 +96,13 @@ class _I18n_pt_BR extends I18n {
   const _I18n_pt_BR();
 
   static final _dateMessageFormatter =
-      DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US');
+      DateFormat('dd/MM/yyyy HH:mm:ss', 'pt_BR');
+
+  static final _moneyMessageFormatter = NumberFormat('R\$ #,##0.00', 'pt_BR');
+
+  static final _numberMessageFormatter = NumberFormat('###.0#', 'pt_BR');
+
+  static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_BR');
 
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
@@ -112,7 +127,10 @@ class _I18n_pt_BR extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
+  String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String get notTranslatable => 'This message is not translatable';
+  String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_BR',
       one: 'Botão foi clicado ${quantity} vez',
@@ -135,7 +153,13 @@ class _I18n_pt_PT extends I18n {
   const _I18n_pt_PT();
 
   static final _dateMessageFormatter =
-      DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US');
+      DateFormat('dd/MM/yyyy HH:mm:ss', 'pt_PT');
+
+  static final _moneyMessageFormatter = NumberFormat('#,##0.00 €', 'pt_PT');
+
+  static final _numberMessageFormatter = NumberFormat('###.0#', 'pt_PT');
+
+  static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_PT');
 
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
@@ -160,7 +184,10 @@ class _I18n_pt_PT extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
+  String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String get notTranslatable => 'This message is not translatable';
+  String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_PT',
       one: 'Botão foi pressionado ${quantity} vez',

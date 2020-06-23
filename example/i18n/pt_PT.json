@@ -23,5 +23,8 @@
     ],
     "#dateMessage": "dd/MM/yyyy HH:mm:ss",
     "notTranslatable": null,
-    "message.key.camel.case": "Isto é uma mensagem"
+    "message.key.camel.case": "Isto é uma mensagem",
+    "$numberMessage": "###.0#",
+    "$moneyMessage": "#,##0.00 €",
+    "$percentMessage": "###.0%"
 }
