@@ -5,6 +5,7 @@ final _paramRegex = RegExp(r'(?<!\\){([a-z][a-z0-9_]*)}', caseSensitive: false);
 final _forcedParamRegex =
     RegExp(r'(?<=\\){!([a-z][a-z0-9_]*)}', caseSensitive: false);
 final _paramRegexList = [_paramRegex, _forcedParamRegex];
+final _escapeBracesRegex = RegExp(r'(?<!\\)\\{');
 
 List _fetchParameters(
   final String text, {
@@ -21,10 +22,6 @@ List _fetchParameters(
     while (true) {
       try {
         final match = regex.allMatches(value, pos)?.first;
-
-        if (match == null) {
-          break;
-        }
 
         final name = match.group(1);
         params.add(MessageParameter(name, dynamic));
@@ -43,6 +40,10 @@ List _fetchParameters(
   }
 
   params.sort((a, b) => a.name.compareTo(b.name));
+
+  if (replace) {
+    value = value.replaceAll(_escapeBracesRegex, '{');
+  }
 
   return [value, params];
 }

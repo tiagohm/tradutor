@@ -44,7 +44,7 @@ class I18n implements WidgetsLocalizations {
       Localizations.of<I18n>(context, WidgetsLocalizations);
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '\{a} ${b} \\{c} \\${d} {${e}} {\{f}} \$';
+      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Green', 'Yellow', 'Blue', 'White'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
@@ -92,7 +92,7 @@ class _I18n_pt_BR extends I18n {
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '\{a} ${b} \\{c} \\${d} {${e}} {\{f}} \$';
+      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
@@ -140,7 +140,7 @@ class _I18n_pt_PT extends I18n {
   TextDirection get textDirection => TextDirection.ltr;
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '\{a} ${b} \\{c} \\${d} {${e}} {\{f}} \$';
+      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
