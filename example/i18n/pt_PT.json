@@ -26,5 +26,10 @@
     "message.key.camel.case": "Isto é uma mensagem",
     "$numberMessage": "###.0#",
     "$moneyMessage": "#,##0.00 €",
-    "$percentMessage": "###.0%"
+    "$percentMessage": "###.0%",
+    "%constellations": {
+        "AND": "Andrômeda ({key}) - Estrela mais brilhante: {star}",
+        "ANT": "Máquina Pneumática ({key}) - Estrela mais brilhante: {star}",
+        "APS": "Ave-do-paraíso ({key}) - Estrela mais brilhante: {star}"
+    }
 }

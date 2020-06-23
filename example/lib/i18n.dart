@@ -48,6 +48,19 @@ class I18n implements WidgetsLocalizations {
   TextDirection get textDirection => TextDirection.ltr;
   static I18n of(BuildContext context) =>
       Localizations.of<I18n>(context, WidgetsLocalizations);
+  String constellations(String key, dynamic star) {
+    switch (key) {
+      case 'AND':
+        return 'Andromeda (${key}) - Brightest star: ${star}';
+      case 'ANT':
+        return 'Antlia (${key}) - Brightest star: ${star}';
+      case 'APS':
+        return 'Apus (${key}) - Brightest star: ${star}';
+      default:
+        return null;
+    }
+  }
+
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   String escapeMessage(dynamic b, dynamic d, dynamic e) =>
       '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
@@ -105,6 +118,19 @@ class _I18n_pt_BR extends I18n {
   static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_BR');
 
   TextDirection get textDirection => TextDirection.ltr;
+  String constellations(String key, dynamic star) {
+    switch (key) {
+      case 'AND':
+        return 'Andrômeda (${key}) - Estrela mais brilhante: ${star}';
+      case 'ANT':
+        return 'Máquina Pneumática (${key}) - Estrela mais brilhante: ${star}';
+      case 'APS':
+        return 'Ave-do-paraíso (${key}) - Estrela mais brilhante: ${star}';
+      default:
+        return null;
+    }
+  }
+
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
@@ -155,6 +181,19 @@ class _I18n_pt_PT extends I18n {
   static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_PT');
 
   TextDirection get textDirection => TextDirection.ltr;
+  String constellations(String key, dynamic star) {
+    switch (key) {
+      case 'AND':
+        return 'Andrômeda (${key}) - Estrela mais brilhante: ${star}';
+      case 'ANT':
+        return 'Máquina Pneumática (${key}) - Estrela mais brilhante: ${star}';
+      case 'APS':
+        return 'Ave-do-paraíso (${key}) - Estrela mais brilhante: ${star}';
+      default:
+        return null;
+    }
+  }
+
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(

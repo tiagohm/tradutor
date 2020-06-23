@@ -115,4 +115,25 @@ void main() {
     expect(ptBR.percentMessage(0.123), '12,3%');
     expect(ptPT.percentMessage(0.123), '12,3%');
   });
+
+  test('Map Message', () {
+    expect(enUS.constellations('AND', 'Alpheratz'),
+        'Andromeda (AND) - Brightest star: Alpheratz');
+    expect(enUS.constellations('ANT', 'α Antliae'),
+        'Antlia (ANT) - Brightest star: α Antliae');
+    expect(enUS.constellations('APS', 'α Apodis'),
+        'Apus (APS) - Brightest star: α Apodis');
+    expect(ptBR.constellations('AND', 'Alpheratz'),
+        'Andrômeda (AND) - Estrela mais brilhante: Alpheratz');
+    expect(ptBR.constellations('ANT', 'α Antliae'),
+        'Máquina Pneumática (ANT) - Estrela mais brilhante: α Antliae');
+    expect(ptBR.constellations('APS', 'α Apodis'),
+        'Ave-do-paraíso (APS) - Estrela mais brilhante: α Apodis');
+    expect(ptPT.constellations('AND', 'Alpheratz'),
+        'Andrômeda (AND) - Estrela mais brilhante: Alpheratz');
+    expect(ptPT.constellations('ANT', 'α Antliae'),
+        'Máquina Pneumática (ANT) - Estrela mais brilhante: α Antliae');
+    expect(ptPT.constellations('APS', 'α Apodis'),
+        'Ave-do-paraíso (APS) - Estrela mais brilhante: α Apodis');
+  });
 }

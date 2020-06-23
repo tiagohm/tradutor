@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:tradutor/tradutor.dart';
 
 import 'helpers.dart';
 import 'language.dart';
@@ -17,7 +18,7 @@ class Tradutor {
   final _textDirection = <Language, String>{};
   final _parent = <String, Language>{};
 
-  static final _keyRegex = RegExp(r'^[@#$]?[a-zA-Z][\w.-]*$');
+  static final _keyRegex = RegExp(r'^[@#$%]?[a-zA-Z][\w.-]*$');
   static final _camelizeRegex = RegExp('[^a-zA-Z0-9]+');
 
   static const _header = '''
@@ -166,6 +167,23 @@ class Tradutor {
           ParseError.printInvalidType(key, res, language);
         }
       }
+
+      // Map.
+      if (key.startsWith('%')) {
+        if (!key.contains('.')) {
+          ParseError.printInvalidKey(key, language);
+        } else if (res is num || res is bool || res is String) {
+          final typeIndex = key.lastIndexOf('.');
+          final name = key.substring(1, typeIndex);
+          final type = key.substring(typeIndex + 1);
+          final message = SimpleMessage(name, '$res');
+          _messages[language].add(MapMessage(type, message));
+          continue;
+        } else {
+          ParseError.printInvalidType(key, res, language);
+        }
+      }
+
       // Plural.
       final type = pluralTypeFromKey(key.toLowerCase());
 
@@ -223,16 +241,33 @@ class Tradutor {
 
     // Preenche com o idioma fallback.
     for (final m in _messages[fallback]) {
+      // Map.
+      if (m is MapMessage) {
+        // Já existe a chave mas ela não é da lista de itens do Map.
+        if (messages.containsKey(m.key) &&
+            messages[m.key] is! List<MapMessage>) {
+          ParseError.printDuplicate(m.key, fallback);
+        } else {
+          // Cria a lista de itens do Map, se necessário.
+          messages[m.key] ??= <MapMessage>[];
+          // Adiciona a mensagem.
+          messages[m.key].add(m);
+        }
+        continue;
+      }
       // Plural.
       if (m is PluralMessage) {
-        // Já existe a chave mas ela não é dos plurais.
-        if (messages.containsKey(m.key) && messages[m.key] is! List) {
+        // Já existe a chave mas ela não é da lista de itens do Plural.
+        if (messages.containsKey(m.key) &&
+            messages[m.key] is! List<PluralMessage>) {
           ParseError.printDuplicate(m.key, fallback);
+        } else {
+          // Cria a lista de itens do Plural, se necessário.
+          messages[m.key] ??= <PluralMessage>[];
+          // Adiciona a mensagem.
+          messages[m.key].add(m);
         }
-        // Cria a lista de plurais, se necessário.
-        messages[m.key] ??= <PluralMessage>[];
-        // Adiciona a mensagem.
-        messages[m.key].add(m);
+        continue;
       }
       // Simple, Date, Option, List, caso não exista ainda.
       else if (!messages.containsKey(m.key)) {
@@ -248,15 +283,28 @@ class Tradutor {
     for (final m in _messages[language]) {
       // Option.
       if (m is OptionMessage) {
-        continue;
+        // nada.
       }
       // A chave não está presente no idioma de fallback.
-      if (!messages.containsKey(m.key)) {
+      else if (!messages.containsKey(m.key)) {
         ParseError.printNotPresentInFallback(m.key, language);
-        continue;
+      }
+      // Map.
+      else if (m is MapMessage) {
+        // Substituir o item de mesmo tipo.
+        final index = messages[m.key]
+            .indexWhere((mm) => (mm as MapMessage).type == m.type);
+        // O tipo foi encontrado.
+        if (index >= 0) {
+          // Substitui.
+          messages[m.key][index] = m;
+        } else {
+          // Caso contrário, adiciona.
+          messages[m.key].add(m);
+        }
       }
       // Plural.
-      if (m is PluralMessage) {
+      else if (m is PluralMessage) {
         // Substituir o plural de mesmo tipo.
         final index = messages[m.key]
             .indexWhere((pm) => (pm as PluralMessage).type == m.type);
@@ -409,8 +457,12 @@ class Tradutor {
         final message = messages[key];
         List m;
 
+        // Map.
+        if (message is List<MapMessage>) {
+          m = _buildMapMessage(message, language);
+        }
         // Plural.
-        if (message is List) {
+        else if (message is List<PluralMessage>) {
           m = _buildPluralMessage(message, language);
         }
         // Option.
@@ -693,10 +745,12 @@ class Tradutor {
         m.returns = refer('String');
 
         for (final parameter in parameters.values) {
-          m.requiredParameters.add(Parameter((p) {
-            p.name = parameter.name;
-            p.type = refer('${parameter.type}');
-          }));
+          m.requiredParameters.add(
+            Parameter((p) {
+              p.name = parameter.name;
+              p.type = refer('${parameter.type}');
+            }),
+          );
         }
 
         m.lambda = true;
@@ -708,6 +762,54 @@ class Tradutor {
               pluralName(message.type): message.expression,
           },
         ).code;
+      }),
+    ];
+  }
+
+  static List _buildMapMessage(
+    List<MapMessage> messages,
+    Language language,
+  ) {
+    final parameters = <String, MessageParameter>{};
+
+    parameters['key'] = MessageParameter('key', String);
+
+    for (final message in messages) {
+      for (final p in message.parameters) {
+        if (!parameters.containsKey(p.name)) {
+          parameters[p.name] = p;
+        }
+      }
+    }
+
+    return [
+      Method((m) {
+        m.name = camelize(messages[0].key);
+        m.returns = refer('String');
+
+        for (final parameter in parameters.values) {
+          m.requiredParameters.add(
+            Parameter((p) {
+              p.name = parameter.name;
+              p.type = refer('${parameter.type}');
+            }),
+          );
+        }
+
+        m.body = Block.of([
+          Code('switch(key) {'),
+          for (final message in messages) ...[
+            Code('case'),
+            literal(message.type).code,
+            Code(':'),
+            literal(message.value).returned.statement,
+          ],
+          ...[
+            Code('default:'),
+            literalNull.returned.statement,
+          ],
+          Code('}'),
+        ]);
       }),
     ];
   }
