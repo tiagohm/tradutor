@@ -87,4 +87,53 @@ void main() {
   test('Escape Message', () {
     expect(enUS.escapeMessage('b', 'd', 'e'), '{a} b \\{c} \\d {e} {{f}} \$');
   });
+
+  test('Date Message', () {
+    final date = DateTime(2019, 1, 1, 12, 0, 6);
+    expect(enUS.dateMessage(date), '01 01, 2019 12:00:06 PM');
+    // expect(ptBR.dateMessage(date), 'BRL 12,35');
+    // expect(ptPT.dateMessage(date), 'USD 12,35');
+  });
+
+  test('Number Message', () {
+    expect(enUS.numberMessage(12.345), '12.35');
+    expect(enUS.numberMessage(12.301), '12.3');
+    expect(ptBR.numberMessage(12.345), '12,35');
+    expect(ptBR.numberMessage(12.301), '12,3');
+    expect(ptPT.numberMessage(12.345), '12,35');
+    expect(ptPT.numberMessage(12.301), '12,3');
+  });
+
+  test('Money Message', () {
+    expect(enUS.moneyMessage(12.345), '\$12.35');
+    expect(ptBR.moneyMessage(12.345), 'R\$ 12,35');
+    expect(ptPT.moneyMessage(12.345), '12,35 €');
+  });
+
+  test('Percent Message', () {
+    expect(enUS.percentMessage(0.123), '12.3%');
+    expect(ptBR.percentMessage(0.123), '12,3%');
+    expect(ptPT.percentMessage(0.123), '12,3%');
+  });
+
+  test('Map Message', () {
+    expect(enUS.constellations('AND', 'Alpheratz'),
+        'Andromeda (AND) - Brightest star: Alpheratz');
+    expect(enUS.constellations('ANT', 'α Antliae'),
+        'Antlia (ANT) - Brightest star: α Antliae');
+    expect(enUS.constellations('APS', 'α Apodis'),
+        'Apus (APS) - Brightest star: α Apodis');
+    expect(ptBR.constellations('AND', 'Alpheratz'),
+        'Andrômeda (AND) - Estrela mais brilhante: Alpheratz');
+    expect(ptBR.constellations('ANT', 'α Antliae'),
+        'Máquina Pneumática (ANT) - Estrela mais brilhante: α Antliae');
+    expect(ptBR.constellations('APS', 'α Apodis'),
+        'Ave-do-paraíso (APS) - Estrela mais brilhante: α Apodis');
+    expect(ptPT.constellations('AND', 'Alpheratz'),
+        'Andrômeda (AND) - Estrela mais brilhante: Alpheratz');
+    expect(ptPT.constellations('ANT', 'α Antliae'),
+        'Máquina Pneumática (ANT) - Estrela mais brilhante: α Antliae');
+    expect(ptPT.constellations('APS', 'α Apodis'),
+        'Ave-do-paraíso (APS) - Estrela mais brilhante: α Apodis');
+  });
 }

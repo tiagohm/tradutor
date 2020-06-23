@@ -22,5 +22,13 @@
     ],
     "#dateMessage": "dd/MM/yyyy HH:mm:ss",
     "notTranslatable": null,
-    "message.key.camel.case": "Isto é uma mensagem"
+    "message.key.camel.case": "Isto é uma mensagem",
+    "$numberMessage": "###.0#",
+    "$moneyMessage": "R\\$ #,##0.00",
+    "$percentMessage": "###.0%",
+    "%constellations": {
+        "AND": "Andrômeda ({key}) - Estrela mais brilhante: {star}",
+        "ANT": "Máquina Pneumática ({key}) - Estrela mais brilhante: {star}",
+        "APS": "Ave-do-paraíso ({key}) - Estrela mais brilhante: {star}"
+    }
 }

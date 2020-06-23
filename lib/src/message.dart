@@ -205,10 +205,6 @@ class PluralMessage extends SimpleMessage {
 
   PluralMessage(this.type, this.message) : super(message.key, message.raw);
 
-  bool get isList => message is ListMessage;
-
-  bool get isSimple => message is SimpleMessage;
-
   @override
   String toString() {
     return 'PluralMessage { type: $type, key: $key, value: $value }';
@@ -235,6 +231,27 @@ class DateMessage extends SimpleMessage {
   @override
   List init(String value) {
     return [value, MessageParameterList.empty];
+  }
+}
+
+class NumberMessage extends SimpleMessage {
+  NumberMessage(String key, String value) : super(key, value);
+
+  @override
+  List init(String value) {
+    return [value, MessageParameterList.empty];
+  }
+}
+
+class MapMessage extends SimpleMessage {
+  final String type;
+  final SimpleMessage message;
+
+  MapMessage(this.type, this.message) : super(message.key, message.raw);
+
+  @override
+  String toString() {
+    return 'MapMessage { type: $type, key: $key, value: $value }';
   }
 }
 

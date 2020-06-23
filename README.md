@@ -6,15 +6,16 @@ A Flutter package that simplify the internationalizing process using JSON and YA
 
 ## Features
 
-* Simple messages;
-* Messages with multiple parameters;
-* List of simple messages;
-* List of messages with multiple parameters;
-* Plural messages;
-* Date messages;
-* JSON and YAML files;
-* Nested messages support;
-* Supports hot reload;
+* Simple messages.
+* Messages with multiple parameters.
+* List of simple messages.
+* List of messages with multiple parameters.
+* Plural messages.
+* Date messages.
+* Number messages.
+* JSON and YAML files.
+* Nested messages support.
+* Supports hot reload.
 
 ## Installation 
 

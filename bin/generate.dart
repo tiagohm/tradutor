@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:equatable/equatable.dart';
 import 'package:path/path.dart' as path;
 import 'package:stream_transform/stream_transform.dart';
-import 'package:tradutor/src/build_options.dart';
+import 'package:tradutor/src/helpers.dart';
 import 'package:tradutor/src/language.dart';
 import 'package:tradutor/src/tradutor.dart';
 import 'package:tradutor/src/yaml.dart';
@@ -30,17 +31,22 @@ void main(List<String> args) async {
       path.normalize('${Directory.current.path}/${options.source}'),
     );
 
-    print('Watching files at "${inputDir.path}"');
+    printInfo('Watching files at "${inputDir.path}"');
 
     inputDir
         .watch()
         .debounce(const Duration(milliseconds: 3000))
         .listen((event) {
       final file = File(event.path);
+      final language = path.basenameWithoutExtension(file.path);
+      final isFallback = language == options.fallback;
 
-      if (event.type == FileSystemEvent.create ||
+      if (isFallback) {
+        tradutor.clear();
+        _discovery(options);
+      } else if (event.type == FileSystemEvent.create ||
           event.type == FileSystemEvent.modify) {
-        _fileFound(file, options);
+        _fileFound(file, options, immediately: true);
       } else {
         _fileDeleted(file, options);
       }
@@ -48,15 +54,25 @@ void main(List<String> args) async {
   }
 }
 
-void _build(
+bool _build(
   String input,
   Language language,
   String ext,
   BuildOptions options, {
   bool immediately = true,
 }) {
-  final data = ext == 'json' ? json.decode(input) : yaml.decode(input);
-  tradutor.read(data, language);
+  if (input != null) {
+    final data = ext == 'json' ? json.decode(input) : yaml.decode(input);
+
+    try {
+      if (!tradutor.read(data, language)) {
+        return false;
+      }
+    } catch (e) {
+      printError(e.toString());
+      exit(0);
+    }
+  }
 
   if (immediately) {
     // Converte os idiomas em código Dart.
@@ -66,8 +82,10 @@ void _build(
     final outputFile =
         File(path.normalize('${current.path}/${options.output}'));
     outputFile.writeAsStringSync(text);
-    print('Generated dart file to ${outputFile.path}');
+    printSuccess('Generated dart file to ${outputFile.path}');
   }
+
+  return true;
 }
 
 ArgParser _buildArgParser() {
@@ -98,18 +116,20 @@ void _discovery(BuildOptions options) async {
       Directory(path.normalize('${current.path}/${options.source}'));
 
   if (!inputPath.existsSync()) {
-    print("Input path '${inputPath.path}' not found");
+    printError("Input path '${inputPath.path}' not found");
     return null;
   }
 
   final files = await _list(inputPath);
 
   for (var i = 0; i < files.length; i++) {
-    _fileFound(files[i], options, immediately: i == files.length - 1);
+    if (!_fileFound(files[i], options, immediately: i == files.length - 1)) {
+      break;
+    }
   }
 }
 
-void _fileDeleted(
+bool _fileDeleted(
   File file,
   BuildOptions options,
 ) {
@@ -124,17 +144,19 @@ void _fileDeleted(
     final locale = Language(code, country);
 
     if (tradutor.removeLanguage(locale)) {
-      _build(
-        file.readAsStringSync(),
+      return _build(
+        null,
         locale,
         ext.substring(1),
         options,
       );
     }
   }
+
+  return false;
 }
 
-void _fileFound(
+bool _fileFound(
   File file,
   BuildOptions options, {
   bool immediately = false,
@@ -145,15 +167,17 @@ void _fileFound(
   if (file is File &&
       (ext == '.json' || ext == '.yaml' || ext == '.yml') &&
       Language.matches(language)) {
-    print("Found translation file at '${file.path}'");
+    printInfo("Found translation file at '${file.path}'");
 
-    _build(
+    return _build(
       file.readAsStringSync(),
       Language.parse(language),
       ext.substring(1),
       options,
       immediately: immediately,
     );
+  } else {
+    return false;
   }
 }
 
@@ -170,4 +194,25 @@ Future<List<FileSystemEntity>> _list(Directory dir) {
   );
 
   return completer.future;
+}
+
+class BuildOptions extends Equatable {
+  final String source;
+  final String output;
+  final String fallback;
+  final bool watch;
+  final String className;
+  final bool isWeb;
+
+  const BuildOptions({
+    this.source = '/i18n',
+    this.output = '/lib/i18n.dart',
+    this.fallback = 'en_US',
+    this.watch = false,
+    this.className = 'I18n',
+    this.isWeb = false,
+  });
+
+  @override
+  List<Object> get props => [source, output, fallback, watch, className, isWeb];
 }

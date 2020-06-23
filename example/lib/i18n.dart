@@ -33,6 +33,12 @@ class I18n implements WidgetsLocalizations {
   static final _dateMessageFormatter =
       DateFormat('MM dd, yyyy h:mm:ss a', 'en_US');
 
+  static final _moneyMessageFormatter = NumberFormat('\$#,##0.00', 'en_US');
+
+  static final _numberMessageFormatter = NumberFormat('###.0#', 'en_US');
+
+  static final _percentMessageFormatter = NumberFormat('###.0%', 'en_US');
+
   static Locale get locale$ => _locale;
   static set locale$(Locale locale) {
     _shouldReload = true;
@@ -42,6 +48,19 @@ class I18n implements WidgetsLocalizations {
   TextDirection get textDirection => TextDirection.ltr;
   static I18n of(BuildContext context) =>
       Localizations.of<I18n>(context, WidgetsLocalizations);
+  String constellations(String key, dynamic star) {
+    switch (key) {
+      case 'AND':
+        return 'Andromeda (${key}) - Brightest star: ${star}';
+      case 'ANT':
+        return 'Antlia (${key}) - Brightest star: ${star}';
+      case 'APS':
+        return 'Apus (${key}) - Brightest star: ${star}';
+      default:
+        return null;
+    }
+  }
+
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
   String escapeMessage(dynamic b, dynamic d, dynamic e) =>
       '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
@@ -64,7 +83,10 @@ class I18n implements WidgetsLocalizations {
         '${milk} cup milk'
       ];
   String get messageKeyCamelCase => 'This is a message';
+  String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String get notTranslatable => 'This message is not translatable';
+  String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'en_US',
       one: 'Button tapped ${quantity} time',
@@ -87,12 +109,29 @@ class _I18n_pt_BR extends I18n {
   const _I18n_pt_BR();
 
   static final _dateMessageFormatter =
-      DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US');
+      DateFormat('dd/MM/yyyy HH:mm:ss', 'pt_BR');
+
+  static final _moneyMessageFormatter = NumberFormat('R\$ #,##0.00', 'pt_BR');
+
+  static final _numberMessageFormatter = NumberFormat('###.0#', 'pt_BR');
+
+  static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_BR');
 
   TextDirection get textDirection => TextDirection.ltr;
+  String constellations(String key, dynamic star) {
+    switch (key) {
+      case 'AND':
+        return 'Andrômeda (${key}) - Estrela mais brilhante: ${star}';
+      case 'ANT':
+        return 'Máquina Pneumática (${key}) - Estrela mais brilhante: ${star}';
+      case 'APS':
+        return 'Ave-do-paraíso (${key}) - Estrela mais brilhante: ${star}';
+      default:
+        return null;
+    }
+  }
+
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
-  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
@@ -112,15 +151,13 @@ class _I18n_pt_BR extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
-  String get notTranslatable => 'This message is not translatable';
+  String moneyMessage(num number) => _moneyMessageFormatter.format(number);
+  String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_BR',
       one: 'Botão foi clicado ${quantity} vez',
       other: 'Botão foi clicado ${quantity} vezes');
-  String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: 'pt_BR',
-      one: 'Button tapped ${quantity} time',
-      other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
           int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,
@@ -135,12 +172,29 @@ class _I18n_pt_PT extends I18n {
   const _I18n_pt_PT();
 
   static final _dateMessageFormatter =
-      DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US');
+      DateFormat('dd/MM/yyyy HH:mm:ss', 'pt_PT');
+
+  static final _moneyMessageFormatter = NumberFormat('#,##0.00 €', 'pt_PT');
+
+  static final _numberMessageFormatter = NumberFormat('###.0#', 'pt_PT');
+
+  static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_PT');
 
   TextDirection get textDirection => TextDirection.ltr;
+  String constellations(String key, dynamic star) {
+    switch (key) {
+      case 'AND':
+        return 'Andrômeda (${key}) - Estrela mais brilhante: ${star}';
+      case 'ANT':
+        return 'Máquina Pneumática (${key}) - Estrela mais brilhante: ${star}';
+      case 'APS':
+        return 'Ave-do-paraíso (${key}) - Estrela mais brilhante: ${star}';
+      default:
+        return null;
+    }
+  }
+
   String dateMessage(DateTime date) => _dateMessageFormatter.format(date);
-  String escapeMessage(dynamic b, dynamic d, dynamic e) =>
-      '{a} ${b} \\{c} \\${d} {${e}} {{f}} \$';
   List<String> get listMessage => ['Verde', 'Amarelo', 'Azul', 'Branco'];
   List<String> listMessageWithParameters(
           dynamic bakingPowder,
@@ -160,15 +214,13 @@ class _I18n_pt_PT extends I18n {
         '${milk} copo de leite'
       ];
   String get messageKeyCamelCase => 'Isto é uma mensagem';
-  String get notTranslatable => 'This message is not translatable';
+  String moneyMessage(num number) => _moneyMessageFormatter.format(number);
+  String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_PT',
       one: 'Botão foi pressionado ${quantity} vez',
       other: 'Botão foi pressionado ${quantity} vezes');
-  String pluralMesssageGrouped(int quantity) => Intl.plural(quantity,
-      locale: 'pt_PT',
-      one: 'Button tapped ${quantity} time',
-      other: 'Button tapped ${quantity} times');
   String pluralMesssageWithParameters(
           int quantity, dynamic action, dynamic item) =>
       Intl.plural(quantity,
