@@ -31,5 +31,6 @@
         "AND": "Andrômeda ({key}) - Estrela mais brilhante: {star}",
         "ANT": "Máquina Pneumática ({key}) - Estrela mais brilhante: {star}",
         "APS": "Ave-do-paraíso ({key}) - Estrela mais brilhante: {star}"
-    }
+    },
+    "optionalParameter": "Você é {?name=Anônimo}"
 }

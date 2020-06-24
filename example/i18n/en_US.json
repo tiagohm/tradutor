@@ -35,5 +35,6 @@
         "AND": "Andromeda ({key}) - Brightest star: {star}",
         "ANT": "Antlia ({key}) - Brightest star: {star}",
         "APS": "Apus ({key}) - Brightest star: {star}"
-    }
+    },
+    "optionalParameter": "You are {?name=Anonymous}"
 }
