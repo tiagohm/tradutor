@@ -1,3 +1,6 @@
+## [0.9.0]
+ - Add Optional parameter support.
+
 ## [0.8.0]
  - Add Number Format support.
  - Add Map support.

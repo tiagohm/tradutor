@@ -15,6 +15,7 @@ A Flutter package that simplify the internationalizing process using JSON and YA
   * Date.
   * Numeric.
   * Map.
+* Optional parameters support.
 * JSON and YAML files.
 * Nested messages support.
 * Supports hot reload.
@@ -29,7 +30,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.8.0
+    tradutor: ^0.9.0
 ```
 
 ## Usage
@@ -103,6 +104,28 @@ counter.other: ボタンが{quantity}回クリックされた
 
 The messages can be nested. The final message name will be transformed to camelCase format (starting with a lower case character and capital for each later key).
 
+```json
+{
+  "this" : {
+    "is" : {
+      "a": {
+        "nested": "Message"
+      }
+    }
+  }
+}
+```
+
+Generated Dart getter:
+
+```dart
+String get thisIsANested => 'Message';
+```
+
+## Optional parameters
+
+Use `{?name=value}` for set the parameter as optional. The `=value` is optional and will use an empty string when omitted.
+
 ## Supported Message Type
 
 The all parameters in a message must be surrounded by curly braces. The parameters are sorted alphabetically.
@@ -118,7 +141,7 @@ The all parameters in a message must be surrounded by curly braces. The paramete
 Generated Dart getter:
 
 ```dart
-String get simpleMessage => "This is a simple Message";
+String get simpleMessage => 'This is a simple Message';
 ```
 
 ### Message with parameters
@@ -132,7 +155,7 @@ String get simpleMessage => "This is a simple Message";
 Generated Dart method:
 
 ```dart
-String messageWithParameters(dynamic name) => "Hi ${name}, Welcome you!";
+String messageWithParameters(dynamic name) => 'Hi ${name}, Welcome you!';
 ```
 
 ### List of simple messages
@@ -148,7 +171,7 @@ Define an array of strings.
 Generated Dart getter:
 
 ```dart
-List<String> get brazilFlagColors => ["Green", "Yellow", "Blue", "White"];
+List<String> get brazilFlagColors => ['Green', 'Yellow', 'Blue', 'White'];
 ```
 
 ### List of messages with multiple parameters
@@ -179,19 +202,19 @@ List<String> simpleWhiteCakeIngredients(
           dynamic vanilla, 
           dynamic whiteSugar) =>
       [
-        "${whiteSugar} cup white sugar",
-        "${butter} cup butter",
-        "${eggs} eggs",
-        "${vanilla} teaspoons vanilla extract",
-        "${flour} cups all-purpose flour",
-        "${bakingPowder} teaspoons baking powder",
-        "${milk} cup milk"
+        '${whiteSugar} cup white sugar',
+        '${butter} cup butter',
+        '${eggs} eggs',
+        '${vanilla} teaspoons vanilla extract',
+        '${flour} cups all-purpose flour',
+        '${bakingPowder} teaspoons baking powder',
+        '${milk} cup milk'
       ];
 ```
 
 ### Plural messages
 
-The message name must end with `.zero`, `.one`, `.two`, `.few`, `.many` or `.other`. See [Language Plural Rules](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html).
+The last message name must be `zero`, `one`, `two`, `few`, `many` or `other`. See [Language Plural Rules](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html).
 
 ```json
 {
@@ -221,14 +244,14 @@ Generated Dart method:
 String counter(int quantity) => Intl.plural(
         quantity,
         locale: 'en_US',
-        one: "Button clicked 1 time",
-        other: "Button cliked ${quantity} times",
+        one: 'Button clicked 1 time',
+        other: 'Button cliked ${quantity} times',
       );
 ```
 
 ### Map messages
 
-The message name starts with '%'.
+The message name starts with `%`.
 
 ```json
 {
@@ -258,7 +281,7 @@ String eyeColor(String key, dynamic color) {
 
 ### Date messages
 
-The message name starts with '#'.
+The message name starts with `#`.
 
 ```json
 {
@@ -277,7 +300,7 @@ See the DateFormat documentation [here](https://pub.dev/documentation/intl/lates
 
 ### Number messages
 
-The message name starts with '$'.
+The message name starts with `$`.
 
 ```json
 {
@@ -373,12 +396,13 @@ class _HomePageState extends State<HomePage> {
 
 ## Escaping Curly Braces and Dollar Sign.
 
-| Json | Dart | Message (a = 'text') | Note |
+| Json | Dart | Message (a = 'Hi') | Note |
 | :-: | :-: | :-: | :-: |
-| "{a}" | "${a}" | "text" | Just a parameter |
+| "{a}" | "${a}" | "Hi" | Just a parameter |
 | "\\\\{a}" | "\\{a}"  | "{a}" | Text surrounded by curly braces |
 | "\\\\\\\\{a}"  | "\\\\{a}" | "\\{a}" | Backslash + text surrounded by curly braces |
-| "\\\\{!a}" | "\\${a}" | "\\text" | Backslash + parameter |
+| "\\\\{!a}" | "\\${a}" | "\\Hi" | Backslash + parameter |
+| "\\\\{!?a}" | "\\${a}" | "\\Hi" | Backslash + optional parameter |
 | "\\\\$"  | "\\$" | "$" | Just a dollar sign |
 
 ## Language Options
