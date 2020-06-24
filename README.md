@@ -132,7 +132,7 @@ String get simpleMessage => "This is a simple Message";
 Generated Dart method:
 
 ```dart
-String messageWithParameters(dynamic name) => "Hi $name, Welcome you!";
+String messageWithParameters(dynamic name) => "Hi ${name}, Welcome you!";
 ```
 
 ### List of simple messages
@@ -191,7 +191,7 @@ List<String> simpleWhiteCakeIngredients(
 
 ### Plural messages
 
-The message name must be end with `zero`, `one`, `two`, `few`, `many` or `other`. See [Language Plural Rules](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html).
+The message name must end with `.zero`, `.one`, `.two`, `.few`, `.many` or `.other`. See [Language Plural Rules](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html).
 
 ```json
 {
