@@ -1,18 +1,18 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:equatable/equatable.dart';
 
-final _paramRegex = RegExp(r'(?<!\\){([a-z][a-z0-9_]*)}', caseSensitive: false);
+final _paramRegex =
+    RegExp(r'(?<!\\){(\?)?([a-z][a-z0-9_]*)(?:=(.*))?}', caseSensitive: false);
 final _forcedParamRegex =
-    RegExp(r'(?<=\\){!([a-z][a-z0-9_]*)}', caseSensitive: false);
+    RegExp(r'(?<=\\){!(\?)?([a-z][a-z0-9_]*)(?:=(.*))?}', caseSensitive: false);
 final _paramRegexList = [_paramRegex, _forcedParamRegex];
 final _escapeBracesRegex = RegExp(r'(?<!\\)\\{');
 
 List _fetchParameters(
-  final String text, {
+  String text, {
   final int start = 0,
   final bool replace = true,
 }) {
-  var value = text;
   final params = <MessageParameter>[];
 
   for (final regex in _paramRegexList) {
@@ -21,14 +21,25 @@ List _fetchParameters(
 
     while (true) {
       try {
-        final match = regex.allMatches(value, pos)?.first;
+        final match = regex.allMatches(text, pos)?.first;
 
-        final name = match.group(1);
-        params.add(MessageParameter(name, dynamic));
+        final optional = match.group(1) == '?';
+        final name = match.group(2);
+        final value = match.group(3) ?? '';
+
+        params.add(MessageParameter(
+          name,
+          dynamic,
+          optional: optional,
+          value: value,
+        ));
 
         if (replace) {
-          final textToReplace = isForced ? '\\\${$name}' : '\${$name}';
-          value = value.replaceRange(match.start, match.end, textToReplace);
+          final prefix = isForced ? '\\\$' : '\$';
+          final nullAwareValue = '?? "${value.replaceAll('"', '\\"')}"';
+          final textToReplace =
+              optional ? '$prefix{$name $nullAwareValue}' : '$prefix{$name}';
+          text = text.replaceRange(match.start, match.end, textToReplace);
           pos = match.start + textToReplace.length;
         } else {
           pos = match.end;
@@ -42,10 +53,10 @@ List _fetchParameters(
   params.sort((a, b) => a.name.compareTo(b.name));
 
   if (replace) {
-    value = value.replaceAll(_escapeBracesRegex, '{');
+    text = text.replaceAll(_escapeBracesRegex, '{');
   }
 
-  return [value, params];
+  return [text, params];
 }
 
 class MessageParameterList extends Iterable<MessageParameter>
@@ -71,22 +82,23 @@ class MessageParameterList extends Iterable<MessageParameter>
 class MessageParameter extends Equatable {
   final String name;
   final Type type;
-  final bool isOptional;
+  final bool optional;
   final String value;
 
   const MessageParameter(
     this.name,
     this.type, {
-    this.isOptional = false,
-    this.value,
+    this.optional = false,
+    this.value = '',
   });
 
   @override
-  List<Object> get props => [name, type, isOptional, value];
+  List<Object> get props => [name, type, optional];
 
   @override
   String toString() {
-    return 'Parameter { name: $name, type: $type, value: $value }';
+    return 'Parameter { name: $name, type: $type,'
+        ' value: $value, optional: $optional }';
   }
 }
 

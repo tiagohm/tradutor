@@ -1,6 +1,5 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:tradutor/tradutor.dart';
 
 import 'helpers.dart';
 import 'language.dart';
@@ -452,7 +451,7 @@ class Tradutor {
 
       final keys = List.of(messages.keys)..sort();
 
-      // Mensagens.
+      // Messages.
       for (final key in keys) {
         final message = messages[key];
         List m;
@@ -662,10 +661,17 @@ class Tradutor {
         m.returns = refer('String');
 
         for (final parameter in parameters.values) {
-          m.requiredParameters.add(Parameter((p) {
+          final p = Parameter((p) {
+            p.named = parameter.optional;
             p.name = parameter.name;
             p.type = refer('${parameter.type}');
-          }));
+          });
+
+          if (parameter.optional) {
+            m.optionalParameters.add(p);
+          } else {
+            m.requiredParameters.add(p);
+          }
         }
 
         m.lambda = true;
@@ -711,10 +717,17 @@ class Tradutor {
         m.returns = refer('List<String>');
 
         for (final parameter in parameters.values) {
-          m.requiredParameters.add(Parameter((p) {
+          final p = Parameter((p) {
+            p.named = parameter.optional;
             p.name = parameter.name;
             p.type = refer('${parameter.type}');
-          }));
+          });
+
+          if (parameter.optional) {
+            m.optionalParameters.add(p);
+          } else {
+            m.requiredParameters.add(p);
+          }
         }
 
         m.lambda = true;
@@ -745,12 +758,17 @@ class Tradutor {
         m.returns = refer('String');
 
         for (final parameter in parameters.values) {
-          m.requiredParameters.add(
-            Parameter((p) {
-              p.name = parameter.name;
-              p.type = refer('${parameter.type}');
-            }),
-          );
+          final p = Parameter((p) {
+            p.named = parameter.optional;
+            p.name = parameter.name;
+            p.type = refer('${parameter.type}');
+          });
+
+          if (parameter.optional) {
+            m.optionalParameters.add(p);
+          } else {
+            m.requiredParameters.add(p);
+          }
         }
 
         m.lambda = true;
@@ -788,12 +806,17 @@ class Tradutor {
         m.returns = refer('String');
 
         for (final parameter in parameters.values) {
-          m.requiredParameters.add(
-            Parameter((p) {
-              p.name = parameter.name;
-              p.type = refer('${parameter.type}');
-            }),
-          );
+          final p = Parameter((p) {
+            p.named = parameter.optional;
+            p.name = parameter.name;
+            p.type = refer('${parameter.type}');
+          });
+
+          if (parameter.optional) {
+            m.optionalParameters.add(p);
+          } else {
+            m.requiredParameters.add(p);
+          }
         }
 
         m.body = Block.of([

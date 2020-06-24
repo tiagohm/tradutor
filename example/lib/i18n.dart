@@ -86,6 +86,7 @@ class I18n implements WidgetsLocalizations {
   String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String get notTranslatable => 'This message is not translatable';
   String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String optionalParameter({dynamic name}) => 'You are ${name ?? "Anonymous"}';
   String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'en_US',
@@ -153,6 +154,7 @@ class _I18n_pt_BR extends I18n {
   String get messageKeyCamelCase => 'Isto é uma mensagem';
   String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String optionalParameter({dynamic name}) => 'Você é ${name ?? "Anônimo"}';
   String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_BR',
@@ -216,6 +218,7 @@ class _I18n_pt_PT extends I18n {
   String get messageKeyCamelCase => 'Isto é uma mensagem';
   String moneyMessage(num number) => _moneyMessageFormatter.format(number);
   String numberMessage(num number) => _numberMessageFormatter.format(number);
+  String optionalParameter({dynamic name}) => 'Você é ${name ?? "Anônimo"}';
   String percentMessage(num number) => _percentMessageFormatter.format(number);
   String pluralMesssage(int quantity) => Intl.plural(quantity,
       locale: 'pt_PT',

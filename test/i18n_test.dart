@@ -136,4 +136,13 @@ void main() {
     expect(ptPT.constellations('APS', 'α Apodis'),
         'Ave-do-paraíso (APS) - Estrela mais brilhante: α Apodis');
   });
+
+  test('Optional Message', () {
+    expect(enUS.optionalParameter(name: 'James'), 'You are James');
+    expect(enUS.optionalParameter(), 'You are Anonymous');
+    expect(ptBR.optionalParameter(name: 'Tiago'), 'Você é Tiago');
+    expect(ptBR.optionalParameter(), 'Você é Anônimo');
+    expect(ptPT.optionalParameter(name: 'Pedro'), 'Você é Pedro');
+    expect(ptPT.optionalParameter(), 'Você é Anônimo');
+  });
 }
