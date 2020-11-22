@@ -135,7 +135,7 @@ void _discovery(BuildOptions options) async {
   for (var i = 0; i < files.length; i++) {
     if (files[i] is File &&
         !_fileFound(files[i], options, immediately: i == files.length - 1)) {
-      break;
+      // nada.
     }
   }
 }
