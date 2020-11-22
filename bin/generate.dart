@@ -120,10 +120,21 @@ void _discovery(BuildOptions options) async {
     return null;
   }
 
-  final files = await _list(inputPath);
+  final files = List.of(await _list(inputPath));
+
+  files.sort((a, b) {
+    final la = path.basenameWithoutExtension(a.path);
+    final lb = path.basenameWithoutExtension(b.path);
+
+    if (la == lb) return 0;
+    if (la == options.fallback) return -1;
+    if (lb == options.fallback) return 1;
+    return la.compareTo(lb);
+  });
 
   for (var i = 0; i < files.length; i++) {
-    if (!_fileFound(files[i], options, immediately: i == files.length - 1)) {
+    if (files[i] is File &&
+        !_fileFound(files[i], options, immediately: i == files.length - 1)) {
       break;
     }
   }
