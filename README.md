@@ -30,7 +30,7 @@ dependencies:
         sdk: flutter 
 
 dev_dependencies:
-    tradutor: ^0.9.1
+    tradutor: ^0.9.2
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ All supported arguments:
 * `--watch`: Watches the JSON/YAML files for edits and does rebuilds as necessary.
 * `--class-name "NAME"` or `-c "NAME"`: Allows change the generated Dart class name (defaults to "I18n").
 
-Full example: `flutter packages pub run tradutor:build -s "/i18n" -o "/lib/i18n.dart" -f "en_US" -c "I18n" --watch`
+Full example: `flutter packages pub run tradutor:generate -s "/i18n" -o "/lib/i18n.dart" -f "en_US" -c "I18n" --watch`
 
 ## JSON Files
 Crete JSON files naming them with language code (lowercase) and country code (uppercase). Ex.: `pt_BR.json`, `en_US.json`, etc.
