@@ -1,3 +1,6 @@
+## [0.9.1]
+ - Bug fix.
+
 ## [0.9.0]
  - Add Optional parameter support.
 
