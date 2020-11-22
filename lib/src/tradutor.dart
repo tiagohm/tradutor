@@ -234,7 +234,7 @@ class Tradutor {
     final messages = <String, dynamic>{};
 
     if (!_messages.containsKey(fallback)) {
-      printError('Fallback language can not be found');
+      printError('The fallback language can not be found: $fallback');
       return false;
     }
 
