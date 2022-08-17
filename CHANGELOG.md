@@ -1,3 +1,6 @@
+## [0.10.0]
+ - Null safety support.
+
 ## [0.9.2]
  - Bug fix.
 
