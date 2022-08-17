@@ -7,9 +7,7 @@ class Language extends Equatable {
   static final _languageRegex = RegExp(r'^[a-z]{2}_[a-zA-Z]{2}$');
 
   Language(String code, String country)
-      : assert(code != null),
-        assert(country != null),
-        code = code.toLowerCase(),
+      : code = code.toLowerCase(),
         country = country.toUpperCase();
 
   factory Language.parse(String text) {

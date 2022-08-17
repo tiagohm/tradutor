@@ -23,7 +23,7 @@ class _I18n_en_US extends I18n {
 class I18n implements WidgetsLocalizations {
   const I18n();
 
-  static Locale _locale;
+  static Locale _locale = Locale('en', 'US');
 
   static bool _shouldReload = false;
 
@@ -47,8 +47,8 @@ class I18n implements WidgetsLocalizations {
 
   TextDirection get textDirection => TextDirection.ltr;
   static I18n of(BuildContext context) =>
-      Localizations.of<I18n>(context, WidgetsLocalizations);
-  String constellations(String key, dynamic star) {
+      Localizations.of<I18n>(context, WidgetsLocalizations)!;
+  String? constellations(String key, dynamic star) {
     switch (key) {
       case 'AND':
         return 'Andromeda (${key}) - Brightest star: ${star}';
@@ -119,7 +119,7 @@ class _I18n_pt_BR extends I18n {
   static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_BR');
 
   TextDirection get textDirection => TextDirection.ltr;
-  String constellations(String key, dynamic star) {
+  String? constellations(String key, dynamic star) {
     switch (key) {
       case 'AND':
         return 'Andrômeda (${key}) - Estrela mais brilhante: ${star}';
@@ -183,7 +183,7 @@ class _I18n_pt_PT extends I18n {
   static final _percentMessageFormatter = NumberFormat('###.0%', 'pt_PT');
 
   TextDirection get textDirection => TextDirection.ltr;
-  String constellations(String key, dynamic star) {
+  String? constellations(String key, dynamic star) {
     switch (key) {
       case 'AND':
         return 'Andrômeda (${key}) - Estrela mais brilhante: ${star}';
@@ -240,18 +240,17 @@ class GeneratedLocalizationsDelegate
 
   List<Locale> get supportedLocales =>
       const [Locale('en', 'US'), Locale('pt', 'BR'), Locale('pt', 'PT')];
-  LocaleResolutionCallback resolution({Locale fallback}) {
+  LocaleResolutionCallback resolution({Locale? fallback}) {
     return (locale, supported) {
       return isSupported(locale) ? locale : (fallback ?? supported.first);
     };
   }
 
   Future<WidgetsLocalizations> load(Locale locale) {
-    I18n._locale ??= locale;
+    I18n._locale = locale;
     I18n._shouldReload = false;
-    locale = I18n._locale;
-    final lang = locale?.toString() ?? '';
-    final languageCode = locale?.languageCode ?? '';
+    final lang = I18n._locale.toString();
+    final languageCode = I18n._locale.languageCode;
     if ('en_US' == lang) {
       return SynchronousFuture<WidgetsLocalizations>(const _I18n_en_US());
     }
@@ -270,7 +269,7 @@ class GeneratedLocalizationsDelegate
     return SynchronousFuture<WidgetsLocalizations>(const I18n());
   }
 
-  bool isSupported(Locale locale) {
+  bool isSupported(Locale? locale) {
     for (var i = 0; i < supportedLocales.length && locale != null; i++) {
       final l = supportedLocales[i];
       if (l.languageCode == locale.languageCode) {

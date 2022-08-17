@@ -11,9 +11,9 @@ class Tradutor {
   final Language fallback;
 
   final _languages = <Language, Class>{};
-  List<Code> _constants;
-  Class _fallback;
-  Class _delegate;
+  List<Code> _constants = [];
+  late Class _fallback;
+  Class? _delegate;
   final _textDirection = <Language, String>{};
   final _parent = <String, Language>{};
 
@@ -37,9 +37,7 @@ class Tradutor {
 
    ''';
 
-  Tradutor({String fallback = 'en_US'})
-      : assert(fallback != null),
-        fallback = Language.parse(fallback) {
+  Tradutor({String fallback = 'en_US'}) : fallback = Language.parse(fallback) {
     _fallback = _buildFallback(this.fallback);
   }
 
@@ -80,7 +78,7 @@ class Tradutor {
       ..._constants,
       _fallback,
       ..._languages.values,
-      _delegate,
+      if (_delegate != null) _delegate!,
     ].map((c) => c.accept(emitter)).join();
 
     return formatter.format(_header + text);
@@ -88,19 +86,19 @@ class Tradutor {
 
   void _parse(
     Language language,
-    Map<String, dynamic> items, [
-    String parentKey,
+    Map<dynamic, dynamic> items, [
+    String? parentKey,
   ]) {
-    items?.forEach((key, value) {
+    items.forEach((key, value) {
       // Key.
-      final itemKey = parentKey == null ? key : '$parentKey.$key';
+      final itemKey = parentKey == null ? '$key' : '$parentKey.$key';
       // Null or Empty.
       if (value == null || value == '') {
         // nada.
       }
       // Primitive.
       else if (value is num || value is bool || value is String) {
-        _items[language][itemKey] = '$value';
+        _items[language]?[itemKey] = '$value';
       }
       // List of Primitives.
       else if (value is List) {
@@ -114,7 +112,7 @@ class Tradutor {
           }
         }
 
-        _items[language][itemKey] = list;
+        _items[language]?[itemKey] = list;
       }
       // Map.
       else if (value is Map) {
@@ -142,7 +140,7 @@ class Tradutor {
       // Option.
       if (key.startsWith('@')) {
         if (res is num || res is bool || res is String) {
-          _messages[language].add(OptionMessage(key.substring(1), res));
+          _messages[language]!.add(OptionMessage(key.substring(1), res));
           continue;
         } else {
           ParseError.printInvalidType(key, res, language);
@@ -151,7 +149,7 @@ class Tradutor {
       // Date.
       if (key.startsWith('#')) {
         if (res is String) {
-          _messages[language].add(DateMessage(key.substring(1), res));
+          _messages[language]!.add(DateMessage(key.substring(1), res));
           continue;
         } else {
           ParseError.printInvalidType(key, res, language);
@@ -160,7 +158,7 @@ class Tradutor {
       // Number.
       if (key.startsWith('\$')) {
         if (res is String) {
-          _messages[language].add(NumberMessage(key.substring(1), res));
+          _messages[language]!.add(NumberMessage(key.substring(1), res));
           continue;
         } else {
           ParseError.printInvalidType(key, res, language);
@@ -176,7 +174,7 @@ class Tradutor {
           final name = key.substring(1, typeIndex);
           final type = key.substring(typeIndex + 1);
           final message = SimpleMessage(name, '$res');
-          _messages[language].add(MapMessage(type, message));
+          _messages[language]!.add(MapMessage(type, message));
           continue;
         } else {
           ParseError.printInvalidType(key, res, language);
@@ -189,7 +187,7 @@ class Tradutor {
       if (type != null) {
         if (res is num || res is bool || res is String) {
           final message = SimpleMessage(removePluralTypeFromKey(key), '$res');
-          _messages[language].add(PluralMessage(type, message));
+          _messages[language]!.add(PluralMessage(type, message));
           continue;
         } else {
           ParseError.printInvalidType(key, res, language);
@@ -197,16 +195,16 @@ class Tradutor {
       }
       // List.
       if (res is List<String>) {
-        _messages[language].add(ListMessage(key, res));
+        _messages[language]!.add(ListMessage(key, res));
         continue;
       }
       // Simple.
-      _messages[language].add(SimpleMessage(key, '$res'));
+      _messages[language]!.add(SimpleMessage(key, '$res'));
     }
   }
 
   void _loadOptions(Language language) {
-    for (final m in _messages[language]) {
+    for (final m in _messages[language]!) {
       if (m is OptionMessage) {
         if (m.key == 'textDirection') {
           if (m.value == 'ltr' || m.value == 'rtl') {
@@ -239,7 +237,7 @@ class Tradutor {
     }
 
     // Preenche com o idioma fallback.
-    for (final m in _messages[fallback]) {
+    for (final m in _messages[fallback]!) {
       // Map.
       if (m is MapMessage) {
         // Já existe a chave mas ela não é da lista de itens do Map.
@@ -279,7 +277,7 @@ class Tradutor {
     }
 
     // Preenche com o idioma.
-    for (final m in _messages[language]) {
+    for (final m in _messages[language]!) {
       // Option.
       if (m is OptionMessage) {
         // nada.
@@ -334,7 +332,7 @@ class Tradutor {
 
     // Remove as chaves que está presente no fallback mas não no idioma atual.
     for (final key in List.of(messages.keys)) {
-      final index = _messages[language].indexWhere((m) => m.key == key);
+      final index = _messages[language]!.indexWhere((m) => m.key == key);
 
       if (index == -1) {
         messages.remove(key);
@@ -380,6 +378,8 @@ class Tradutor {
             f.static = true;
             f.name = '_locale';
             f.type = refer('Locale');
+            f.assignment = refer('Locale').newInstance(
+                [literal(fallback.code), literal(fallback.country)]).code;
           }),
         if (isFallback)
           Field((f) {
@@ -442,10 +442,13 @@ class Tradutor {
                 p.type = refer('BuildContext');
               }),
             ]);
-            m.body = refer('Localizations.of<I18n>').call([
-              refer('context'),
-              refer('WidgetsLocalizations'),
-            ]).code;
+            m.body = refer('Localizations.of<I18n>')
+                .call([
+                  refer('context'),
+                  refer('WidgetsLocalizations'),
+                ])
+                .nullChecked
+                .code;
           }),
       ]);
 
@@ -454,7 +457,7 @@ class Tradutor {
       // Messages.
       for (final key in keys) {
         final message = messages[key];
-        List m;
+        List? m;
 
         // Map.
         if (message is List<MapMessage>) {
@@ -551,7 +554,7 @@ class Tradutor {
           m.returns = refer('LocaleResolutionCallback');
           m.optionalParameters.add(Parameter((p) {
             p.name = 'fallback';
-            p.type = refer('Locale');
+            p.type = refer('Locale?');
             p.named = true;
           }));
           m.body = Code('''
@@ -568,18 +571,17 @@ class Tradutor {
             p.type = refer('Locale');
           }));
           m.body = Block.of([
-            refer('I18n._locale').assignNullAware(refer('locale')).statement,
+            refer('I18n._locale').assign(refer('locale')).statement,
             refer('I18n._shouldReload').assign(literal(false)).statement,
-            refer('locale').assign(refer('I18n._locale')).statement,
-            refer('locale')
-                .nullSafeProperty('toString')
+            refer('I18n')
+                .property('_locale')
+                .property('toString')
                 .call(const [])
-                .ifNullThen(literal(''))
                 .assignFinal('lang')
                 .statement,
-            refer('locale')
-                .nullSafeProperty('languageCode')
-                .ifNullThen(literal(''))
+            refer('I18n')
+                .property('_locale')
+                .property('languageCode')
                 .assignFinal('languageCode')
                 .statement,
             for (final l in _languages.keys)
@@ -597,7 +599,7 @@ class Tradutor {
           m.returns = refer('bool');
           m.requiredParameters.add(Parameter((p) {
             p.name = 'locale';
-            p.type = refer('Locale');
+            p.type = refer('Locale?');
           }));
           m.body = Code(''' 
             for (var i = 0; i < supportedLocales.length && locale != null; i++) {
@@ -803,7 +805,7 @@ class Tradutor {
     return [
       Method((m) {
         m.name = camelize(messages[0].key);
-        m.returns = refer('String');
+        m.returns = refer('String?');
 
         for (final parameter in parameters.values) {
           final p = Parameter((p) {
@@ -903,7 +905,7 @@ class Tradutor {
     ];
   }
 
-  static PluralType pluralTypeFromKey(String key) {
+  static PluralType? pluralTypeFromKey(String key) {
     if (key.endsWith('.zero')) return PluralType.zero;
     if (key.endsWith('.one')) return PluralType.one;
     if (key.endsWith('.two')) return PluralType.two;
@@ -960,7 +962,7 @@ class Tradutor {
   }
 
   Map<String, dynamic> language(Language language) {
-    return _items[language];
+    return _items[language]!;
   }
 
   bool removeLanguage(Language language) {
@@ -982,17 +984,17 @@ class Tradutor {
     Language language,
     String key,
   ) {
-    return hasLanguage(language) && _items[language].containsKey(key);
+    return hasLanguage(language) && _items[language]!.containsKey(key);
   }
 
-  Iterable<String> keys(Language language) => _items[language]?.keys;
+  Iterable<String> keys(Language language) => _items[language]?.keys ?? [];
 
   dynamic value(
     Language language,
     String key,
   ) {
     if (hasLanguage(language)) {
-      return _items[language][key];
+      return _items[language]![key];
     } else {
       return null;
     }
@@ -1002,14 +1004,14 @@ class Tradutor {
     Language language,
     String key,
   ) {
-    return hasLanguage(language) && _items[language].remove(key) != null;
+    return hasLanguage(language) && _items[language]?.remove(key) != null;
   }
 
-  List<Message> messages(Language language) {
+  List<Message>? messages(Language language) {
     return _messages[language];
   }
 
-  Message message(
+  Message? message(
     Language language,
     String key,
   ) {

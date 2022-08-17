@@ -55,7 +55,7 @@ void main(List<String> args) async {
 }
 
 bool _build(
-  String input,
+  String? input,
   Language language,
   String ext,
   BuildOptions options, {
@@ -144,11 +144,10 @@ bool _fileDeleted(
   File file,
   BuildOptions options,
 ) {
-  final ext = path.extension(file.path)?.toLowerCase();
+  final ext = path.extension(file.path).toLowerCase();
   final language = path.basenameWithoutExtension(file.path);
 
-  if (file is File &&
-      (ext == '.json' || ext == '.yaml' || ext == '.yml') &&
+  if ((ext == '.json' || ext == '.yaml' || ext == '.yml') &&
       Language.matches(language)) {
     final code = language.substring(0, 2);
     final country = language.substring(3);
@@ -168,11 +167,11 @@ bool _fileDeleted(
 }
 
 bool _fileFound(
-  File file,
+  FileSystemEntity file,
   BuildOptions options, {
   bool immediately = false,
 }) {
-  final ext = path.extension(file.path)?.toLowerCase();
+  final ext = path.extension(file.path).toLowerCase();
   final language = path.basenameWithoutExtension(file.path);
 
   if (file is File &&

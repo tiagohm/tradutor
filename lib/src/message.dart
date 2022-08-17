@@ -21,10 +21,10 @@ List _fetchParameters(
 
     while (true) {
       try {
-        final match = regex.allMatches(text, pos)?.first;
+        final match = regex.allMatches(text, pos).first;
 
         final optional = match.group(1) == '?';
-        final name = match.group(2);
+        final name = match.group(2)!;
         final value = match.group(3) ?? '';
 
         params.add(MessageParameter(
@@ -69,7 +69,7 @@ class MessageParameterList extends Iterable<MessageParameter>
 
   @override
   String toString() {
-    return parameters?.toString();
+    return parameters.toString();
   }
 
   @override
@@ -123,8 +123,8 @@ abstract class Message<T> implements Comparable<Message<T>> {
 class SimpleMessage extends Message<String> {
   @override
   final String key;
-  MessageParameterList _parameters;
-  String _value;
+  late MessageParameterList _parameters;
+  late String _value;
   final String raw;
 
   SimpleMessage(this.key, this.raw) {
@@ -156,8 +156,8 @@ class SimpleMessage extends Message<String> {
 
 class ListMessage extends Message<List<String>> {
   final String key;
-  List<String> _value;
-  MessageParameterList _parameters;
+  late List<String> _value;
+  late MessageParameterList _parameters;
 
   ListMessage(this.key, List<String> values) {
     final res = init(values);

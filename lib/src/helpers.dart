@@ -1,6 +1,6 @@
 void _printColor(
   dynamic text, [
-  int color,
+  int? color,
 ]) {
   if (color != null) {
     print('\u001b[${color}m$text\u001b[0m');

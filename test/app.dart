@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../example/lib/i18n.dart';
+import 'i18n.dart';
 
 class App extends StatefulWidget {
   final Locale locale;
 
   const App({
-    Key key,
-    this.locale,
+    Key? key,
+    required this.locale,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  Locale _locale;
+  Locale? _locale;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class _AppState extends State<App> {
         i18n,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        ...GlobalCupertinoLocalizations.delegates,
       ],
       locale: _locale ?? widget.locale,
       supportedLocales: i18n.supportedLocales,
@@ -48,8 +49,8 @@ class _HomePage extends StatelessWidget {
   final void Function(Locale locale) onLocaleChanged;
 
   const _HomePage({
-    Key key,
-    this.onLocaleChanged,
+    Key? key,
+    required this.onLocaleChanged,
   }) : super(key: key);
 
   @override
@@ -81,6 +82,6 @@ class _HomePage extends StatelessWidget {
 
     I18n.locale$ = locale;
 
-    onLocaleChanged?.call(locale);
+    onLocaleChanged.call(locale);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../example/lib/i18n.dart';
+import 'i18n.dart';
 
 void main() {
   test('Simple Message', () {

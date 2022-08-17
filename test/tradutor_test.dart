@@ -9,11 +9,11 @@ void main() {
   test('Build', () {
     final parser = Tradutor();
 
-    final en = File('./example/i18n/en_US.json').readAsStringSync();
+    final en = File('./test/i18n/en_US.json').readAsStringSync();
     parser.read(json.decode(en), Language('en', 'US'));
-    final br = File('./example/i18n/pt_BR.json').readAsStringSync();
+    final br = File('./test/i18n/pt_BR.json').readAsStringSync();
     parser.read(json.decode(br), Language('pt', 'BR'));
-    final pt = File('./example/i18n/pt_PT.json').readAsStringSync();
+    final pt = File('./test/i18n/pt_PT.json').readAsStringSync();
     parser.read(json.decode(pt), Language('pt', 'PT'));
 
     print(parser.text());
